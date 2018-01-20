@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xust.wtc.Dao.book.StockMapper">
+
+    <!-- 增加一个库存 -->
+    <insert id="addStock">
+        INSERT INTO stock(person_id, book_id)
+        VALUES(#{personId,javaType=INTEGER},#{bookId,javaType=INTEGER})
+    </insert>
+
+</mapper>

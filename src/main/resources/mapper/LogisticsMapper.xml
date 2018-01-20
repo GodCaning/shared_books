@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xust.wtc.Dao.logistics.LogisticsMapper">
+
+    <resultMap id="displayLogistics" type="com.xust.wtc.Entity.DisplayLogistics">
+        <result property="id" column="logistics_id"/>
+        <result property="number" column="logistics_number"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyNumber" column="company_number"/>
+    </resultMap>
+
+    <resultMap id="displayCompany" type="com.xust.wtc.Entity.Company">
+        <result property="id" column="company_id"/>
+        <result property="name" column="company_name"/>
+    </resultMap>
+
+    <!-- 增加一个物流信息 -->
+    <insert id="addLogistics">
+        INSERT INTO logistics(lend_id)
+        VALUES(#{lendId,javaType=INTEGER})
+    </insert>
+
+    <!-- 添加物流编号和公司 -->
+    <update id="updateLogistics" parameterType="com.xust.wtc.Entity.Logistics">
+        UPDATE logistics
+        SET logistics_number = #{number}, logistics_company_id = #{companyId}
+        WHERE logistics_id = #{id}
+    </update>
+
+    <!-- 根据订单ID获取物流信息 -->
+    <select id="findLogisticsByLendId" parameterType="int" resultMap="displayLogistics">
+        SELECT logistics_id, logistics_number, company_name, company_number
+        FROM logistics l JOIN company c ON l.logistics_company_id = c.company_id
+        WHERE lend_id = #{lendId}
+    </select>
+
+    <!--更新物流状态 -->
+    <update id="updateLogisticsStatus">
+        UPDATE logistics
+        SET logistics_status = #{status}
+        WHERE logistics_id = #{id}
+    </update>
+
+    <!--查询所有物流公司信息-->
+    <select id="findLogisticsCompany" resultMap="displayCompany">
+        SELECT company_id, company_name
+        FROM company
+    </select>
+
+</mapper>

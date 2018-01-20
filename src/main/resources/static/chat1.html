@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8" />
+<head>
+    <title>Home</title>
+    <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<p>
+    聊天室
+</p>
+
+<form id="wiselyForm">
+    <textarea rows="4" cols="60" name="text"></textarea>
+    <input type="button" onclick="sendSpittle()" value="发送"/>
+</form>
+
+<script>
+    //链接endpoint名称为 "/endpointChat" 的endpoint。
+    var sock = new SockJS("/wtc");
+    var stomp = Stomp.over(sock);
+    stomp.connect('guest', 'guest', function(frame) {
+
+        /**  订阅了/user/queue/notifications 发送的消息,这里雨在控制器的 convertAndSendToUser 定义的地址保持一致, 
+         *  这里多用了一个/user,并且这个user 是必须的,使用user 才会发送消息到指定的用户。 
+         *  */
+        stomp.subscribe('/user/' + 1 + '/message', handleNotification);
+    });
+
+    function handleNotification(message) {
+        console.log(message);
+    }
+
+    function sendSpittle() {
+        stomp.send("/app/chat", {}, JSON.stringify({ 'name': 'woshiwangtiancan' }));//3
+    }
+</script>
+
+<div id="output"></div>
+</body>
+</html>

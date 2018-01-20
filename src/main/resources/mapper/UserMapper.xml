@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xust.wtc.Dao.user.UserMapper">
+
+    <resultMap id="user" type="com.xust.wtc.Entity.Person">
+        <result property="id" column="person_id" javaType="int"/>
+        <result property="name" column="person_name" javaType="string"/>
+        <result property="loginName" column="login_name" javaType="string"/>
+        <result property="loginPasswd" column="login_passwd" javaType="string"/>
+        <result property="status" column="status" javaType="int"/>
+        <result property="balance" column="balance" javaType="int"/>
+        <result property="birthdate" column="birthdate" javaType="string"/>
+        <result property="gender" column="gender" javaType="int"/>
+        <result property="autograph" column="autograph" javaType="string"/>
+    </resultMap>
+
+    <sql id="field">
+        person_id, person_name, login_name, login_passwd, status, balance, birthdate, gender, autograph
+    </sql>
+
+    <insert id="register" parameterType="com.xust.wtc.Entity.Person">
+        INSERT INTO person(person_name, login_name, login_passwd, birthdate, gender, autograph)
+        VALUES (#{name}, #{loginName}, #{loginPasswd}, #{birthdate}, #{gender}, #{autograph})
+    </insert>
+
+    <select id="findUserByLoginName" parameterType="string" resultMap="user">
+        SELECT
+        <include refid="field"/>
+        FROM person
+        WHERE login_name = #{loginName};
+    </select>
+
+    <!-- 根据ID查询用户信息 -->
+    <select id="findUser" parameterType="int" resultMap="user">
+        SELECT
+        <include refid="field"/>
+        FROM person
+        WHERE person_id = #{id}
+    </select>
+
+    <!-- 根据用户提供的资料修改用户信息 -->
+    <update id="updateUserInfo" parameterType="com.xust.wtc.Entity.Person">
+        UPDATE person
+        <set>
+            <if test="name != null AND name != ''">
+                person_name = #{name}
+            </if>
+            <if test="loginPasswd != null AND loginPasswd != ''">
+                login_passwd = #{loginPasswd}
+            </if>
+            <if test="status != null AND status != ''">
+                status = #{status}
+            </if>
+            <if test="balance != null AND balance != ''">
+                balance = #{balance}
+            </if>
+            <if test="birthdate != null AND birthdate != ''">
+                birthdate = #{birthdate}
+            </if>
+            <if test="gender != null AND gender != ''">
+                gender = #{gender}
+            </if>
+            <if test="autograph != null AND autograph != ''">
+                autograph = #{autograph}
+            </if>
+        </set>
+        WHERE person_id = #{id}
+    </update>
+</mapper>

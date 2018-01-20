@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xust.wtc.Dao.book.OrderMapper">
+
+    <resultMap id="order" type="com.xust.wtc.Entity.Lend">
+        <result property="id" column="lend_id" javaType="int"/>
+        <result property="borrowerId" column="borrower_id" javaType="int"/>
+        <result property="stockId" column="stock_id" javaType="int"/>
+        <result property="borrowerAddress" column="borrower_address" javaType="string"/>
+        <result property="borrowerPhone" column="borrower_phone" javaType="string"/>
+        <result property="lenderAddress" column="lender_address" javaType="string"/>
+        <result property="lenderPhone" column="lender_phone" javaType="string"/>
+        <result property="status" column="status" javaType="int"/>
+        <result property="beginDate" column="begin_date" javaType="java.sql.Timestamp"/>
+        <result property="endDate" column="end_date" javaType="java.sql.Timestamp"/>
+    </resultMap>
+
+    <sql id="filed">
+        lend_id, borrower_id, stock_id, borrower_address, borrower_phone,
+        lender_address, lender_phone, status, begin_date, end_date
+    </sql>
+
+    <!-- 根据订单ID获取一个订单信息 -->
+    <select id="getOrder" parameterType="int" resultMap="order">
+        SELECT
+        <include refid="filed"/>
+        FROM lend WHERE lend_id = #{id} AND status != 0
+    </select>
+
+    <!--获取借书人订单信息 -->
+    <select id="getBorrowerOrders" parameterType="int" resultMap="order">
+        SELECT
+        <include refid="filed"/>
+        FROM lend
+        WHERE borrower_id = #{borrowerId} AND status = 1
+    </select>
+
+    <!-- 修改订单中借书人信息 -->
+    <update id="borrowerModifyOrder" parameterType="com.xust.wtc.Entity.Lend">
+        UPDATE lend
+        SET borrower_address = #{borrowerAddress}, borrower_phone = #{borrowerPhone}, status = 2
+        WHERE lend_id = #{id} AND status = 1
+    </update>
+
+    <!--获取出借人订单信息 -->
+    <select id="getLenderOrders" parameterType="int" resultMap="order">
+        SELECT
+        <include refid="filed"/>
+        FROM lend JOIN IN stock ON lend.stock_id = stock.stock_id
+        WHERE stock.person_id = #{lenderId} AND status = 2
+    </select>
+
+    <!-- 修改订单中出借人信息-->
+    <update id="lenderModifyOrder" parameterType="com.xust.wtc.Entity.Lend">
+        UPDATE lend
+        SET lender_address = #{lenderAddress}, lender_phone = #{lenderPhone}, status = 3
+        WHERE lend_id = #{id} AND status = 2
+    </update>
+
+    <!-- 出借人拒绝订单 -->
+    <update id="lenderRefuseOrder" parameterType="int">
+        UPDATE lend
+        SET status = 0
+        WHERE lend_id = #{id} AND status = 2
+    </update>
+
+    <!-- 获取过期库存ID -->
+    <select id="getExpireOrder" parameterType="java.sql.Timestamp" resultType="int">
+        SELECT stock_id
+        FROM stock
+        WHERE modify_date &lt; #{time} AND status = 2
+    </select>
+
+    <!-- 下订单 -->
+    <update id="orderForBook">
+        UPDATE stock
+        SET status = 2, modify_date = current_timestamp
+        WHERE stock_id = #{stockId} AND status = 1
+    </update>
+
+    <!-- 取消库存锁定 -->
+    <update id="cancelStock" parameterType="list">
+        UPDATE stock
+        SET status = 1, modify_date = current_timestamp
+        WHERE status = 2 AND stock_id IN 
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 取消订单 -->
+    <update id="cancelLend" parameterType="list">
+        UPDATE lend
+        SET STATUS = 5
+        WHERE stock_id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 生成一张订单表 -->
+    <insert id="insertLendRecord">
+        INSERT INTO lend(borrower_id, stock_id)
+        VALUES(#{borrowerId,javaType=INTEGER}, #{stockId,javaType=INTEGER})
+    </insert>
+
+</mapper>

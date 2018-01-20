@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xust.wtc.Dao.user.FriendMapper">
+
+    <resultMap id="friend" type="com.xust.wtc.Entity.Person">
+        <result property="id" column="person_id" javaType="int"/>
+        <result property="name" column="person_name" javaType="string"/>
+        <result property="autograph" column="autograph" javaType="string"/>
+    </resultMap>
+
+    <sql id="info">
+        person_id, person_name, autograph
+    </sql>
+
+    <!--增加一个友情信息 -->
+    <insert id="addFriend">
+
+        INSERT INTO friendship(fans_id, concerned_id)
+        VALUES(#{fansId,javaType=INTEGER}, #{concernedId,javaType=INTEGER});
+    </insert>
+
+    <update id="deleteFriend">
+        UPDATE friendship
+        SET status = 0
+        WHERE fans_id = #{fansId,javaType=INTEGER} AND concerned_id = #{concernedId,javaType=INTEGER}
+    </update>
+
+    <select id="listConcernedInfo" parameterType="int" resultMap="friend">
+        SELECT
+        <include refid="info"/>
+        FROM person
+        WHERE person_id
+        IN (
+            SELECT concerned_id
+            FROM friendship
+            WHERE fans_id = #{id,javaType=INTEGER}
+            );
+    </select>
+
+    <select id="listFansInfo" parameterType="int" resultMap="friend">
+        SELECT
+        <include refid="info"/>
+        FROM person
+        WHERE person_id
+        IN (
+            SELECT fans_id
+            FROM friendship
+            WHERE concerned_id = #{id,javaType=INTEGER}
+            );
+    </select>
+
+</mapper>

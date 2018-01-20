@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xust.wtc.Dao.chat.PrivateMessageMapper">
+
+    <!--具体聊天信息 -->
+    <resultMap id="ps" type="com.xust.wtc.Entity.chat.PrivateMessage">
+        <result property="id" column="private_message_id"/>
+        <result property="sendId" column="send_id"/>
+        <result property="sendName" column="send_name"/>
+        <result property="receiveId" column="receive_id"/>
+        <result property="receiveName" column="receive_name"/>
+        <result property="isSend" column="isReal"/>
+        <result property="content" column="message_content"/>
+        <result property="timestamp" column="create_date"/>
+    </resultMap>
+
+    <!--列表显示-->
+    <resultMap id="chatList" type="com.xust.wtc.Entity.chat.ChatList">
+        <result property="receiveId" column="receive_id"/>
+        <result property="receiveName" column="person_name"/>
+    </resultMap>
+
+    <!-- 未读情况 -->
+    <resultMap id="unreadCount" type="com.xust.wtc.Entity.chat.UnreadCount">
+        <result property="receiveId" column="receive_id"/>
+        <result property="number" column="number"/>
+    </resultMap>
+
+    <sql id="sql">
+        private_message_id, send_id, s.person_name send_name,
+        receive_id, r.person_name receive_name, isReal,
+        message_content, ps.create_date create_date
+    </sql>
+
+    <!--查询一个具体的聊天-->
+    <select id="findPrivateMessageBySendIdAndReceiveId" resultMap="ps">
+        SELECT
+        <include refid="sql"/>
+        FROM private_message ps
+        JOIN person s ON ps.send_id = s.person_id
+        JOIN person r ON ps.receive_id = r.person_id
+        WHERE send_id = #{sendId} AND receive_id = #{receiveId} AND ps.status != 3
+    </select>
+
+    <update id="updateUnreadCount">
+        UPDATE private_message
+        SET STATUS = 2
+        WHERE send_id = #{sendId} AND receive_id = #{receiveId}
+    </update>
+
+    <!-- 插入发送方的聊天记录 -->
+    <insert id="insertSend">
+        INSERT INTO private_message(send_id,receive_id,isReal,message_content,status)
+        VALUES(#{sendId},#{receiveId},1,#{content},2)
+    </insert>
+
+    <!-- 插入接受方的聊天记录 -->
+    <insert id="insertReceive">
+        INSERT INTO private_message(send_id,receive_id,isReal,message_content,status)
+        VALUES(#{receiveId},#{sendId},0,#{content},1)
+    </insert>
+
+    <!--删除聊天记录-->
+    <update id="deletePrivateMessage">
+        UPDATE private_message
+        SET STATUS = 3
+        WHERE send_id = #{sendId} AND receive_id = #{receiveId}
+    </update>
+
+    <!-- 查询列表显示情况 -->
+    <select id="findListDisplay" parameterType="int" resultMap="chatList">
+        SELECT receive_id, person_name
+        FROM private_message ps JOIN person p ON ps.receive_id = p.person_id
+        WHERE send_id = #{sendId} AND ps.status != 3
+        GROUP BY receive_id;
+    </select>
+
+    <!-- 查询未读信息 -->
+    <select id="findUnreadCount" parameterType="int" resultMap="unreadCount">
+        SELECT receive_id,COUNT(1) AS number
+        FROM private_message
+        WHERE send_id = #{sendId} AND STATUS = 1
+        GROUP BY receive_id;
+    </select>
+</mapper>
