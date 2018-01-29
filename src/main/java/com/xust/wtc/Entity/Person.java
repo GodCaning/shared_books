@@ -1,5 +1,6 @@
 package com.xust.wtc.Entity;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
@@ -33,6 +34,9 @@ public class Person implements Serializable {
     private int gender;
     @Size(max = 100, groups = {Other.class, Register.class})
     private String autograph;
+
+    @Email(groups = {Register.class})
+    private String email;
 
     public Person() {}
 
@@ -115,6 +119,13 @@ public class Person implements Serializable {
         this.autograph = autograph;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
     @Override
     public String toString() {
         return "Person{" +

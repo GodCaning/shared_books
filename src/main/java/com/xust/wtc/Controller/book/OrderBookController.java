@@ -25,8 +25,7 @@ public class OrderBookController {
      * @param stockId
      * @return
      */
-    @RequestMapping(value = "/orderForBook", method = RequestMethod.POST,
-            consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/orderForBook", consumes = "application/json", produces = "application/json")
     public Result orderForBook(HttpSession httpSession, @RequestBody int stockId) {
         String sessionId = httpSession.getId();
         return orderService.orderForBook(sessionId, stockId);
@@ -37,8 +36,7 @@ public class OrderBookController {
      * @param httpSession
      * @return
      */
-    @RequestMapping(value = "/borrowerOrders", method = RequestMethod.GET,
-            consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/borrowerOrders", consumes = "application/json", produces = "application/json")
     public List<Lend> getBorrowerOrders(HttpSession httpSession) {
         String sessionId = httpSession.getId();
         return orderService.getBorrowerOrders(sessionId);
@@ -49,8 +47,7 @@ public class OrderBookController {
      * @param httpSession
      * @return
      */
-    @RequestMapping(value = "/lenderOrders", method = RequestMethod.GET,
-            consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/lenderOrders", consumes = "application/json", produces = "application/json")
     public List<Lend> getLenderOrders(HttpSession httpSession) {
         String sessionId = httpSession.getId();
         return orderService.getLenderOrders(sessionId);
@@ -61,8 +58,7 @@ public class OrderBookController {
      * @param lendId
      * @return
      */
-    @RequestMapping(value = "/order", method = RequestMethod.GET,
-            consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/order", consumes = "application/json", produces = "application/json")
     public Lend getOrder(@RequestParam(value = "lendId") int lendId) {
         return orderService.getOrder(lendId);
     }
@@ -72,8 +68,7 @@ public class OrderBookController {
      * @param lend
      * @return
      */
-    @RequestMapping(value = "/borrowerModifyOrder", method = RequestMethod.PUT,
-            consumes = "application/json", produces = "application/json")
+    @PutMapping(value = "/borrowerModifyOrder", consumes = "application/json", produces = "application/json")
     public Result borrowerModifyOrder(@RequestBody Lend lend) {
         return orderService.borrowerModifyOrder(lend);
     }
@@ -83,8 +78,7 @@ public class OrderBookController {
      * @param lend
      * @return
      */
-    @RequestMapping(value = "/lenderModifyOrder", method = RequestMethod.PUT,
-            consumes = "application/json", produces = "application/json")
+    @PutMapping(value = "/lenderModifyOrder", consumes = "application/json", produces = "application/json")
     public Result lenderModifyOrder(@RequestBody Lend lend) {
         return orderService.lenderModifyOrder(lend);
     }

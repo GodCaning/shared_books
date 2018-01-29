@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>忘记密码</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/forget.css">
+    <link href="css/mui.min.css" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">找回密码</h1>
+	</header>
+   <div class="content">
+       <div class="options">
+           <div class="progress">
+               <div class="progress-bar">
+                   <div class="progress-list focus"></div>
+                   <div class="progress-list"></div>
+                   <div class="progress-list"></div>
+                   <div class="progress-list"></div>
+               </div>
+               <div class="progress-messagebox">
+                   <div class="progresstext focus">
+                       <em>1</em>
+                       <br/>
+                       <strong>填写账户名</strong>
+                   </div>
+                   <div class="progresstext">
+                       <em>2</em>
+                       <br/>
+                       <strong>验证身份</strong>
+                   </div>
+                   <div class="progresstext">
+                       <em>3</em>
+                       <br/>
+                       <strong>设置新密码</strong>
+                   </div>
+                   <div class="progresstext">
+                       <em>4</em>
+                       <br/>
+                       <strong>完成</strong>
+                   </div>
+               </div>
+           </div>
+           <div class="forget-pwd">
+               <div class="space">
+                   <span>用户名:</span>
+                   <input type="text" name="user" id="name">
+               </div>
+               <div class="space">
+                   <span>验证码:</span>
+                   <input type="text" name="num" id="code">
+                   <div class="test-num">
+                       <img src="/code"/>
+                       <a href="javasript:;">换一张</a>
+                   </div>
+
+               </div>
+               <div class="submit">
+                   <input type="submit" value="下一步" onclick="myFirst()">
+               </div>
+           </div>
+       </div>
+   </div>
+   <script src="js/mui.min.js"></script>
+   <script src="js/app.js"></script>
+   <script src="js/jquery-1.8.3.min.js"></script>
+   <script>
+       function myFirst() {
+           var loginName = $('#name').val();
+           var code = $('#code').val();
+           if (loginName == '' && code == ''){
+               return;
+           }
+           $.ajax({
+               url: 'http://localhost:8080/validationName?loginName=' + loginName + "&code=" + code,
+               type: 'GET',
+               dataType: 'json',
+               contentType: 'application/json',
+               accept: 'application/json',
+               success: function(data){
+                   if(data.status == 1) {
+//                       console.log("forget2.html?name=" + data.content.name + "&email=" + data.content.email);
+                       window.location.href="forget2.html?name=" + data.content.name + "&email=" + data.content.email;
+                   } else {
+                       alert(data.content);
+                   }
+               }
+           });
+       }
+   </script>
+</body>
+</html>

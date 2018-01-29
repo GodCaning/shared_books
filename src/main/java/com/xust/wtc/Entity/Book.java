@@ -14,6 +14,7 @@ public class Book {
     private String pubdate;
     private String summary;
     private String price;
+    private int ctr;
 
     public Book() {}
 
@@ -123,5 +124,13 @@ public class Book {
                 ", summary='" + summary + '\'' +
                 ", price='" + price + '\'' +
                 '}';
+    }
+
+    public int getCtr() {
+        return ctr;
+    }
+
+    public void setCtr(int ctr) {
+        this.ctr = ctr;
     }
 }

@@ -1,0 +1,105 @@
+/*��ʼ��*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video, select{margin: 0;padding: 0;border: 0;}
+table{ border-collapse:collapse;}
+body{font-size:17px;color:#333; font-family:"Microsoft Yahei";overflow-x:hidden; background:#f7f7f7;}
+img,a{border:0; text-decoration:none;}
+ol, ul {list-style: none; }
+.content{
+    height: 736px;
+}
+.options{
+    height: 100%;
+    /*background-color: blueviolet;*/
+}
+.progress{
+    height: 150px;
+    background-color: #f7f7f7;
+}
+.progress-bar{
+    position: relative;
+    width: 414px;
+    height: 35px;
+    top: 55px;
+}
+.progress-list{
+    float: left;
+    width: 25%;
+    height: 12px;
+    background-color: #cccccc;
+}
+.progress-messagebox{
+    position: absolute;
+    width: 414px;
+    top: 49px;
+    left: 0;
+}
+.progress-messagebox .progresstext{
+    width: 25%;
+    float: left;
+    text-align: center;
+}
+.progresstext  em{
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-color: #cccccc;
+    color: #ffffff;
+    line-height: 24px;
+    border-radius: 50%;
+}
+.progresstext strong{
+    font-weight: 400;
+}
+.focus em{
+    background-color: #007AFF;
+
+}
+.focus strong{
+    color: #007AFF;
+}
+.progresstext strong{
+    display: inline-block;
+}
+.progress-bar .focus{
+    background-color: #007AFF;
+}
+.forget-pwd{
+    display: block;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.forget-pwd input{
+    border: none;
+    width: 190px;
+    height: 28px;
+    border: 1px solid #dddddd;
+}
+.test-num{
+    margin-top: 20px;
+    text-align: right;
+}
+.submit{
+    padding-left: 110px;
+}
+.submit input{
+    border: none;
+    width: 90px;
+    height: 28px;
+    border: 1px solid #ffffff;
+    background-color: #007AFF;
+    color: #ffffff;
+}
+.space{
+    margin-bottom: 20px;
+    /*text-align: right;*/
+}
+.successs{
+    text-align:center;
+    padding: 20px 0 60px 0;
+}
+.successs h3{
+    padding:20px;
+    font-size:25px;
+    color:#007AFF;
+}

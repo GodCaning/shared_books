@@ -1,7 +1,8 @@
 package com.xust.wtc.Service.book.impl;
 
+import static org.elasticsearch.index.query.QueryBuilders.*;
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xust.wtc.Dao.book.BookMapper;
 import com.xust.wtc.Dao.book.StockMapper;
 import com.xust.wtc.Entity.Book;
@@ -15,11 +16,10 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +27,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +53,25 @@ public class BookServiceImpl implements BookService {
     private StockMapper stockMapper;
 
     private String url = "https://api.douban.com/v2/book/isbn/{isbn}";
+
+    /**
+     * 根据文本查询匹配书籍返回
+     * @param content
+     * @return
+     */
+    @Override
+    public List<Book> searchBooks(String content) {
+        SearchResponse response = client.prepareSearch("shared_books").setTypes("book")
+                .setSearchType(SearchType.QUERY_THEN_FETCH)
+                .setQuery(multiMatchQuery(content, "title", "summary"))
+                .execute().actionGet();
+        List<Book> bookList = new ArrayList<>();
+        for (SearchHit searchHit : response.getHits().getHits()) {
+            System.out.println(searchHit.getSourceAsString());
+            bookList.add(StringConverter.stringToBook(searchHit.getSourceAsString()));
+        }
+        return bookList;
+    }
 
     @Override
     @Transactional
@@ -117,13 +138,18 @@ public class BookServiceImpl implements BookService {
         SearchRequestBuilder requestBuilder =
                 client.prepareSearch("shared_books").setTypes("book");
         SearchResponse response = requestBuilder.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.termQuery("isbn", isbn))
+                .setQuery(termQuery("isbn", isbn))
                 .execute().actionGet();
         SearchHits searchHits = response.getHits();
         return searchHits;
     }
 
+    /**
+     * 在ES中增加一个图书信息
+     * @param book
+     */
     private void addBookToES(Book book) {
+
         XContentBuilder mapping = null;
         try {
             mapping = XContentFactory.jsonBuilder()
@@ -144,5 +170,51 @@ public class BookServiceImpl implements BookService {
         }
         IndexResponse response = client.prepareIndex("shared_books", "book")
                 .setSource(mapping).get();
+        client.prepareSearch("fast_search", "book_title")
+                .setSource("{" + "\"title\":" + book.getTitle() +"}").get();
+    }
+
+    /**
+     * 根据输入文字返回匹配的书籍名称
+     * @param content
+     * @return
+     */
+    @Override
+    public List<String> searchTitleToES(String content) {
+        SearchResponse response = client.prepareSearch("fast_search")
+                .setTypes("book_title").setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(termQuery("title", content)) // Query
+                .setFrom(0).setSize(6).setExplain(true)
+                .execute().actionGet();
+        System.out.println(content);
+        List<String> searchTiler = new ArrayList<>();
+        SearchHit []searchHits = response.getHits().getHits();
+        System.out.println(searchHits.length);
+        for (SearchHit searchHit : searchHits) {
+            System.out.println(searchHit.getSourceAsString());
+            searchTiler.add(searchHit.getSourceAsString());
+        }
+        return searchTiler;
+    }
+
+    /**
+     * 根据书籍ID查找书籍
+     * @param id
+     * @return
+     */
+    @Override
+    public Book findBook(int id) {
+        //增加书籍点击率
+        bookMapper.updateBookCTR(id);
+        return bookMapper.findBook(id);
+    }
+
+    /**
+     * 根据点击率返回TOP10
+     * @return
+     */
+    @Override
+    public List<Book> findTop10Book() {
+        return bookMapper.findTop10Book();
     }
 }

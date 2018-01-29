@@ -18,4 +18,6 @@ public interface UserMapper {
     Person findUser(@Param("id") int id);
 
     int updateUserInfo(Person person);
+
+    int modifyPassWd(@Param("name") String loginName, @Param("passwd") String passwd);
 }

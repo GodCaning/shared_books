@@ -11,15 +11,16 @@
         <result property="birthdate" column="birthdate" javaType="string"/>
         <result property="gender" column="gender" javaType="int"/>
         <result property="autograph" column="autograph" javaType="string"/>
+        <result property="email" column="email" javaType="string"/>
     </resultMap>
 
     <sql id="field">
-        person_id, person_name, login_name, login_passwd, status, balance, birthdate, gender, autograph
+        person_id, person_name, login_name, login_passwd, status, balance, birthdate, gender, autograph, email
     </sql>
 
     <insert id="register" parameterType="com.xust.wtc.Entity.Person">
-        INSERT INTO person(person_name, login_name, login_passwd, birthdate, gender, autograph)
-        VALUES (#{name}, #{loginName}, #{loginPasswd}, #{birthdate}, #{gender}, #{autograph})
+        INSERT INTO person(person_name, login_name, login_passwd, birthdate, gender, autograph, email)
+        VALUES (#{name}, #{loginName}, #{loginPasswd}, #{birthdate}, #{gender}, #{autograph}, #{email})
     </insert>
 
     <select id="findUserByLoginName" parameterType="string" resultMap="user">
@@ -36,6 +37,13 @@
         FROM person
         WHERE person_id = #{id}
     </select>
+
+    <!--修改密码-->
+    <update id="modifyPassWd">
+        UPDATE person
+        SET login_passwd = #{passwd}
+        WHERE login_name = #{name}
+    </update>
 
     <!-- 根据用户提供的资料修改用户信息 -->
     <update id="updateUserInfo" parameterType="com.xust.wtc.Entity.Person">

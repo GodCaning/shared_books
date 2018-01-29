@@ -11,6 +11,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +33,44 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @GetMapping(value = "/validationName", consumes = "application/json", produces = "application/json")
+    public Result validationLogin(HttpServletRequest request, @RequestParam String loginName, @RequestParam String code) {
+        Result result = isTrueCode(request, code);
+        if (result != null) {
+            return result;
+        }
+        return userService.validationLogin(loginName);
+    }
+
+    /**
+     * 发送邮件
+     * @param loginName
+     * @param email
+     * @return
+     */
+    @GetMapping(value = "/sendEmail", consumes = "application/json", produces = "application/json")
+    public Result sendEmail(@RequestParam String loginName, @RequestParam String email) {
+        return userService.sendEmail(loginName, email);
+    }
+
+    /**
+     * 修改密码
+     * @param code
+     * @param passwd
+     * @return
+     */
+    @PostMapping(value = "/modifyPassWd", consumes = "application/json", produces = "application/json")
+    public Result modifyPassWd(@RequestParam String code, @RequestBody() String passwd) {
+        System.out.println(passwd);
+        return userService.modifyPassWd(code, passwd);
+    }
+
     /**
      * 根据ID号查询某一个用户信息
      * @param id
      * @return
      */
-    @RequestMapping(value = "/findUser/{id}", method = RequestMethod.GET,
-            consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/findUser/{id}", consumes = "application/json", produces = "application/json")
     public DisplayPerson findUser(@PathVariable int id) {
         Person person = userService.findUser(id);
         return new DisplayPerson(person.getId(), person.getName(), person.getBirthdate(), person.getGender(), person.getAutograph());
@@ -76,10 +108,8 @@ public class UserController {
             result.setContent("注册参数不正确");
             return result;
         }
-        if (!JCaptcha.validateResponse(httpServletRequest, code)) {
-            Result result = new Result();
-            result.setStatus(0);
-            result.setContent("验证码不正确");
+        Result result = isTrueCode(httpServletRequest, code);
+        if (result != null) {
             return result;
         }
         return userService.register(person);
@@ -101,28 +131,29 @@ public class UserController {
     /**
      * 登录
      * @param httpServletRequest
-     * @param code
+     * @param //code
      * @param person
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST,
-            consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/myLogin", method = RequestMethod.POST,
+             consumes = "application/json", produces = "application/json")
     public Result login(HttpServletRequest httpServletRequest,
-                        @RequestParam(value = "code") String code,
+//                        @RequestParam(value = "code") String code,
                         @Validated({Person.Login.class})@RequestBody() Person person) {
         Result result = new Result();
-        if (!JCaptcha.validateResponse(httpServletRequest, code)) {
-            result.setStatus(0);
-            result.setContent("验证码不正确");
-            return result;
-        }
-
+//        if (!JCaptcha.validateResponse(httpServletRequest, code)) {
+//            result.setStatus(0);
+//            result.setContent("验证码不正确");
+//            return result;
+//        }
+        System.out.println(person);
         Subject subject = SecurityUtils.getSubject();
 
         UsernamePasswordToken token = new UsernamePasswordToken(person.getLoginName(), person.getLoginPasswd());
 
         try {
             subject.login(token);
+            System.out.println(subject.getPrincipal());
             Person p = userService.findUserByLoginName(person.getLoginName());
             //把当前用户缓存进redis
             redisTemplate.opsForValue().set(subject.getSession().getId(), p.getId(), 30, TimeUnit.MINUTES);
@@ -134,6 +165,16 @@ public class UserController {
             result.setContent("登录失败");
         }
 
+        return result;
+    }
+
+    private Result isTrueCode(HttpServletRequest request, String code) {
+        Result result = null;
+        if (!JCaptcha.validateResponse(request, code)) {
+            result = new Result();
+            result.setStatus(0);
+            result.setContent("验证码不正确");
+        }
         return result;
     }
 }

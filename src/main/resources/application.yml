@@ -26,6 +26,10 @@ spring:
     port: 6379
     password:
 
+#  data:
+#    elasticsearch:
+#      cluster-name: wtc-application
+#      cluster-nodes: 60.205.184.204:9300
 
 #server:
 #  port: 8443

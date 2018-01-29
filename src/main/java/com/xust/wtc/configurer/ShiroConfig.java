@@ -38,7 +38,7 @@ public class ShiroConfig {
     @Bean
     public ShiroRealm shiroRealm() {
         ShiroRealm shiroRealm = new ShiroRealm();
-        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+//        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         shiroRealm.setAuthenticationCachingEnabled(true);
         shiroRealm.setAuthenticationCacheName("authenticationCache");
         shiroRealm.setAuthorizationCachingEnabled(true);
@@ -139,7 +139,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/asdf", "anon");
         filterChainDefinitionMap.put("/wtc", "anon");
         filterChainDefinitionMap.put("/find", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/myLogin", "anon");
+        filterChainDefinitionMap.put("/login*", "anon");
         filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/**", "anon");
 //        filterChainDefinitionMap.put("/**/**", "anon");

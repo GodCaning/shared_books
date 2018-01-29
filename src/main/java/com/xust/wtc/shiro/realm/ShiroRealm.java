@@ -24,14 +24,15 @@ public class ShiroRealm extends AuthorizingRealm {
 	private UserService userService;
 
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(
-			AuthenticationToken token) throws AuthenticationException {
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
 		UsernamePasswordToken upToken = (UsernamePasswordToken) token;
 		
 		String username = upToken.getUsername();
 
 		Person person = userService.findUserByLoginName(username);
+
+		System.out.println(person);
 
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, person.getLoginPasswd(), getName());
 

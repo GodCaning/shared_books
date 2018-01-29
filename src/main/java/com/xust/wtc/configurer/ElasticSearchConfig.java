@@ -17,10 +17,6 @@ import java.net.UnknownHostException;
 @Configuration
 public class ElasticSearchConfig {
 
-    public void a() {
-
-    }
-
     @Bean
     public Client client() {
         Settings settings = Settings.settingsBuilder()

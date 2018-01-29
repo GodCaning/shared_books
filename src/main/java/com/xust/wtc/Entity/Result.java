@@ -5,7 +5,7 @@ package com.xust.wtc.Entity;
  */
 public class Result {
     private int status;
-    private String content;
+    private Object content;
 
     public int getStatus() {
         return status;
@@ -15,11 +15,11 @@ public class Result {
         this.status = status;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 }

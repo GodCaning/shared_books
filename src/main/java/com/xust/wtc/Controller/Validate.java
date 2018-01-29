@@ -2,6 +2,7 @@ package com.xust.wtc.Controller;
 
 import com.xust.wtc.jcaptcha.JCaptcha;
 import com.xust.wtc.redis.RedisSessionDao;
+import com.xust.wtc.utils.Secret;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -42,9 +43,9 @@ public class Validate {
         response.setContentType("image/jpeg");
 
         System.out.println(redisSessionDao);
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         if (session == null) {
-            System.out.println("weikom");
+            System.out.println("为空");
         } else {
             System.out.println(session.getId());
         }

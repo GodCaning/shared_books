@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>共享图书</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/icons-extra.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<style>
+			
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 11px 0;
+				vertical-align: middle;
+			}
+			
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+	
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				border-radius: 50%;
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+			}
+			.oa-contact-name, oa-contact-position {
+				float: left;
+			}
+			.inline{
+				position: absolute;
+                left: 50px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-search mui-pull-right"></a>
+			<h1 id="title" class="mui-title">书房</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="#tabbar">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-chat">
+				<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+				<span class="mui-tab-label">消息</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-contact">
+				 
+				<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
+				<span class="mui-tab-label">书圈</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-map">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<div class="mui-content">
+			<div id="tabbar" class="mui-control-content mui-active">
+				<div class="mui-card">
+				<div class="mui-card-header mui-card-media">
+					<img src="images/logo.jpg" />
+					<div class="mui-media-body">
+						SLibrary
+						<p>发表于 2018-01-25 15:50</p>
+					</div>
+					
+				</div>
+				<div class="mui-card-content" >
+					<img src="images/book1.jpg" alt="" width="100%"/>
+					<div class="mui-card-content-inner">
+						<p style="color: #333;">本书介绍了如何学习关于.........</p>
+					</div>
+				</div>
+				<div class="mui-card-footer">
+					<a class="mui-card-link">喜欢</a>
+					<span class="mui-icon-extra mui-icon-extra-heart inline"></span>
+					<a class="mui-card-link">评论</a>
+					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 52%;"></span>
+					<a class="mui-card-link">详细信息</a>
+				</div>
+			</div>
+			<div class="mui-card">
+				<div class="mui-card-header mui-card-media">
+					<img src="images/logo.jpg" />
+					<div class="mui-media-body">
+						SLibrary
+						<p>发表于 2018-01-25 15:30</p>
+					</div>
+					
+				</div>
+				<div class="mui-card-content" >
+					<img src="images/book2.jpg" alt="" width="100%"/>
+					<div class="mui-card-content-inner">
+						<p style="color: #333;">本书介绍了如何学习关于.........</p>
+					</div>
+				</div>
+				<div class="mui-card-footer">
+					<a class="mui-card-link">喜欢</a>
+					<span class="mui-icon-extra mui-icon-extra-heart inline"></span>
+					<a class="mui-card-link">评论</a>
+					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 52%;"></span>
+					<a class="mui-card-link">详细信息</a>
+				</div>
+			</div>
+			<div class="mui-card">
+				<div class="mui-card-header mui-card-media">
+					<img src="images/logo.jpg" />
+					<div class="mui-media-body">
+						SLibrary
+						<p>发表于 2018-01-25 15:20</p>
+					</div>
+					
+				</div>
+				<div class="mui-card-content" >
+					<img src="images/book3.jpg" alt="" width="100%"/>
+					<div class="mui-card-content-inner">
+						<p style="color: #333;">本书介绍了如何学习关于.........</p>
+					</div>
+				</div>
+				<div class="mui-card-footer">
+					<a class="mui-card-link">喜欢</a>
+					<span class="mui-icon-extra mui-icon-extra-heart inline"></span>
+					<a class="mui-card-link">评论</a>
+					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 52%;"></span>
+					<a class="mui-card-link">详细信息</a>
+				</div>
+			</div>	
+			</div>
+			
+			<div id="tabbar-with-chat" class="mui-control-content">
+				
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">暂时没有消息</li>
+				</ul>
+				
+			</div>
+			<div id="tabbar-with-contact" class="mui-control-content">
+				<div class="mui-collapse-content">
+							<div id="slider" class="mui-slider">
+								<div class="mui-slider-group mui-slider-loop">
+									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+									<div class="mui-slider-item mui-slider-item-duplicate">
+										<a href="#">
+											<img src="images/book3.jpg">
+										</a>
+									</div>
+									<!-- 第一张 -->
+									<div class="mui-slider-item">
+										<a href="#">
+											<img src="images/book1.jpg">
+										</a>
+									</div>
+									<!-- 第二张 -->
+									<div class="mui-slider-item">
+										<a href="#">
+											<img src="images/book2.jpg">
+										</a>
+									</div>
+									<!-- 第三张 -->
+									<div class="mui-slider-item">
+										<a href="#">
+											<img src="images/book3.jpg">
+										</a>
+									</div>
+									
+									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+									<div class="mui-slider-item mui-slider-item-duplicate">
+										<a href="#">
+											<img src="images/book1.jpg">
+										</a>
+									</div>
+								</div>
+								<div class="mui-slider-indicator">
+									<div class="mui-indicator mui-active"></div>
+									<div class="mui-indicator"></div>
+									<div class="mui-indicator"></div>
+								</div>
+							</div>
+						</div>
+						
+				<div class="mui-card" style="margin-bottom: 35px;">
+				  <ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-right" src="images/book1.jpg">
+							<div class="mui-media-body">
+								书籍
+								<p class='mui-ellipsis'>阅读，做一个安静的人，不急不躁。</p>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-right" src="images/book2.jpg">
+							<div class="mui-media-body">
+								关于爱情
+								<p class='mui-ellipsis'>每一张照片，记录着多少怀念，未来，很长..</p>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-right" src="images/book3.jpg">
+							<div class="mui-media-body">
+								关于文学
+								<p class='mui-ellipsis'>那时我们都有梦，静静看着世界，后来看着看着都疯了</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+			  </div>
+			  <div class="mui-card">
+				<div class="mui-card-header mui-card-media">
+					<img src="images/logo.jpg" />
+					<div class="mui-media-body">
+						SLibrary
+						<p>2018-01-25 15:30</p>
+					</div>
+					
+				</div>
+				<div class="mui-card-content" >
+					
+					<div class="mui-card-content-inner">
+						<p style="color: #333;">
+							不是所有的悲伤都能被看到，要为爱的人选择一条幸福的路。
+						     我想东野圭吾应是对脑科学或脑医学颇有研究，在。。。
+						</p>
+					</div>
+					<img src="images/book2.jpg" alt="" width="100%"/>
+				</div>
+				<div class="mui-card-footer">
+					<a class="mui-card-link" style="margin-left: 85%;">评论</a>
+					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 92%;"></span>
+				</div>
+			</div>
+			<div class="mui-card">
+				<div class="mui-card-header mui-card-media">
+					<img src="images/logo.jpg" />
+					<div class="mui-media-body">
+						SLibrary
+						<p>2018-01-25 15:30</p>
+					</div>
+					
+				</div>
+				<div class="mui-card-content" >
+					
+					<div class="mui-card-content-inner">
+						<p style="color: #333;">
+							不是所有的悲伤都能被看到，要为爱的人选择一条幸福的路。
+						     我想东野圭吾应是对脑科学或脑医学颇有研究，在。。。
+						</p>
+					</div>
+					<img src="images/book2.jpg" alt="" width="100%"/>
+				</div>
+				<div class="mui-card-footer">
+					<a class="mui-card-link" style="margin-left: 85%;">评论</a>
+					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 92%;"></span>
+				</div>
+			</div>
+			</div>
+			<div id="tabbar-with-map" class="mui-control-content">
+				<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						新消息通知
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						隐私
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						通用
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 25px;">
+				<li class="mui-table-view-cell">
+					<a id="info" class="mui-navigate-right">
+						关于共享图书
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 25px;">
+				<li class="mui-table-view-cell">
+					<a href="login.html" style="text-align: center;color: #FF3B30;">
+						退出登录
+					</a>
+				</li>
+			</ul>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script>
+		mui.init({
+			swipeBack:true //启用右滑关闭功能
+		});
+		var title = document.getElementById("title");
+		mui('.mui-bar-tab').on('tap', 'a', function(e) {
+				//更换标题
+				title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+				//显示目标选项卡
+			});
+			
+	    	//处理右上角关于图标的点击事件；
+			var subWebview = null,
+				template = null;
+			document.getElementById('info').addEventListener('tap', function() {
+				if (!mui.os.plus) {
+					mui.openWindow({
+						url: "source/info.html",
+						id: "info",
+						show: {
+							aniShow: 'zoom-fade-out',
+							duration: 300
+						}
+					});
+					return;
+				}
+				if (subWebview == null) {
+					//获取共用父窗体
+					template = plus.webview.getWebviewById("default-main");
+				}
+				if (template) {
+					subWebview = template.children()[0];
+					subWebview.loadURL('examples/info.html');
+					//修改共用父模板的标题
+					mui.fire(template, 'updateHeader', {
+						title: '关于我们',
+						showMenu: false
+					});
+					template.show('slide-in-right', 150);
+				}
+			});
+			var slider = mui("#slider");
+			var cli = document.getElementById('slider');
+			
+			cli.onclick  = function(){
+					slider.slider({
+					interval:5000
+				});
+			}
+	</script>
+</html>

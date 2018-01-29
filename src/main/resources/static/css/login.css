@@ -1,0 +1,188 @@
+html {
+
+    font-size: 62.5%;
+    font-family: "Dosis", sans-serif;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+body{
+    /*background-image: url("../img/image4.jpg");*/
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+}
+.logo img{
+    position: absolute;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+}
+span{
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-attachment: fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    transition: all 2s ease;
+    opacity: 1.0;
+}
+.logsign{
+    width: 360px;
+    height: auto;
+    margin: 50px auto;
+    box-shadow: 0px 5px 10px #212C3C;
+    perspective: 500px;
+    position: absolute;
+    top: 0px;
+    left: 38vw;
+}
+.logsign .login{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transform-style: preserve-3d;
+    -webkit-transform-style:preserve-3d ;
+    transform: rotateY(0deg);
+    transition: 1.5s ease-in-out;
+    position: absolute;
+}
+.logsign .signup{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transform-style: preserve-3d;
+    -webkit-transform-style:preserve-3d ;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: rotateY(180deg);
+    transition: 1.5s ease-in-out;
+    position: absolute;
+}
+.logsign .signup .form-signup .title,
+.logsign .login .form-login .title {
+    font-size: 2.8em;
+    color: #e74c3c;
+    text-align: center;
+}
+.logsign .signup .form-signup label,
+.logsign .signup .form-login label,
+.logsign .login .form-signup label,
+.logsign .login .form-login label {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 20px auto 10px auto;
+    display: block;
+    text-align: center;
+}
+.logsign .signup .form-signup,
+.logsign .login .form-login {
+    width: 90%;
+    height: auto;
+    padding: 50px 0 0 0;
+    margin: 0 auto;
+}
+
+
+.logsign .signup .form-signup input,
+.logsign .signup .form-login input,
+.logsign .login .form-signup input,
+.logsign .login .form-login input {
+    background: none;
+    width: 100%;
+    height: 30px;
+    font-family: "Dosis", sans-serif;
+    font-size: 1.6em;
+    color: #ffffff;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid #B1BDC3;
+}
+.logsign .signup .form-signup input:focus,
+.logsign .signup .form-login input:focus,
+.logsign .login .form-signup input:focus,
+.logsign .login .form-login input:focus {
+    outline: none;
+}
+.logsign .signup .form-signup .btn,
+.logsign .signup .form-login .btn,
+.logsign .login .form-signup .btn,
+.logsign .login .form-login .btn {
+    background: #e74c3c;
+    width: 290px;
+    height: 50px;
+    font-size: 1.8em;
+    color: #ffffff;
+    line-height: 2.8;
+    margin: 10px auto;
+    display: block;
+    cursor: pointer;
+    text-align: center;
+}
+.logsign .signup .form-signup .btn-signup,
+.logsign .signup .form-signup .btn-login,
+.logsign .signup .form-login .btn-signup,
+.logsign .signup .form-login .btn-login,
+.logsign .login .form-signup .btn-signup,
+.logsign .login .form-signup .btn-login,
+.logsign .login .form-login .btn-signup,
+.logsign .login .form-login .btn-login {
+    width: 150px;
+    color: #ffffff;
+    font-size: 1.6em;
+    font-weight: 700;
+    padding: 10px 5px;
+    margin: 10px auto;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+    display: block;
+    text-align: center;
+}
+.logsign .signup .form-signup .btn-signup:hover,
+.logsign .signup .form-signup .btn-login:hover,
+.logsign .signup .form-login .btn-signup:hover,
+.logsign .signup .form-login .btn-login:hover,
+.logsign .login .form-signup .btn-signup:hover,
+.logsign .login .form-signup .btn-login:hover,
+.logsign .login .form-login .btn-signup:hover,
+.logsign .login .form-login .btn-login:hover {
+    background: #ffffff;
+    color: #212C3C;
+    border: 1px solid #ffffff;
+    box-shadow: 2px 2px 0px #212C3C;
+}
+.logsign .signup .form-signup .help,
+.logsign .signup .form-login .help,
+.logsign .login .form-signup .help,
+.logsign .login .form-login .help {
+    color: #ffffff;
+    font-size: 1.3em;
+    left: 10px;
+    bottom: 10px;
+    position: absolute;
+}
+.logsign .signup .form-signup a,
+.logsign .signup .form-login a,
+.logsign .login .form-signup a,
+.logsign .login .form-login a {
+    color: #e74c3c;
+    font-size: 1.3em;
+    text-decoration: none;
+    right: 10px;
+    bottom: 10px;
+    position: absolute;
+}
