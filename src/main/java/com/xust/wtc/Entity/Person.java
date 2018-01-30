@@ -21,7 +21,7 @@ public class Person implements Serializable {
 
     @NotNull(groups = Other.class)
     private int id;
-    @NotBlank(groups = Other.class)
+    @NotBlank(groups = {Other.class, Register.class})
     private String name;
     @NotBlank(groups = {Login.class, Register.class})
     private String loginName;

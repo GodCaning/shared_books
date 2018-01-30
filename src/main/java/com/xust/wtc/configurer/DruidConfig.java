@@ -25,8 +25,7 @@ public class DruidConfig implements EnvironmentAware {
 //		datasource.setDriverClass("com.mysql.jdbc.Driver");
 		datasource.setUsername(propertyResolver.getProperty("username"));
 //		datasource.setUsername(propertyResolver.getProperty("username"));
-//		datasource.setPassword(propertyResolver.getProperty("password"));
-		datasource.setPassword("wangcan123");
+		datasource.setPassword(propertyResolver.getProperty("password"));
 //		datasource.setInitialSize(Integer.valueOf(propertyResolver.getProperty("initialSize")));
 //		datasource.setMinIdle(Integer.valueOf(propertyResolver.getProperty("minIdle")));
 //		datasource.setMaxWait(Long.valueOf(propertyResolver.getProperty("maxWait")));
