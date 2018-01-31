@@ -150,16 +150,16 @@ public class UserController {
      * @param person
      * @return
      */
-    @GetMapping(value = "/myLogin", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/myLogin", consumes = "application/json", produces = "application/json")
     public Result login(HttpServletRequest httpServletRequest,
-//                        @RequestParam(value = "code") String code,
-                        @Validated({Person.Login.class})@RequestBody() Person person) {
-        Result result = new Result();
-//        if (!JCaptcha.validateResponse(httpServletRequest, code)) {
-//            result.setStatus(0);
-//            result.setContent("验证码不正确");
-//            return result;
-//        }
+                        @RequestParam(value = "code") String code,
+                        @RequestBody() Person person) {
+        Result result = isTrueCode(httpServletRequest, code);
+        if (result != null) {
+            return result;
+        } else {
+            result = new Result();
+        }
         System.out.println(person);
         Subject subject = SecurityUtils.getSubject();
 

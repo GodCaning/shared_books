@@ -147,7 +147,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result register(Person person) {
         Result result = new Result();
-
+        if (userMapper.findUserByLoginName(person.getLoginName()) != null) {
+            result.setStatus(0);
+            result.setContent("登录名存在");
+            return result;
+        }
         SimpleHash simpleHash =
                 new SimpleHash("md5", person.getLoginPasswd(), null, 1023);
         person.setLoginPasswd(simpleHash.toBase64());

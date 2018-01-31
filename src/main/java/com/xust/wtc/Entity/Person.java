@@ -96,7 +96,6 @@ public class Person implements Serializable {
         this.balance = balance;
     }
 
-
     public int getGender() {
         return gender;
     }
