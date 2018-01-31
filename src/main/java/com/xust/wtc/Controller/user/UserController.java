@@ -153,15 +153,14 @@ public class UserController {
      */
     @PostMapping(value = "/myLogin", consumes = "application/json", produces = "application/json")
     public Result login(HttpServletRequest httpServletRequest,
-//                        @RequestParam(value = "code") String code,
+                        @RequestParam(value = "code") String code,
                         @Validated({Person.Login.class})@RequestBody() Person person) {
-//        Result result = isTrueCode(httpServletRequest, code);
-        Result result = new Result();
-//        if (result != null) {
-//            return result;
-//        } else {
-//            result = new Result();
-//        }
+        Result result = isTrueCode(httpServletRequest, code);
+        if (result != null) {
+            return result;
+        } else {
+            result = new Result();
+        }
         System.out.println(person);
         Subject subject = SecurityUtils.getSubject();
 
@@ -183,6 +182,11 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 登陆成功获取当前登陆的用户信息
+     * @param session
+     * @return
+     */
     @GetMapping(value = "/loginInfo", consumes = "application/json", produces = "application/json")
     public DisplayPerson loginInfo(HttpSession session) {
         Person person = userService.findUser((Integer) redisTemplate.opsForValue().get(session.getId()));
