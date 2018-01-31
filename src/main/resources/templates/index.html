@@ -71,10 +71,17 @@
 				<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
 				<span class="mui-tab-label">书圈</span>
 			</a>
-			<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">
+			<!--<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">-->
+				<!--<span class="mui-icon mui-icon-gear"></span>-->
+				<!--<span  class="mui-tab-label">我的</span>-->
+			<!--</a>-->
+			<!--href="#tabbar-with-map"-->
+			<div id="mybtn1" class="mui-tab-item">
+				<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">
 				<span class="mui-icon mui-icon-gear"></span>
 				<span  class="mui-tab-label">我的</span>
-			</a>
+				</a>
+			</div>
 		</nav>
 		<div class="mui-content">
 			<div id="search" class="mui-indexed-list-search mui-input-row mui-search">
@@ -289,8 +296,8 @@
 								<a class="mui-navigate-right" href="#account">
 									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="img/logo.jpg">
 									<div id="usermessage" class="mui-media-body">
-										ShareLibrary
-										<p class='mui-ellipsis'>账号:promise</p>
+										{{messages.name}}
+										<p class='mui-ellipsis'>账号:{{messages.id}}</p>
 									</div>
 								</a>
 							</li>
@@ -334,9 +341,7 @@
 	<script src="js/jquery-1.8.3.min.js"></script>
 	<script src="js/vue.min.js"></script>
 	<script>
-
-		window.onload = function () {
-            $('#mybtn').click(function () {
+            $('#mybtn1').click(function () {
                 var vue = new Vue({
                     el:'#usermessage',
                     data:{
@@ -350,7 +355,7 @@
                             contentType: 'application/json',
                             accept: 'application/json',
                             success: function(data){
-                                vue.messages  = data.content;
+                                vue.messages  = data;
                                 console.log(vue.messages);
                             }
                         })
@@ -358,8 +363,6 @@
                 })
 
             })
-
-        }
 
 		mui.init({
 			swipeBack:true //启用右滑关闭功能
