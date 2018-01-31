@@ -20,4 +20,6 @@ public interface UserService {
     Result sendEmail(String loginName, String email);
 
     Result modifyPassWd(String code, String passwd);
+
+    Result modifyPortrait(String portrait, int id);
 }

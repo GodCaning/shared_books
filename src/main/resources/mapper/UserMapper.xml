@@ -8,19 +8,19 @@
         <result property="loginPasswd" column="login_passwd" javaType="string"/>
         <result property="status" column="status" javaType="int"/>
         <result property="balance" column="balance" javaType="int"/>
-        <result property="birthdate" column="birthdate" javaType="string"/>
         <result property="gender" column="gender" javaType="int"/>
         <result property="autograph" column="autograph" javaType="string"/>
         <result property="email" column="email" javaType="string"/>
+        <result property="portrait" column="portrait" javaType="string"/>
     </resultMap>
 
     <sql id="field">
-        person_id, person_name, login_name, login_passwd, status, balance, birthdate, gender, autograph, email
+        person_id, person_name, login_name, login_passwd, status, balance, gender, autograph, email, portrait
     </sql>
 
     <insert id="register" parameterType="com.xust.wtc.Entity.Person">
-        INSERT INTO person(person_name, login_name, login_passwd, birthdate, gender, autograph, email)
-        VALUES (#{name}, #{loginName}, #{loginPasswd}, #{birthdate}, #{gender}, #{autograph}, #{email})
+        INSERT INTO person(person_name, login_name, login_passwd, gender, autograph, email)
+        VALUES (#{name}, #{loginName}, #{loginPasswd}, #{gender}, #{autograph}, #{email})
     </insert>
 
     <select id="findUserByLoginName" parameterType="string" resultMap="user">
@@ -45,6 +45,13 @@
         WHERE login_name = #{name}
     </update>
 
+    <!--修改头像-->
+    <update id="modifyPortrait">
+        UPDATE person
+        SET portrait = #{portrait}
+        WHERE person_id = #{id}
+    </update>
+
     <!-- 根据用户提供的资料修改用户信息 -->
     <update id="updateUserInfo" parameterType="com.xust.wtc.Entity.Person">
         UPDATE person
@@ -52,17 +59,11 @@
             <if test="name != null AND name != ''">
                 person_name = #{name}
             </if>
-            <if test="loginPasswd != null AND loginPasswd != ''">
-                login_passwd = #{loginPasswd}
-            </if>
             <if test="status != null AND status != ''">
                 status = #{status}
             </if>
             <if test="balance != null AND balance != ''">
                 balance = #{balance}
-            </if>
-            <if test="birthdate != null AND birthdate != ''">
-                birthdate = #{birthdate}
             </if>
             <if test="gender != null AND gender != ''">
                 gender = #{gender}

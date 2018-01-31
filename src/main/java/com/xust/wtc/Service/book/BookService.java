@@ -1,7 +1,8 @@
 package com.xust.wtc.Service.book;
 
-import com.xust.wtc.Entity.Book;
+import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Entity.book.UserBook;
 
 import java.util.List;
 
@@ -15,6 +16,12 @@ public interface BookService {
      * @return
      */
     List<Book> findTop10Book();
+
+    /**
+     * 根据书籍创建时间返回最近的书籍
+     * @return
+     */
+    List<Book> findBooksWithCreateTime(int currentPage, int pageSize);
 
     /**
      * 根据ID查询书籍信息
@@ -44,4 +51,11 @@ public interface BookService {
      * @return
      */
     List<String> searchTitleToES(String content);
+
+    /**
+     * 返回用户上传的书籍
+     * @param sessionId
+     * @return
+     */
+    List<UserBook> userBooks(String sessionId);
 }

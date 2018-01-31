@@ -3,10 +3,13 @@ package com.xust.wtc.Service.book.impl;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xust.wtc.Dao.book.BookMapper;
 import com.xust.wtc.Dao.book.StockMapper;
-import com.xust.wtc.Entity.Book;
+import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Entity.book.UserBook;
 import com.xust.wtc.Service.book.BookService;
 import com.xust.wtc.utils.StringConverter;
 import org.elasticsearch.action.index.IndexResponse;
@@ -16,7 +19,6 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,18 @@ public class BookServiceImpl implements BookService {
     private StockMapper stockMapper;
 
     private String url = "https://api.douban.com/v2/book/isbn/{isbn}";
+
+    /**
+     * 返回用户上传的书籍
+     * @param sessionId
+     * @return
+     */
+    @Override
+    public List<UserBook> userBooks(String sessionId) {
+//        Integer userId = (Integer)redisTemplate.opsForValue().get(sessionId);
+        Integer userId = Integer.valueOf(sessionId);
+        return bookMapper.userBooks(userId);
+    }
 
     /**
      * 根据文本查询匹配书籍返回
@@ -216,5 +230,23 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findTop10Book() {
         return bookMapper.findTop10Book();
+    }
+
+    /**
+     * 根据书籍创建时间返回最近的书籍
+     * @return
+     */
+    @Override
+    public List<Book> findBooksWithCreateTime(int currentPage, int pageSize) {
+        PageHelper.startPage(currentPage, pageSize);
+        List<Book> bookList = bookMapper.findBooksWithCreateTime();
+        PageInfo<Book> pageInfo = new PageInfo<>(bookList);
+        System.out.println(pageInfo.getFirstPage());//第一页的页码
+        System.out.println(pageInfo.getLastPage());//最后一页的页码
+        System.out.println(pageInfo.getPageNum()); //当前页的坐标
+        System.out.println(pageInfo.getPages()); //总页数
+        System.out.println(pageInfo.getPageSize()); //当前一页的长度
+        System.out.println(pageInfo.getTotal());  //总条数
+        return null;
     }
 }

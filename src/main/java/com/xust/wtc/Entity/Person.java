@@ -29,14 +29,15 @@ public class Person implements Serializable {
     private String loginPasswd;
     private int status;
     private int balance;
-    private String birthdate;
-    @Range(max = 2, min = 1, groups = {Other.class, Register.class})
+    @Range(max = 1, min = 0, groups = {Other.class, Register.class})
     private int gender;
     @Size(max = 100, groups = {Other.class, Register.class})
     private String autograph;
 
     @Email(groups = {Register.class})
     private String email;
+
+    private String portrait;
 
     public Person() {}
 
@@ -95,13 +96,6 @@ public class Person implements Serializable {
         this.balance = balance;
     }
 
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
 
     public int getGender() {
         return gender;
@@ -126,6 +120,14 @@ public class Person implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
     @Override
     public String toString() {
         return "Person{" +
@@ -135,7 +137,6 @@ public class Person implements Serializable {
                 ", loginPasswd='" + loginPasswd + '\'' +
                 ", status=" + status +
                 ", balance=" + balance +
-                ", birthdate='" + birthdate + '\'' +
                 ", gender=" + gender +
                 ", autograph='" + autograph + '\'' +
                 '}';

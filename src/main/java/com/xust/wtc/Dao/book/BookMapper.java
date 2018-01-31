@@ -1,6 +1,7 @@
 package com.xust.wtc.Dao.book;
 
-import com.xust.wtc.Entity.Book;
+import com.xust.wtc.Entity.book.Book;
+import com.xust.wtc.Entity.book.UserBook;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,10 +14,23 @@ import java.util.List;
 public interface BookMapper {
 
     /**
+     * 返回用户上传的书籍
+     * @param id
+     * @return
+     */
+    List<UserBook> userBooks(@Param("id") int id);
+
+    /**
      * 根据点击率返回书籍信息
      * @return
      */
     List<Book> findTop10Book();
+
+    /**
+     * 根据书籍创建时间返回最近的书籍
+     * @return
+     */
+    List<Book> findBooksWithCreateTime();
 
     /**
      * 根据书籍ID查找书籍

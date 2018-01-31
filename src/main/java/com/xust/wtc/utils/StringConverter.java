@@ -2,7 +2,7 @@ package com.xust.wtc.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xust.wtc.Entity.Book;
+import com.xust.wtc.Entity.book.Book;
 
 import java.io.IOException;
 import java.util.HashMap;

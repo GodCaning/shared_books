@@ -1,7 +1,7 @@
 package com.xust.wtc.elasticsearch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xust.wtc.Entity.Book;
+import com.xust.wtc.Entity.book.Book;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.index.IndexResponse;

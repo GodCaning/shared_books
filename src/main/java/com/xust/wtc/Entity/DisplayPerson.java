@@ -10,21 +10,21 @@ public class DisplayPerson {
 
     private String name;
 
-    private String birthdate;
-
     private int gender;
 
     private String autograph;
 
+    private String portrait;
+
     public DisplayPerson() {
     }
 
-    public DisplayPerson(int id, String name, String birthdate, int gender, String autograph) {
+    public DisplayPerson(int id, String name, int gender, String autograph, String portrait) {
         this.id = id;
         this.name = name;
-        this.birthdate = birthdate;
         this.gender = gender;
         this.autograph = autograph;
+        this.portrait = portrait;
     }
 
     public int getId() {
@@ -43,14 +43,6 @@ public class DisplayPerson {
         this.name = name;
     }
 
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-
     public int getGender() {
         return gender;
     }
@@ -65,5 +57,13 @@ public class DisplayPerson {
 
     public void setAutograph(String autograph) {
         this.autograph = autograph;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 }

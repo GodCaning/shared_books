@@ -33,6 +33,13 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    /**
+     * 忘记密码第一步 验证用户名
+     * @param request
+     * @param loginName
+     * @param code
+     * @return
+     */
     @GetMapping(value = "/validationName", consumes = "application/json", produces = "application/json")
     public Result validationLogin(HttpServletRequest request, @RequestParam String loginName, @RequestParam String code) {
         Result result = isTrueCode(request, code);
@@ -43,7 +50,7 @@ public class UserController {
     }
 
     /**
-     * 发送邮件
+     * 忘记密码第二步 发送邮件
      * @param loginName
      * @param email
      * @return
@@ -54,14 +61,13 @@ public class UserController {
     }
 
     /**
-     * 修改密码
+     * 忘记密码第三步 修改密码
      * @param code
      * @param passwd
      * @return
      */
     @PostMapping(value = "/modifyPassWd", consumes = "application/json", produces = "application/json")
     public Result modifyPassWd(@RequestParam String code, @RequestBody() String passwd) {
-        System.out.println(passwd);
         return userService.modifyPassWd(code, passwd);
     }
 
@@ -73,7 +79,7 @@ public class UserController {
     @GetMapping(value = "/findUser/{id}", consumes = "application/json", produces = "application/json")
     public DisplayPerson findUser(@PathVariable int id) {
         Person person = userService.findUser(id);
-        return new DisplayPerson(person.getId(), person.getName(), person.getBirthdate(), person.getGender(), person.getAutograph());
+        return new DisplayPerson(person.getId(), person.getName(), person.getGender(), person.getAutograph(), person.getPortrait());
     }
 
     /**
@@ -81,8 +87,7 @@ public class UserController {
      * @param person
      * @return
      */
-    @RequestMapping(value = "/updateUserInfo/{id}", method = RequestMethod.PUT,
-            consumes = "application/json", produces = "application/json")
+    @PutMapping(value = "/updateUserInfo/{id}", consumes = "application/json", produces = "application/json")
     public Result updateUserInfo(@PathVariable("id") int id,@RequestBody Person person) {
         person.setId(id);
         return userService.updateUserInfo(person);
@@ -96,8 +101,7 @@ public class UserController {
      * @param bindingResult
      * @return
      */
-    @RequestMapping(value = "/register", method = RequestMethod.POST,
-            consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
     public Result register(HttpServletRequest httpServletRequest,
                            @RequestParam(value = "code") String code,
                            @Validated({Person.Register.class}) @RequestBody() Person person, BindingResult bindingResult) {
@@ -116,16 +120,27 @@ public class UserController {
     }
 
     /**
-     * 七牛云上传图片
+     * 获取七牛云上传图片授权码
      */
-    @GetMapping("/asdf")
-    public void a() {
+    @GetMapping(value = "/updateCode", consumes = "application/json", produces = "application/json")
+    public String updateCode() {
         String accessKey = "RRyC_e6AmR_7u7MKtQNJNkm4QfTvZs7n--suNnB5";
         String secretKey = "-L3t_xoFd7JvuNGJXQ0G6yU3IaCzXwj6cLmqA7mh";
         String bucket = "spirit";
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
         System.out.println(upToken);
+        return upToken;
+    }
+
+    /**
+     * 更新用户头像
+     * @param person
+     * @return
+     */
+    @PutMapping(value = "/updatePortrait", consumes = "application/json", produces = "application/json")
+    public Result updateUserPortrait(@RequestBody Person person) {
+        return userService.modifyPortrait(person.getPortrait(), person.getId());
     }
 
     /**
@@ -135,8 +150,7 @@ public class UserController {
      * @param person
      * @return
      */
-    @RequestMapping(value = "/myLogin", method = RequestMethod.POST,
-             consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/myLogin", consumes = "application/json", produces = "application/json")
     public Result login(HttpServletRequest httpServletRequest,
 //                        @RequestParam(value = "code") String code,
                         @Validated({Person.Login.class})@RequestBody() Person person) {
@@ -164,10 +178,15 @@ public class UserController {
             result.setStatus(0);
             result.setContent("登录失败");
         }
-
         return result;
     }
 
+    /**
+     * 验证码判断
+     * @param request
+     * @param code
+     * @return
+     */
     private Result isTrueCode(HttpServletRequest request, String code) {
         Result result = null;
         if (!JCaptcha.validateResponse(request, code)) {

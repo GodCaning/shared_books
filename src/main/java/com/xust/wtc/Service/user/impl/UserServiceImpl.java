@@ -36,6 +36,31 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    /**
+     * 修改用户头像
+     * @param portrait
+     * @param id
+     * @return
+     */
+    @Override
+    public Result modifyPortrait(String portrait, int id) {
+        Result result = new Result();
+        if (userMapper.modifyPortrait(portrait, id) > 0) {
+            result.setStatus(1);
+            result.setContent("修改成功");
+        } else {
+            result.setStatus(0);
+            result.setContent("修改失败");
+        }
+        return result;
+    }
+
+    /**
+     * 修改密码
+     * @param code
+     * @param passwd
+     * @return
+     */
     @Override
     public Result modifyPassWd(String code, String passwd) {
         Result result = new Result();
@@ -122,6 +147,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result register(Person person) {
         Result result = new Result();
+
         SimpleHash simpleHash =
                 new SimpleHash("md5", person.getLoginPasswd(), null, 1023);
         person.setLoginPasswd(simpleHash.toBase64());

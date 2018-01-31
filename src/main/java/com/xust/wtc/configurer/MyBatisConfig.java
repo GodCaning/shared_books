@@ -1,5 +1,6 @@
 package com.xust.wtc.configurer;
 
+import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -19,8 +20,8 @@ import javax.sql.DataSource;
 @Configuration
 public class MyBatisConfig {
 
-//    @Autowired
-//    private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
     /**
      * 返回SqlSessionFactory

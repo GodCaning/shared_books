@@ -15,25 +15,21 @@ public class DruidConfig implements EnvironmentAware {
 
 	private RelaxedPropertyResolver propertyResolver;
 
-	@Bean // 声明其为Bean实例
-	public DataSource dataSource() {
-		DruidDataSource datasource = new DruidDataSource();
-//		datasource.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/sharedBooks?useUnicode=true&characterEncoding=utf-8");
-		datasource.setUrl(propertyResolver.getProperty("url"));
-//		datasource.setDriverClass("com.mysql.jdbc.Driver");
-		datasource.setDriverClassName(propertyResolver.getProperty("driver-class-name"));
-//		datasource.setDriverClass("com.mysql.jdbc.Driver");
-		datasource.setUsername(propertyResolver.getProperty("username"));
+//	@Bean // 声明其为Bean实例
+//	public DataSource dataSource() {
+//		DruidDataSource datasource = new DruidDataSource();
+//		datasource.setUrl(propertyResolver.getProperty("url"));
+//		datasource.setDriverClassName(propertyResolver.getProperty("driver-class-name"));
 //		datasource.setUsername(propertyResolver.getProperty("username"));
-		datasource.setPassword(propertyResolver.getProperty("password"));
+//		datasource.setPassword(propertyResolver.getProperty("password"));
 //		datasource.setInitialSize(Integer.valueOf(propertyResolver.getProperty("initialSize")));
 //		datasource.setMinIdle(Integer.valueOf(propertyResolver.getProperty("minIdle")));
 //		datasource.setMaxWait(Long.valueOf(propertyResolver.getProperty("maxWait")));
 //		datasource.setMaxActive(Integer.valueOf(propertyResolver.getProperty("maxActive")));
 //		datasource.setMinEvictableIdleTimeMillis(
 //				Long.valueOf(propertyResolver.getProperty("minEvictableIdleTimeMillis")));
-		return datasource;
-	}
+//		return datasource;
+//	}
 
 	@Override
 	public void setEnvironment(Environment environment) {

@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.book.BookMapper">
 
-    <resultMap id="bookEntity" type="com.xust.wtc.Entity.Book">
+    <resultMap id="bookEntity" type="com.xust.wtc.Entity.book.Book">
         <result property="id" column="book_id"/>
         <result property="isbn" column="isbn"/>
         <result property="title" column="title"/>
@@ -17,17 +17,40 @@
         <result property="ctr" column="ctr"/>
     </resultMap>
 
+    <!--个人书房显示类-->
+    <resultMap id="userBooks" type="com.xust.wtc.Entity.book.UserBook">
+        <result property="id" column="book_id"/>
+        <result property="title" column="title"/>
+        <result property="image" column="image"/>
+        <result property="status" column="status" typeHandler="com.xust.wtc.typeHandle.BookBorrowSituationTypeHandler"/>
+    </resultMap>
+
     <sql id="filed">
         book_id, isbn, title, image, author, translator, publisher, pubdate, summary, price, ctr
     </sql>
 
     <!-- 插入一条书籍信息-->
-    <insert id="addBook" parameterType="com.xust.wtc.Entity.Book" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addBook" parameterType="com.xust.wtc.Entity.book.Book" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO book(isbn, title, image, author, translator, publisher, pubdate, summary, price)
         VALUES(#{isbn,javaType=string}, #{title,javaType=string}, #{image,javaType=string},
                #{author,javaType=string}, #{translator,javaType=string}, #{publisher,javaType=string},
                #{pubdate,javaType=string}, #{summary,javaType=string}, #{price,javaType=string});
     </insert>
+
+    <!--查找个人书房信息-->
+    <select id="userBooks" resultMap="userBooks">
+        SELECT book.book_id, title, image, status
+        FROM book JOIN stock ON book.book_id = stock.book_id
+        WHERE person_id = #{id};
+    </select>
+
+    <!-- 显示书籍 -->
+    <select id="findBooksWithCreateTime" resultMap="bookEntity">
+        SELECT
+        <include refid="filed"/>
+        FROM book
+        ORDER BY book_id DESC
+    </select>
 
     <!-- 更新点击率 -->
     <update id="updateBookCTR">
