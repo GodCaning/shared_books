@@ -67,6 +67,10 @@
 <script src="js/jquery-1.8.3.min.js"></script>
 <script>
 
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    })
+
     function getQueryVariable(variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
@@ -81,7 +85,7 @@
         var password = $('#password').val();
         var repassword = $('#repassword').val();
         if (password != repassword) {
-            alert("2次密码不一致");
+            mui.toast('两次密码不一致');
             return;
         }
         $.ajax({
@@ -95,7 +99,7 @@
                 if(data.status == 1) {
                     window.location.href = "forget4.html";
                 } else {
-                    alert(data.content);
+                    mui.toast(data.content);
                 }
             }
         });

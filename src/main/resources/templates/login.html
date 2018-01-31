@@ -102,6 +102,14 @@
 					<label>密码</label>
 					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
 				</div>
+				<div class=mui-input-row">
+					<label style="margin-left: 14px;">验证码</label>
+					<input type="text" name="num" id="code" class="mui-input-clear mui-input" placeholder="请输入验证码" style="width: 80%">
+					<div class="test-num" style="width: 200px;margin: 0 auto;">
+						<img id="flu-num" src="/code">
+						<a id="fresh">换一张</a>
+					</div>
+				</div>
 			</form>
 			<form class="mui-input-group">
 				<ul class="mui-table-view mui-table-view-chevron">
@@ -307,24 +315,46 @@
 					};
 				});
 			}(mui, document));
+
+            var flush  = document.getElementById('fresh');
+            var flunum = document.getElementById('flu-num');
+            flush.onclick = function () {
+                var num = parseInt(100*Math.random());
+                flunum.src = '/code?'+num;
+            }
+
 			function myLogin() {
-                var loginName = $('#account').val();
-                var loginPasswd = $('#password').val();
-                $.ajax({
-                    url: 'http://localhost:8080/myLogin',
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    accept: 'application/json',
-                    data : JSON.stringify({'loginName':loginName,'loginPasswd':loginPasswd}),
-                    success: function(data){
-                        if(data.status == 1) {
-                            window.location.href="index.html";
-                        } else {
-                            alert(data.content);
+
+                var loginName = $('#account').val().trim();
+                var loginPasswd = $('#password').val().trim();
+                var code = $('#code').val().trim();
+                // console.log(code);
+                var check = true;
+
+                if(loginName == ''){
+                    mui.toast('用户名不能为空!!');
+                    check = false;
+				}else if(loginPasswd == ''){
+                    mui.toast('密码不能为空');
+                    check = false;
+				}
+                if(check){
+                    $.ajax({
+                        url: 'http://localhost:8080/myLogin?code='+code,
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        data : JSON.stringify({'loginName':loginName,'loginPasswd':loginPasswd}),
+                        success: function(data){
+                            if(data.status == 1) {
+                                window.location.href="index.html";
+                            } else {
+                                mui.toast(data.content);
+                            }
                         }
-                    }
-                });
+                    });
+				}
             }
 		</script>
 	</body>

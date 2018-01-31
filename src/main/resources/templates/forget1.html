@@ -62,7 +62,7 @@
 
                </div>
                <div class="submit">
-                   <input type="submit" value="下一步" onclick="myFirst()">
+                   <input type="button" value="下一步" onclick="myFirst()" style="color: #ffffff;border: 1px solid #007aff;background-color: #007aff;">
                </div>
            </div>
        </div>
@@ -72,6 +72,9 @@
    <script src="js/jquery-1.8.3.min.js"></script>
    <script>
 
+       mui.init({
+           swipeBack: true //启用右滑关闭功能
+       })
        var flush  = document.getElementById('fresh');
        var flunum = document.getElementById('flu-num');
        flush.onclick = function () {
@@ -82,24 +85,30 @@
        function myFirst() {
            var loginName = $('#name').val();
            var code = $('#code').val();
-           if (loginName == '' && code == ''){
-               return;
+           var check = true;
+           if (loginName == ''|| code == ''){
+               //console.log('用户名或验证码不能为空!!');
+               check = false;
+               mui.toast('用户名或验证码不能为空!!');
            }
-           $.ajax({
-               url: 'http://localhost:8080/validationName?loginName=' + loginName + "&code=" + code,
-               type: 'GET',
-               dataType: 'json',
-               contentType: 'application/json',
-               accept: 'application/json',
-               success: function(data){
-                   if(data.status == 1) {
+           if(check){
+               $.ajax({
+                   url: 'http://localhost:8080/validationName?loginName=' + loginName + "&code=" + code,
+                   type: 'GET',
+                   dataType: 'json',
+                   contentType: 'application/json',
+                   accept: 'application/json',
+                   success: function(data){
+                       if(data.status == 1) {
 //                       console.log("forget2.html?name=" + data.content.name + "&email=" + data.content.email);
-                       window.location.href="forget2.html?name=" + data.content.name + "&email=" + data.content.email;
-                   } else {
-                       alert(data.content);
+                           window.location.href="forget2.html?name=" + data.content.name + "&email=" + data.content.email;
+                       } else {
+                           mui.toast(data.content);
+                       }
                    }
-               }
-           });
+               });
+           }
+
        }
    </script>
 </body>

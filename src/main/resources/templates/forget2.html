@@ -67,14 +67,19 @@
     <script src="js/jquery-1.8.3.min.js"></script>
 <script>
     window.onload = function(){
-        console.log(getQueryVariable("name"));
-        console.log(getQueryVariable("email"));
+        //console.log(getQueryVariable("name"));
+        //console.log(getQueryVariable("email"));
         $("#name").val(getQueryVariable("name"));
         $("#email").val(getQueryVariable("email"));
     }
 
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    })
+
     function getQueryVariable(variable) {
         var query = window.location.search.substring(1);
+        //console.log(query);
         var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
@@ -94,9 +99,9 @@
             accept: 'application/json',
             success: function(data){
                 if(data.status == 1) {
-                    alert(data.content);
+                   mui.toast(data.content);
                 } else {
-                    alert(data.content);
+                    mui.toast(data.content);
                 }
             }
         });

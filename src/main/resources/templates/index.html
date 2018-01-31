@@ -71,9 +71,9 @@
 				<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
 				<span class="mui-tab-label">书圈</span>
 			</a>
-			<a class="mui-tab-item" href="#tabbar-with-map">
+			<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">
 				<span class="mui-icon mui-icon-gear"></span>
-				<span class="mui-tab-label">我的</span>
+				<span  class="mui-tab-label">我的</span>
 			</a>
 		</nav>
 		<div class="mui-content">
@@ -288,7 +288,7 @@
 							<li class="mui-table-view-cell mui-media">
 								<a class="mui-navigate-right" href="#account">
 									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="img/logo.jpg">
-									<div class="mui-media-body">
+									<div id="usermessage" class="mui-media-body">
 										ShareLibrary
 										<p class='mui-ellipsis'>账号:promise</p>
 									</div>
@@ -331,7 +331,36 @@
 		
 	</body>
 	<script src="js/mui.min.js"></script>
+	<script src="js/jquery-1.8.3.min.js"></script>
+	<script src="js/vue.min.js"></script>
 	<script>
+
+		window.onload = function () {
+            $('#mybtn').click(function () {
+                var vue = new Vue({
+                    el:'#usermessage',
+                    data:{
+                        messages:''
+                    },
+                    created:function(){
+                        $.ajax({
+                            url: 'http://localhost:8080/loginInfo',
+                            type: 'GET',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            success: function(data){
+                                vue.messages  = data.content;
+                                console.log(vue.messages);
+                            }
+                        })
+                    },
+                })
+
+            })
+
+        }
+
 		mui.init({
 			swipeBack:true //启用右滑关闭功能
 		});
@@ -387,5 +416,8 @@
 					interval:5000
 				});
 			}
+
+
+
 	</script>
 </html>
