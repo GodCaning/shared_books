@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.concurrent.TimeUnit;
 
 
@@ -152,14 +153,15 @@ public class UserController {
      */
     @PostMapping(value = "/myLogin", consumes = "application/json", produces = "application/json")
     public Result login(HttpServletRequest httpServletRequest,
-                        @RequestParam(value = "code") String code,
-                        @RequestBody() Person person) {
-        Result result = isTrueCode(httpServletRequest, code);
-        if (result != null) {
-            return result;
-        } else {
-            result = new Result();
-        }
+//                        @RequestParam(value = "code") String code,
+                        @Validated({Person.Login.class})@RequestBody() Person person) {
+//        Result result = isTrueCode(httpServletRequest, code);
+        Result result = new Result();
+//        if (result != null) {
+//            return result;
+//        } else {
+//            result = new Result();
+//        }
         System.out.println(person);
         Subject subject = SecurityUtils.getSubject();
 
@@ -179,6 +181,12 @@ public class UserController {
             result.setContent("登录失败");
         }
         return result;
+    }
+
+    @GetMapping(value = "/loginInfo", consumes = "application/json", produces = "application/json")
+    public DisplayPerson loginInfo(HttpSession session) {
+        Person person = userService.findUser((Integer) redisTemplate.opsForValue().get(session.getId()));
+        return new DisplayPerson(person.getId(), person.getName(), person.getGender(), person.getAutograph(), person.getPortrait());
     }
 
     /**
