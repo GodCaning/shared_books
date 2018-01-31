@@ -76,12 +76,17 @@
 					<label>签名</label>
 					<input id='autograph' type="text" class="mui-input-clear mui-input" placeholder="请输入个性签名">
 				</div>
+				<div class=mui-input-row">
+					<label style="margin-left: 14px;">验证码</label>
+					<input type="text" name="num" id="code" class="mui-input-clear mui-input" placeholder="请输入验证码" style="width: 80%">
+					<div class="test-num" style="width: 200px;margin: 0 auto;">
+						<img id="flu-num" src="/code">
+						<a id="fresh">换一张</a>
+					</div>
+				</div>
 			</form>
 			<div class="mui-content-padded">
 				<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
-			</div>
-			<div class="mui-content-padded">
-				<p>注册真实可用，注册成功后的用户可用于登录，但是示例程序并未和服务端交互，用户相关数据仅存储于本地。</p>
 			</div>
 		</div>
 		<script src="js/mui.min.js"></script>
@@ -91,6 +96,13 @@
             mui.init({
                 swipeBack: true //启用右滑关闭功能
             });
+
+            var flush  = document.getElementById('fresh');
+            var flunum = document.getElementById('flu-num');
+            flush.onclick = function () {
+                var num = parseInt(100*Math.random());
+                flunum.src = '/code?'+num;
+            }
 
             var value;
             $(document).ready(function () {
@@ -102,7 +114,8 @@
                     var gender = $('input:radio[name="woman"]:checked').val();
                     var email = $('#email').val().trim();
                     var autograph = $('#autograph').val().trim();
-                    console.log(gender);
+                    var code = $('#code').val().trim();
+                    console.log(code);
                     var check = true;
                     if(loginName == ''){
                         mui.toast('账号不能为空!!');
@@ -119,24 +132,26 @@
                         check = false;
 					}
 					if(check){
-                        value = $('input:radio[name="woman"]:checked').val();
-                        mui.toast(value);
-					}
-                    $.ajax({
-                        url: 'http://localhost:8080/register',
-                        type: 'POST',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        accept: 'application/json',
-                        data : JSON.stringify({'loginName':loginName,'name':name,'loginPasswd':loginPasswd,'gender':gender,'email':email,'autograph':autograph}),
-                        success: function(data){
-                            if(data.status == 1) {
-                                window.location.href="index.html";
-                            } else {
-                                alert(data.content);
+                        $.ajax({
+                            url: 'http://localhost:8080/register?code='+code,
+                            type: 'POST',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            data : JSON.stringify({'loginName':loginName,'name':name,'loginPasswd':password,'gender':gender,'email':email,'autograph':autograph}),
+                            //data : {'loginName':loginName,'name':name,'loginPasswd':password,'gender':gender,'email':email,'autograph':autograph},
+                            success: function(data){
+                                if(data.status == 1) {
+                                    // console.log('yy');
+                                    window.location.href="login.html";
+                                } else {
+                                    //console.log(data.content);
+                                    mui.toast(data.content);
+                                }
                             }
-                        }
-                    });
+                        });
+					}
+
                 })
             })
 
