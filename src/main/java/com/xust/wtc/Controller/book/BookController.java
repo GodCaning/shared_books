@@ -80,7 +80,7 @@ public class BookController {
      * @param id
      * @return
      */
-    @GetMapping(value = "findBook/{id}", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/findBook/{id}", consumes = "application/json", produces = "application/json")
     public Book findBookById(@PathVariable("id") int id) {
         return bookService.findBook(id);
     }
@@ -89,7 +89,7 @@ public class BookController {
      * 根据点击率返回书籍信息
      * @return
      */
-    @GetMapping(value = "findTop10", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/findTop10", consumes = "application/json", produces = "application/json")
     public List<Book> findTop10Book() {
         return bookService.findTop10Book();
     }
@@ -98,7 +98,7 @@ public class BookController {
      * 返回用户上传的书籍
      * @return
      */
-    @GetMapping(value = "userBooks", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/userBooks", consumes = "application/json", produces = "application/json")
     public List<UserBook> userBooks(HttpSession session) {
         return bookService.userBooks(session.getId());
     }
