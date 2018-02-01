@@ -24,13 +24,7 @@ import java.util.UUID;
 public class AsyncSendEmailImpl implements AsyncSendEmail {
 
     @Autowired
-    private JavaMailSender mailSender;
-
-    @Autowired
     private KafkaTemplate kafkaTemplate;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     /**
      * 异步邮件发送生产者

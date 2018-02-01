@@ -99,8 +99,7 @@ public class BookController {
      * @return
      */
     @GetMapping(value = "userBooks", consumes = "application/json", produces = "application/json")
-    public List<UserBook> userBooks(HttpSession session, String s) {
-        return bookService.userBooks(s);
-//        return bookService.userBooks(session.getId());
+    public List<UserBook> userBooks(HttpSession session) {
+        return bookService.userBooks(session.getId());
     }
 }

@@ -63,8 +63,7 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public List<UserBook> userBooks(String sessionId) {
-//        Integer userId = (Integer)redisTemplate.opsForValue().get(sessionId);
-        Integer userId = Integer.valueOf(sessionId);
+        Integer userId = (Integer)redisTemplate.opsForValue().get(sessionId);
         return bookMapper.userBooks(userId);
     }
 
