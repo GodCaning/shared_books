@@ -3,6 +3,7 @@ package com.xust.wtc.Service.user.impl;
 import com.xust.wtc.Dao.user.UserMapper;
 import com.xust.wtc.Entity.Person;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Service.user.AsyncSendEmail;
 import com.xust.wtc.Service.user.UserService;
 import com.xust.wtc.utils.Secret;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -30,11 +31,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private JavaMailSender mailSender;
+//    @Autowired
+//    private JavaMailSender mailSender;
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private AsyncSendEmail asyncSendEmail;
 
     /**
      * 修改用户头像
@@ -116,32 +120,43 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+//    /**
+//     * 同步发送邮件
+//     * @param loginName
+//     * @param email
+//     * @return
+//     */
+//    @Override
+//    public Result sendEmail(String loginName, String email) {
+//        MimeMessage message = mailSender.createMimeMessage();
+//        MimeMessageHelper helper;
+//        Result result = new Result();
+//        try {
+//            helper = new MimeMessageHelper(message, true, "UTF-8");
+//            helper.setFrom("1033184008@qq.com");
+//            helper.setTo(email);
+//            helper.setSubject("共享图书找回密码");
+//            helper.setText(createEmailText(loginName), true);
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//            result.setStatus(0);
+//            result.setContent("发送失败，请稍后重试");
+//        }
+//        mailSender.send(message);
+//        result.setStatus(1);
+//        result.setContent("发送成功，请及时登录邮箱修改密码");
+//        return result;
+//    }
+
     /**
-     * 发送邮件
+     * 异步发送邮件
      * @param loginName
      * @param email
      * @return
      */
     @Override
     public Result sendEmail(String loginName, String email) {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper;
-        Result result = new Result();
-        try {
-            helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("1033184008@qq.com");
-            helper.setTo(email);
-            helper.setSubject("共享图书找回密码");
-            helper.setText(createEmailText(loginName), true);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            result.setStatus(0);
-            result.setContent("发送失败，请稍后重试");
-        }
-        mailSender.send(message);
-        result.setStatus(1);
-        result.setContent("发送成功，请及时登录邮箱修改密码");
-        return result;
+        return asyncSendEmail.emailProducer(loginName, email);
     }
 
     @Override

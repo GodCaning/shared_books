@@ -58,7 +58,11 @@ public class UserController {
      */
     @GetMapping(value = "/sendEmail", consumes = "application/json", produces = "application/json")
     public Result sendEmail(@RequestParam String loginName, @RequestParam String email) {
-        return userService.sendEmail(loginName, email);
+        long a = System.currentTimeMillis();
+        Result s = userService.sendEmail(loginName, email);
+        long b = System.currentTimeMillis();
+        System.out.println("需要时间---------------》" + (b - a));
+        return s;
     }
 
     /**
@@ -80,7 +84,7 @@ public class UserController {
     @GetMapping(value = "/findUser/{id}", consumes = "application/json", produces = "application/json")
     public DisplayPerson findUser(@PathVariable int id) {
         Person person = userService.findUser(id);
-        return new DisplayPerson(person.getId(), person.getName(), person.getGender(), person.getAutograph(), person.getPortrait());
+        return new DisplayPerson(person.getId(), person.getName(), person.getLoginName(), person.getGender(), person.getAutograph(), person.getPortrait());
     }
 
     /**
@@ -190,7 +194,7 @@ public class UserController {
     @GetMapping(value = "/loginInfo", consumes = "application/json", produces = "application/json")
     public DisplayPerson loginInfo(HttpSession session) {
         Person person = userService.findUser((Integer) redisTemplate.opsForValue().get(session.getId()));
-        return new DisplayPerson(person.getId(), person.getName(), person.getGender(), person.getAutograph(), person.getPortrait());
+        return new DisplayPerson(person.getId(), person.getName(), person.getLoginName(), person.getGender(), person.getAutograph(), person.getPortrait());
     }
 
     /**

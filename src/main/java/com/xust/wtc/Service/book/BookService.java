@@ -18,6 +18,13 @@ public interface BookService {
     List<Book> findTop10Book();
 
     /**
+     * 根据isbn返回书籍信息
+     * @param isbn
+     * @return
+     */
+    Result queryBookByISBN(String isbn);
+
+    /**
      * 根据书籍创建时间返回最近的书籍
      * @return
      */

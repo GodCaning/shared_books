@@ -14,12 +14,11 @@ public class Book {
     private String pubdate;
     private String summary;
     private String price;
-    private int ctr;
+    private int ctr;  //点击量
 
     public Book() {}
 
-    public Book(String isbn, String title, String image, String author, String translator, String publisher, String pubdate, String summary, String price) {
-        this.isbn = isbn;
+    public Book(String title, String image, String author, String translator, String publisher, String pubdate, String summary, String price) {
         this.title = title;
         this.image = image;
         this.author = author;

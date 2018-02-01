@@ -69,6 +69,26 @@ public class BookServiceImpl implements BookService {
     }
 
     /**
+     * 根据isbn查找书籍并返回
+     * @param isbn
+     * @return
+     */
+    @Override
+    public Result queryBookByISBN(String isbn) {
+        Result result = new Result();
+        try {
+            Book book = getBook(restTemplate.getForObject(url, String.class, isbn));
+            book.setIsbn(isbn);
+            result.setStatus(1);
+            result.setContent(book);
+        } catch (Exception e) {
+            result.setStatus(0);
+            result.setContent("暂未此条形码的书籍信息，请以后在试。");
+        }
+        return result;
+    }
+
+    /**
      * 根据文本查询匹配书籍返回
      * @param content
      * @return
@@ -87,6 +107,12 @@ public class BookServiceImpl implements BookService {
         return bookList;
     }
 
+    /**
+     * 存入一本书
+     * @param isbn
+     * @param sessionId
+     * @return
+     */
     @Override
     @Transactional
     public Result addBook(String isbn, String sessionId) {
@@ -99,19 +125,8 @@ public class BookServiceImpl implements BookService {
             String bookResult = restTemplate.getForObject(url, String.class, isbn);
             //解析result
             System.out.println(bookResult);
-            JsonNode jsonNode = StringConverter.converterToJsonNode(bookResult);
-            Map<String, JsonNode> map = StringConverter.jsonNodeToMap(jsonNode);
-
-            String title = getValue(map, "title");
-            String image = getValue(map, "image");
-            String author = getValue(map, "author");
-            String translator = getValue(map, "translator");
-            String publisher = getValue(map, "publisher");
-            String pubdate = getValue(map, "pubdate");
-            String summary = getValue(map, "summary");
-            String price = getValue(map, "price");
-            book = new Book(isbn, title, image, author,
-                    translator, publisher, pubdate, summary, price);
+            book = getBook(bookResult);
+            book.setIsbn(isbn);
             //存入数据库
             bookMapper.addBook(book);
             System.out.println(book);
@@ -130,6 +145,28 @@ public class BookServiceImpl implements BookService {
         result.setStatus(1);
         result.setContent("增加成功");
         return result;
+    }
+
+    /**
+     * 根据查找的结果解析后返回书籍
+     * @param bookString
+     * @return
+     */
+    private Book getBook(String bookString) {
+        JsonNode jsonNode = StringConverter.converterToJsonNode(bookString);
+        Map<String, JsonNode> map = StringConverter.jsonNodeToMap(jsonNode);
+
+        String title = getValue(map, "title");
+        String image = getValue(map, "image");
+        String author = getValue(map, "author");
+        String translator = getValue(map, "translator");
+        String publisher = getValue(map, "publisher");
+        String pubdate = getValue(map, "pubdate");
+        String summary = getValue(map, "summary");
+        String price = getValue(map, "price");
+        Book book = new Book(title, image, author,
+                translator, publisher, pubdate, summary, price);
+        return book;
     }
 
     private String getValue(Map<String, JsonNode> map, String name) {

@@ -10,6 +10,8 @@ public class DisplayPerson {
 
     private String name;
 
+    private String loginName;
+
     private int gender;
 
     private String autograph;
@@ -19,9 +21,10 @@ public class DisplayPerson {
     public DisplayPerson() {
     }
 
-    public DisplayPerson(int id, String name, int gender, String autograph, String portrait) {
+    public DisplayPerson(int id, String name, String loginName, int gender, String autograph, String portrait) {
         this.id = id;
         this.name = name;
+        this.loginName = loginName;
         this.gender = gender;
         this.autograph = autograph;
         this.portrait = portrait;
@@ -65,5 +68,13 @@ public class DisplayPerson {
 
     public void setPortrait(String portrait) {
         this.portrait = portrait;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }

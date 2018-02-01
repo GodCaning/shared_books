@@ -22,6 +22,16 @@ public class BookController {
     private BookService bookService;
 
     /**
+     * 根据isbn返回书籍信息
+     * @param isbn
+     * @return
+     */
+    @GetMapping(value = "/queryisbn", consumes = "application/json", produces = "application/json")
+    public Result queryBookByISBN(@RequestParam("isbn") String isbn) {
+        return bookService.queryBookByISBN(isbn);
+    }
+
+    /**
      * 增加一本书籍
      * @param httpSession
      * @param isbn
