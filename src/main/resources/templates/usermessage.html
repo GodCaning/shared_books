@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			.mui-navigate-right:after, .mui-push-right:after {
+				right: 0px;
+				top:100px;
+				content: '\e583';
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div id="account" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">我的信息</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div id="mymessage" class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<a id="head" class="mui-navigate-right">
+									<span style="display: block;margin-top: 80px;float: left;">头像</span>
+								<span class="mui-pull-right head" style="margin-top: 50px;margin-right: -70px;">
+									<img class="head-img mui-action-preview" id="head-img1" src="img/logo.jpg" style="width: 50%; height: 50%; "/>
+								</span>
+							    </a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a>用户名<span class="mui-pull-right">{{messages.name}}</span></a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a>账号<span class="mui-pull-right">{{messages.num}}</span></a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a>性别<span class="mui-pull-right" v-if="messages.gender == 0">男</span>
+									   <span class="mui-pull-right" v-else>女</span>
+								</a>
+							</li>
+						</ul>
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<a>个性签名<span class="mui-pull-right">{{messages.auto}}</span></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.enterfocus.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script>
+
+			window.onload = function(){
+                var vue = new Vue({
+                    el:'#mymessage',
+                    data:{
+                        messages:''
+                    },
+                    created:function(){
+                        $.ajax({
+                            url: 'http://localhost:8080/loginInfo',
+                            type: 'GET',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            success: function(data){
+                                vue.messages  = data;
+                                //console.log(vue.messages);
+                            }
+                        })
+                    },
+                })
+			}
+
+			mui.init({
+				swipBack:true
+			})
+		</script>
+	</body>
+
+</html>

@@ -161,8 +161,8 @@
 			
 			<div id="tabbar-with-chat" class="mui-control-content">
 				
-				<ul class="mui-table-view mui-table-view-chevron">
-					<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">暂时没有消息</li>
+				<ul id="chat" class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">{{messages.name}}</li>
 				</ul>
 				
 			</div>
@@ -293,7 +293,7 @@
 			<div id="tabbar-with-map" class="mui-control-content">
 				<ul class="mui-table-view mui-table-view-chevron">
 							<li class="mui-table-view-cell mui-media">
-								<a class="mui-navigate-right" href="#account">
+								<a class="mui-navigate-right" href="usermessage.html">
 									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="img/logo.jpg">
 									<div id="usermessage" class="mui-media-body">
 										{{messages.name}}
@@ -311,6 +311,16 @@
 					<li class="mui-table-view-cell">
 						<a href="indent.html" class="mui-navigate-right">
 						       我的订单
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a href="scan.html" class="mui-navigate-right">
+							扫码上传书籍
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a href="mybook.html" class="mui-navigate-right">
+							我的书房
 						</a>
 					</li>
 					<li class="mui-table-view-cell">
@@ -341,28 +351,71 @@
 	<script src="js/jquery-1.8.3.min.js"></script>
 	<script src="js/vue.min.js"></script>
 	<script>
-            $('#mybtn1').click(function () {
-                var vue = new Vue({
-                    el:'#usermessage',
-                    data:{
-                        messages:''
-                    },
-                    created:function(){
-                        $.ajax({
-                            url: 'http://localhost:8080/loginInfo',
-                            type: 'GET',
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            accept: 'application/json',
-                            success: function(data){
-                                vue.messages  = data;
-                                console.log(vue.messages);
-                            }
-                        })
-                    },
-                })
 
+		window.onload = function () {
+            var vue = new Vue({
+                el:'#usermessage',
+                data:{
+                    messages:''
+                },
+                created:function(){
+                    $.ajax({
+                        url: 'http://localhost:8080/loginInfo',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            vue.messages  = data;
+                            //console.log(vue.messages);
+                        }
+                    })
+                },
             })
+
+            var vue2 = new Vue({
+                el:'#chat',
+                data:{
+                    messages:''
+                },
+                created:function(){
+                    $.ajax({
+                        url: 'http://localhost:8080/loginInfo',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            vue2.messages  = data;
+                            //console.log(vue2.messages);
+                        }
+                    })
+                },
+            })
+		}
+
+            // $('#mybtn1').click(function () {
+            //     var vue = new Vue({
+            //         el:'#usermessage',
+            //         data:{
+            //             messages:''
+            //         },
+            //         created:function(){
+            //             $.ajax({
+            //                 url: 'http://localhost:8080/loginInfo',
+            //                 type: 'GET',
+            //                 dataType: 'json',
+            //                 contentType: 'application/json',
+            //                 accept: 'application/json',
+            //                 success: function(data){
+            //                     vue.messages  = data;
+            //                     console.log(vue.messages);
+            //                 }
+            //             })
+            //         },
+            //     })
+            //
+            // })
 
 		mui.init({
 			swipeBack:true //启用右滑关闭功能
