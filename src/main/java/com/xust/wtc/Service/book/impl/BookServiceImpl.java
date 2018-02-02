@@ -209,7 +209,6 @@ public class BookServiceImpl implements BookService {
                         .field("title", book.getTitle())
                         .field("image", book.getImage())
                         .field("author", book.getAuthor())
-                        .field("translator", book.getTranslator())
                         .field("publisher", book.getPublisher())
                         .field("pubdate", book.getPubdate())
                         .field("summary", book.getSummary())
