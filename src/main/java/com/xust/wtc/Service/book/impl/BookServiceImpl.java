@@ -134,11 +134,13 @@ public class BookServiceImpl implements BookService {
         } else if (searchHits.getTotalHits() == 1){
             SearchHit hit = searchHits.getHits()[0];
             book = StringConverter.stringToBook(hit.getSourceAsString());
+            System.out.println("------------------>" + book);
         } else {
             //todo 抛出异常
         }
 
         Integer userId = (Integer) redisTemplate.opsForValue().get(sessionId);
+        System.out.println("------------------>" + userId);
         stockMapper.addStock(userId, book.getId());
 
         result.setStatus(1);
@@ -200,27 +202,32 @@ public class BookServiceImpl implements BookService {
      */
     private void addBookToES(Book book) {
 
-        XContentBuilder mapping = null;
+        XContentBuilder mapping1 = null;
+        XContentBuilder mapping2 = null;
         try {
-            mapping = XContentFactory.jsonBuilder()
-                    .startObject()
-                        .field("id", book.getId())
-                        .field("isbn", book.getIsbn())
-                        .field("title", book.getTitle())
-                        .field("image", book.getImage())
-                        .field("author", book.getAuthor())
-                        .field("publisher", book.getPublisher())
-                        .field("pubdate", book.getPubdate())
-                        .field("summary", book.getSummary())
-                        .field("price", book.getPrice())
-                    .endObject();
+            mapping1 = XContentFactory.jsonBuilder()
+                        .startObject()
+                            .field("id", book.getId())
+                            .field("isbn", book.getIsbn())
+                            .field("title", book.getTitle())
+                            .field("image", book.getImage())
+                            .field("author", book.getAuthor())
+                            .field("publisher", book.getPublisher())
+                            .field("pubdate", book.getPubdate())
+                            .field("summary", book.getSummary())
+                            .field("price", book.getPrice())
+                        .endObject();
+            mapping2 = XContentFactory.jsonBuilder()
+                        .startObject()
+                            .field("title", book.getTitle())
+                        .endObject();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        IndexResponse response = client.prepareIndex("shared_books", "book")
-                .setSource(mapping).get();
-        client.prepareSearch("fast_search", "book_title")
-                .setSource("{" + "\"title\":" + book.getTitle() +"}").get();
+        client.prepareIndex("shared_books", "book")
+                .setSource(mapping1).get();
+        client.prepareIndex("fast_search", "book_title")
+                .setSource(mapping2).get();
     }
 
     /**
