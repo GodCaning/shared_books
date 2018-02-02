@@ -95,31 +95,31 @@
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">我的书房</h1>
-		</header>
+		<div class="mui-navbar-inner mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+						<span>
+							<a href="index.html">返回</a>
+						</span>
+			</button>
+			<h1 class="mui-center mui-title">我的书房</h1>
+		</div>
 		<div class="mui-content">
 			<div id="slider" class="mui-slider mui-fullscreen">
 				<div class="mui-slider-group">
 					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
 						<div id="scroll1" class="mui-scroll-wrapper">
 							<div id="myhouse" class="mui-scroll">
-								<ul class="mui-table-view">
-									<li class="mui-table-view-cell mui-media" v-for="book in messages">
-										<a href="javascript:;">
+								<ul id="book" class="mui-table-view">
+									<li id="booklist"  :bookid="book.id" class="mui-table-view-cell mui-media getbook" v-for="book in messages">
 											<img class="mui-media-object mui-pull-left" :src="book.image">
 											<div class="mui-media-body">
 												图书信息
 												<p class='mui-ellipsis'>{{book.title}}</p>
-												<p>{{book.id}}</p>
 											</div>
-											<button id="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
+											<p class="mui-btn mui-btn-primary mui-btn-outlined">
 						                                                       {{book.status}}
-											</button>
-									    </a>
+											</p>
 									</li>
-										
 								</ul>
 							</div>
 						</div>
@@ -151,12 +151,18 @@
                             accept: 'application/json',
                             success: function(data){
                                 vue.messages  = data;
-                                console.log(data);
+                                //console.log(data);
                             }
                         })
                     },
                 })
+
+                $('ul#book').on('click','li',function () {
+                    var bookID = $(this).attr('bookid');
+                    window.location.href = 'mybookmessage.html?id='+ bookID;
+                })
             }
+
 
 			mui.init({
 				gestureConfig: {

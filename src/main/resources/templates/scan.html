@@ -20,7 +20,16 @@
           text-align: center;
           margin: 0 auto;
       }
-
+      #btn1{
+          display: block;
+          border: none;
+          background-color: #FFFFFF;
+          color: #000000;
+          text-align: center;
+          margin: 0 auto;
+          padding-left: 26px;
+          padding-right: 26px;
+      }
   </style>
   <body>
   	<div id="account" class="mui-page">
@@ -31,12 +40,13 @@
 					</span>
 				</button>
 				<h1 class="mui-center mui-title">扫码上传书籍</h1>
-    </div>
+        </div>
     <section id="container" class="container">
         <div class="controls">
             <fieldset class="input-group">
             	<span>停止扫码</span>
                 <button class="stop">Stop</button>
+
             </fieldset>
             <fieldset class="reader-config-group">
                 <label>
@@ -46,15 +56,6 @@
                         <option value="code_128" selected="selected" >Code 128</option>
                         <option value="code_39">Code 39</option>
                         <option value="code_39_vin">Code 39 VIN</option>
-                        
-                        <!--<option value="ean_extended">EAN-extended</option>
-                        <option value="ean_8">EAN-8</option>
-                        <option value="upc">UPC</option>
-                        <option value="upc_e">UPC-E</option>
-                        <option value="codabar">Codabar</option>
-                        <option value="i2of5">Interleaved 2 of 5</option>
-                        <option value="2of5">Standard 2 of 5</option>
-                        <option value="code_93">Code 93</option>-->
                     </select>
                 </label>
                 <label>
@@ -112,15 +113,15 @@
         <ul class="collector"></ul>
       </div>
         <div id="bookmessage" style="display: none;">
-        <img :src="messages.image" style="display: block;margin: 0 auto;">
-        <ul>
-            <li>作者：{{messages.author}}</li>
-            <li>书名：{{messages.title}}</li>
-            <li>简介：{{messages.summary}}</li>
-            <li>出版社：{{messages.publisher}}</li>
-            <li>价格：{{messages.price}}</li>
-        </ul>
-    </div>
+            <img :src="messages.image" style="display: block;margin: 0 auto;">
+            <ul>
+                <li>作者：{{messages.author}}</li>
+                <li>书名：{{messages.title}}</li>
+                <li>简介：{{messages.summary}}</li>
+                <li>出版社：{{messages.publisher}}</li>
+                <li>价格：{{messages.price}}</li>
+            </ul>
+        </div>
       <div id="interactive" class="viewport"></div>
     </section>
   	</div>
@@ -419,7 +420,7 @@
                     App.lastResult = code;
                     var $node = null, canvas = Quagga.canvas.dom.image;
 
-                    $node = $('<li><div class="thumbnail" id="list"><div class="imgWrapper"><img /></div><div class="caption"><h4 class="code" id="code"></h4><input type="button" value="获取更多信息" id="btn"/></div></div></li>');
+                    $node = $('<li><div class="thumbnail" id="list"><div class="imgWrapper"><img /></div><div class="caption"><h4 class="code" id="code"></h4><input type="button" value="获取更多信息" id="btn"/><input type="button" value="确定上传" id="btn1"/></div></div></li>');
                     $node.find("img").attr("src", canvas.toDataURL());
                     $node.find("h4.code").html(code);
                     $("#result_strip ul.thumbnails").prepend($node);
@@ -443,10 +444,11 @@
                                 dataType: 'json',
                                 contentType: 'application/json',
                                 accept: 'application/json',
+                                cache:'false',
                                 success: function (result) {
                                     bookVue.messages = result.content;
                                     // bookVue.seen = true;
-                                    //console.log(bookVue.messages.image);
+                                    console.log(bookVue.messages.image);
                                 }
 
                             });
@@ -454,11 +456,60 @@
                     })
                 })
 
+                $('#btn1').click(function () {
+                   // console.log('gdgdfgfdgf');
+                        $.ajax({
+                            url: "http://localhost:8080/addBook",
+                            type: "post",
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            data:code,
+                            success: function (result) {
+                                console.log(result);
+                                //mui.toast(result);
+                            }
+
+                         })
+                })
+                // function  add() {
+                //     console.log('sdsdsadasdsa');
+
+                // }
             });
 
 
+            // $('#push').click(function () {
+            //     console.log('sdsds');
+            //     // $.ajax({
+            //     //     url: "http://localhost:8080/addBook",
+            //     //     type: "post",
+            //     //     dataType: 'json',
+            //     //     contentType: 'application/json',
+            //     //     accept: 'application/json',
+            //     //     data:JSON.stringify({'isbn':code}),
+            //     //     success: function (result) {
+            //     //        console.log(result);
+            //     //     }
+            //     //
+            //     // })
+            // })
+            // if($('#code').text() !== ''){
+            //     $('#push').removeAttr('disabled')
+            // }
 
         });
+
+
+
+        // window.onload = function () {
+        //     var push = document.getElementById('push');
+        //     push.onclick = function () {
+        //         console.log('fsdfdsfdsf');
+        //     }
+        //
+        // }
+
 
     </script>
   </body>
