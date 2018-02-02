@@ -187,6 +187,16 @@ public class UserController {
     }
 
     /**
+     * 退出操作
+     */
+    @GetMapping(value = "/myLogout", consumes = "application/json", produces = "application/json")
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        redisTemplate.delete(subject.getSession().getId());
+        subject.logout();
+    }
+
+    /**
      * 登陆成功获取当前登陆的用户信息
      * @param session
      * @return

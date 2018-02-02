@@ -126,7 +126,7 @@ public class BookServiceImpl implements BookService {
             System.out.println(bookResult);
             book = getBook(bookResult);
             book.setIsbn(isbn);
-            //存入数据库
+            //存入书籍信息数据库
             bookMapper.addBook(book);
             System.out.println(book);
             //存入ES

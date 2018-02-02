@@ -39,9 +39,10 @@ public class BookController {
      */
     @PostMapping(value = "/addBook", consumes = "application/json", produces = "application/json")
     public Result addBook(HttpSession httpSession, @RequestBody String isbn) {
-        JsonNode jsonNode = StringConverter.converterToJsonNode(isbn);
+//        JsonNode jsonNode = StringConverter.converterToJsonNode(isbn);
+//        StringConverter.converterToString(jsonNode, "isbn")
         String sessionId = httpSession.getId();
-        return bookService.addBook(StringConverter.converterToString(jsonNode, "isbn"), sessionId);
+        return bookService.addBook(isbn, sessionId);
     }
 
     /**
