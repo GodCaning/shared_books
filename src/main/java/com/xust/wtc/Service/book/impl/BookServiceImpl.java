@@ -372,7 +372,7 @@ public class BookServiceImpl implements BookService {
         System.out.println(pageInfo.getPages()); //总页数
         System.out.println(pageInfo.getPageSize()); //当前一页的长度
         System.out.println(pageInfo.getTotal());  //总条数
-        AllBook allBook = new AllBook(pageInfo.getPages(), pageInfo.getTotal(), pageInfo.getPageNum(), bookList);
+        AllBook allBook = new AllBook(pageInfo.getPages(), pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), bookList);
         return allBook;
     }
 }

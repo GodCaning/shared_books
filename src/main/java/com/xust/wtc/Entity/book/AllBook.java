@@ -10,15 +10,17 @@ public class AllBook {
     private int pages; //总页数
     private long total; //总条数
     private int pageNum; //当前页的坐标
+    private int pageSize;
     private List<Book> list;
 
     public AllBook() {
     }
 
-    public AllBook(int pages, long total, int pageNum, List<Book> list) {
+    public AllBook(int pages, long total, int pageNum, int pageSize, List<Book> list) {
         this.pages = pages;
         this.total = total;
         this.pageNum = pageNum;
+        this.pageSize = pageSize;
         this.list = list;
     }
 
@@ -52,5 +54,13 @@ public class AllBook {
 
     public void setList(List<Book> list) {
         this.list = list;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }

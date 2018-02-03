@@ -53,7 +53,7 @@ public class BookController {
      */
     @GetMapping(value = "/findBooks", consumes = "application/json", produces = "application/json")
     public AllBook findBooksWithCreateTime(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-                                           @RequestParam(value = "pageSize", defaultValue = "10")int pageSize) {
+                                           @RequestParam(value = "pageSize", defaultValue = "6")int pageSize) {
         return bookService.findBooksWithCreateTime(currentPage, pageSize);
     }
 
