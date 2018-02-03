@@ -49,9 +49,11 @@ public class PrivateMessageController {
      */
     @MessageMapping(value = "/chat")
     public void sendMessage(String content) {
+        System.out.println(content);
         String []strings = content.split("_");
-        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
-        privateMessageService.insertPrivateMessage(sessionId, Integer.parseInt(strings[0]), strings[1]);
+//        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
+        privateMessageService.insertPrivateMessage(strings[1], Integer.parseInt(strings[0]), strings[1]);
+//        privateMessageService.insertPrivateMessage(sessionId, Integer.parseInt(strings[0]), strings[1]);
         simpMessageSendingOperations.convertAndSendToUser(strings[0], "/message", strings[1]);
     }
 

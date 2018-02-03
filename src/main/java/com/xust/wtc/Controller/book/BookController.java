@@ -1,6 +1,7 @@
 package com.xust.wtc.Controller.book;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.UserBook;
@@ -51,8 +52,8 @@ public class BookController {
      * @param pageSize
      */
     @GetMapping(value = "/findBooks", consumes = "application/json", produces = "application/json")
-    public List<Book> findBooksWithCreateTime(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-                                        @RequestParam(value = "pageSize", defaultValue = "10")int pageSize) {
+    public AllBook findBooksWithCreateTime(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                                           @RequestParam(value = "pageSize", defaultValue = "10")int pageSize) {
         return bookService.findBooksWithCreateTime(currentPage, pageSize);
     }
 

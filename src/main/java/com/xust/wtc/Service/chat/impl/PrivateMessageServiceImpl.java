@@ -47,7 +47,9 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
      */
     public Result insertPrivateMessage(String sessionId, int receiveId, String content) {
         Result result = new Result();
-        int sendId = (int) redisTemplate.opsForValue().get(sessionId);
+//        int sendId = (int) redisTemplate.opsForValue().get(sessionId);
+        int sendId = Integer.parseInt(sessionId.substring(0,1));
+        System.out.println("sendId" + sendId);
         int x = privateMessageMapper.insertSend(sendId, receiveId, content);
         int y = privateMessageMapper.insertReceive(sendId, receiveId, content);
         if ((x + y) < 1) {

@@ -1,5 +1,6 @@
 package com.xust.wtc.Service.book;
 
+import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.UserBook;
@@ -28,7 +29,7 @@ public interface BookService {
      * 根据书籍创建时间返回最近的书籍
      * @return
      */
-    List<Book> findBooksWithCreateTime(int currentPage, int pageSize);
+    AllBook findBooksWithCreateTime(int currentPage, int pageSize);
 
     /**
      * 根据ID查询书籍信息

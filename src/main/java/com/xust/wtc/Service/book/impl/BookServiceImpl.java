@@ -7,21 +7,27 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xust.wtc.Dao.book.BookMapper;
 import com.xust.wtc.Dao.book.StockMapper;
+import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.UserBook;
 import com.xust.wtc.Service.book.BookService;
 import com.xust.wtc.utils.StringConverter;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ResultsExtractor;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,13 +52,13 @@ public class BookServiceImpl implements BookService {
     private RedisTemplate redisTemplate;
 
     @Autowired
-    private Client client;
-
-    @Autowired
     private BookMapper bookMapper;
 
     @Autowired
     private StockMapper stockMapper;
+
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
 
     private String url = "https://api.douban.com/v2/book/isbn/{isbn}";
 
@@ -94,15 +100,30 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public List<Book> searchBooks(String content) {
-        SearchResponse response = client.prepareSearch("shared_books").setTypes("book")
-                .setSearchType(SearchType.QUERY_THEN_FETCH)
-                .setQuery(multiMatchQuery(content, "title", "summary"))
-                .execute().actionGet();
+        /*
+        elasticsearch原生API
+         */
+//        SearchResponse response = elasticsearchTemplate.getClient().prepareSearch("shared_books").setTypes("book")
+//                .setSearchType(SearchType.QUERY_THEN_FETCH)
+//                .setQuery(multiMatchQuery(content, "title", "summary"))
+//                .execute().actionGet();
+
+        /*
+        spring封装elasticsearch
+         */
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withSearchType(SearchType.QUERY_THEN_FETCH)
+                .withIndices("shared_books").withTypes("book")
+                .withQuery(multiMatchQuery(content, "title", "summary"))
+                .build();
+
+        SearchResponse response = elasticsearchTemplate.query(searchQuery, searchResponse -> searchResponse);
+
         List<Book> bookList = new ArrayList<>();
         for (SearchHit searchHit : response.getHits().getHits()) {
-            System.out.println(searchHit.getSourceAsString());
             bookList.add(StringConverter.stringToBook(searchHit.getSourceAsString()));
         }
+
         return bookList;
     }
 
@@ -117,30 +138,38 @@ public class BookServiceImpl implements BookService {
     public Result addBook(String isbn, String sessionId) {
         Result result = new Result();
         //先搜索是否存在ES中
-        Book book = null;
+        Book book;
         SearchHits searchHits = existsES(isbn);
         if (searchHits.getTotalHits() < 1) {
-            //不存在ES则把书籍信息存入ES和BOOK表中
-            String bookResult = restTemplate.getForObject(url, String.class, isbn);
-            //解析result
-            System.out.println(bookResult);
-            book = getBook(bookResult);
-            book.setIsbn(isbn);
-            //存入书籍信息数据库
-            bookMapper.addBook(book);
-            System.out.println(book);
-            //存入ES
-            addBookToES(book);
+            try {
+                //不存在ES则把书籍信息存入ES和BOOK表中
+                String bookResult = restTemplate.getForObject(url, String.class, isbn);
+                //解析result
+                System.out.println(bookResult);
+                book = getBook(bookResult);
+                book.setIsbn(isbn);
+                //存入书籍信息数据库
+                bookMapper.addBook(book);
+                System.out.println(book);
+                //存入ES
+                addBookToES(book);
+            } catch (Exception e) {
+                result.setStatus(0);
+                result.setContent("添加失败");
+                return result;
+            }
         } else if (searchHits.getTotalHits() == 1){
             SearchHit hit = searchHits.getHits()[0];
             book = StringConverter.stringToBook(hit.getSourceAsString());
             System.out.println("------------------>" + book);
         } else {
             //todo 抛出异常
+            result.setStatus(0);
+            result.setContent("添加失败");
+            return result;
         }
 
         Integer userId = (Integer) redisTemplate.opsForValue().get(sessionId);
-        System.out.println("------------------>" + userId);
         stockMapper.addStock(userId, book.getId());
 
         result.setStatus(1);
@@ -187,13 +216,27 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     private SearchHits existsES(String isbn) {
-        SearchRequestBuilder requestBuilder =
-                client.prepareSearch("shared_books").setTypes("book");
-        SearchResponse response = requestBuilder.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(termQuery("isbn", isbn))
-                .execute().actionGet();
-        SearchHits searchHits = response.getHits();
-        return searchHits;
+
+        /*
+        elasticsearch原生API
+         */
+//        SearchRequestBuilder requestBuilder =
+//                elasticsearchTemplate.getClient().prepareSearch("shared_books").setTypes("book");
+//        SearchResponse response = requestBuilder.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+//                .setQuery(termQuery("isbn", isbn))
+//                .execute().actionGet();
+//        SearchHits searchHits = response.getHits();
+
+        /*
+        spring封装elasticsearch
+         */
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .withIndices("shared_books").withTypes("book")
+                .withQuery(termQuery("isbn", isbn))
+                .build();
+
+        return elasticsearchTemplate.query(searchQuery, searchResponse -> searchResponse.getHits());
     }
 
     /**
@@ -202,8 +245,10 @@ public class BookServiceImpl implements BookService {
      */
     private void addBookToES(Book book) {
 
-        XContentBuilder mapping1 = null;
-        XContentBuilder mapping2 = null;
+        XContentBuilder mapping1;
+        XContentBuilder mapping2;
+        String s1 = null;
+        String s2 = null;
         try {
             mapping1 = XContentFactory.jsonBuilder()
                         .startObject()
@@ -217,17 +262,31 @@ public class BookServiceImpl implements BookService {
                             .field("summary", book.getSummary())
                             .field("price", book.getPrice())
                         .endObject();
+            s1 = mapping1.string();
             mapping2 = XContentFactory.jsonBuilder()
                         .startObject()
                             .field("title", book.getTitle())
                         .endObject();
+            s2 = mapping2.string();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        client.prepareIndex("shared_books", "book")
-                .setSource(mapping1).get();
-        client.prepareIndex("fast_search", "book_title")
-                .setSource(mapping2).get();
+//        elasticsearchTemplate.getClient().prepareIndex("shared_books", "book")
+//                .setSource(mapping1).get();
+//        elasticsearchTemplate.getClient().prepareIndex("fast_search", "book_title")
+//                .setSource(mapping2).get();
+
+        IndexQuery indexQuery1 = new IndexQueryBuilder()
+                .withIndexName("shared_books").withType("book")
+                .withSource(s1)
+                .build();
+        IndexQuery indexQuery2 = new IndexQueryBuilder()
+                .withIndexName("fast_search").withType("book_title")
+                .withSource(s2)
+                .build();
+
+        elasticsearchTemplate.index(indexQuery1);
+        elasticsearchTemplate.index(indexQuery2);
     }
 
     /**
@@ -237,20 +296,44 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public List<String> searchTitleToES(String content) {
-        SearchResponse response = client.prepareSearch("fast_search")
-                .setTypes("book_title").setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(termQuery("title", content)) // Query
-                .setFrom(0).setSize(6).setExplain(true)
-                .execute().actionGet();
-        System.out.println(content);
-        List<String> searchTiler = new ArrayList<>();
-        SearchHit []searchHits = response.getHits().getHits();
-        System.out.println(searchHits.length);
+
+        /*
+        elasticsearch原生API
+         */
+//        SearchRequestBuilder requestBuilder =
+//                elasticsearchTemplate.getClient().prepareSearch("fast_search").setTypes("book_title");
+//        SearchResponse response = requestBuilder.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+//                .setQuery(termQuery("title", content))
+//                .setFrom(0).setSize(6).setExplain(true)
+//                .execute().actionGet();
+//        System.out.println(content);
+//        List<String> searchTiler = new ArrayList<>();
+//        SearchHit []searchHits = response.getHits().getHits();
+//        System.out.println(searchHits.length);
+//        for (SearchHit searchHit : searchHits) {
+//            System.out.println(searchHit.getSourceAsString());
+//            searchTiler.add(String.valueOf(searchHit.sourceAsMap().entrySet().iterator().next().getValue()));
+//        }
+
+        /*
+        spring封装elasticsearch
+         */
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                        .withSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                        .withIndices("fast_search").withTypes("book_title")
+                        .withQuery(termQuery("title", content))
+                        .withPageable(new PageRequest(0, 6))
+                        .build();
+
+        SearchHit []searchHits =
+                elasticsearchTemplate.query(searchQuery, searchResponse -> searchResponse.getHits().getHits());
+
+        List<String> searchResult = new ArrayList<>();
         for (SearchHit searchHit : searchHits) {
-            System.out.println(searchHit.getSourceAsString());
-            searchTiler.add(searchHit.getSourceAsString());
+            searchResult.add(String.valueOf(searchHit.sourceAsMap().entrySet().iterator().next().getValue()));
         }
-        return searchTiler;
+
+        return searchResult;
     }
 
     /**
@@ -279,7 +362,7 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    public List<Book> findBooksWithCreateTime(int currentPage, int pageSize) {
+    public AllBook findBooksWithCreateTime(int currentPage, int pageSize) {
         PageHelper.startPage(currentPage, pageSize);
         List<Book> bookList = bookMapper.findBooksWithCreateTime();
         PageInfo<Book> pageInfo = new PageInfo<>(bookList);
@@ -289,6 +372,7 @@ public class BookServiceImpl implements BookService {
         System.out.println(pageInfo.getPages()); //总页数
         System.out.println(pageInfo.getPageSize()); //当前一页的长度
         System.out.println(pageInfo.getTotal());  //总条数
-        return null;
+        AllBook allBook = new AllBook(pageInfo.getPages(), pageInfo.getTotal(), pageInfo.getPageNum(), bookList);
+        return allBook;
     }
 }
