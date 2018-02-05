@@ -2,478 +2,532 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<title>共享图书</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<!--标准mui.css-->
-		<link rel="stylesheet" href="css/mui.min.css">
-		<link rel="stylesheet" href="css/icons-extra.css">
-		<!--App自定义的css-->
-		<link rel="stylesheet" type="text/css" href="css/app.css"/>
-		<style>
-			
-			.title{
-				margin: 20px 15px 10px;
-				color: #6d6d72;
-				font-size: 15px;
-			}
-			
-			.oa-contact-cell.mui-table .mui-table-cell {
-				padding: 11px 0;
-				vertical-align: middle;
-			}
-			
-			.oa-contact-cell {
-				position: relative;
-				margin: -11px 0;
-			}
-	
-			.oa-contact-avatar {
-				width: 75px;
-			}
-			.oa-contact-avatar img {
-				border-radius: 50%;
-			}
-			.oa-contact-content {
-				width: 100%;
-			}
-			.oa-contact-name {
-				margin-right: 20px;
-			}
-			.oa-contact-name, oa-contact-position {
-				float: left;
-			}
-			.inline{
-				position: absolute;
-                left: 50px;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8">
+	<title>共享图书</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<!--标准mui.css-->
+	<link rel="stylesheet" href="css/mui.min.css">
+	<link rel="stylesheet" href="css/icons-extra.css">
+	<!--App自定义的css-->
+	<link rel="stylesheet" type="text/css" href="css/app.css"/>
+	<style>
 
-	<body>
-		<header class="mui-bar mui-bar-nav">
-			<h1 id="title" class="mui-title">书房</h1>
-		</header>
-		<nav class="mui-bar mui-bar-tab">
-			<a class="mui-tab-item mui-active" href="#tabbar">
-				<span class="mui-icon mui-icon-home"></span>
-				<span class="mui-tab-label">首页</span>
-			</a>
-			<a class="mui-tab-item" href="#tabbar-with-chat">
-				<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
-				<span class="mui-tab-label">消息</span>
-			</a>
-			<a class="mui-tab-item" href="#tabbar-with-contact">
-				 
-				<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
-				<span class="mui-tab-label">书圈</span>
-			</a>
-			<!--<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">-->
-				<!--<span class="mui-icon mui-icon-gear"></span>-->
-				<!--<span  class="mui-tab-label">我的</span>-->
-			<!--</a>-->
-			<!--href="#tabbar-with-map"-->
-			<div id="mybtn1" class="mui-tab-item">
-				<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">
-				<span class="mui-icon mui-icon-gear"></span>
-				<span  class="mui-tab-label">我的</span>
-				</a>
-			</div>
-		</nav>
-		<div class="mui-content">
-			<div id="search" class="mui-indexed-list-search mui-input-row mui-search">
-					<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索图书">
-			</div>
-			<div id="tabbar" class="mui-control-content mui-active">
-				<div class="mui-card">
-				<div class="mui-card-header mui-card-media">
-					<img src="img/logo.jpg" />
-					<div class="mui-media-body">
-						SLibrary
-						<p>发表于 2018-01-25 15:50</p>
-					</div>
-					
-				</div>
-				<div class="mui-card-content" >
-					<img src="img/book1.jpg" alt="" width="100%"/>
-					<div class="mui-card-content-inner">
-						<p style="color: #333;">本书介绍了如何学习关于.........</p>
-					</div>
-				</div>
-				<div class="mui-card-footer">
-					<a class="mui-card-link">喜欢</a>
-					<span class="mui-icon-extra mui-icon-extra-heart inline"></span>
-					<a class="mui-card-link">评论</a>
-					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 52%;"></span>
-					<a class="mui-card-link">详细信息</a>
-				</div>
-			</div>
-			<div class="mui-card">
-				<div class="mui-card-header mui-card-media">
-					<img src="img/logo.jpg" />
-					<div class="mui-media-body">
-						SLibrary
-						<p>发表于 2018-01-25 15:30</p>
-					</div>
-					
-				</div>
-				<div class="mui-card-content" >
-					<img src="img/book2.jpg" alt="" width="100%"/>
-					<div class="mui-card-content-inner">
-						<p style="color: #333;">本书介绍了如何学习关于.........</p>
-					</div>
-				</div>
-				<div class="mui-card-footer">
-					<a class="mui-card-link">喜欢</a>
-					<span class="mui-icon-extra mui-icon-extra-heart inline"></span>
-					<a class="mui-card-link">评论</a>
-					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 52%;"></span>
-					<a class="mui-card-link">详细信息</a>
-				</div>
-			</div>
-			<div class="mui-card">
-				<div class="mui-card-header mui-card-media">
-					<img src="img/logo.jpg" />
-					<div class="mui-media-body">
-						SLibrary
-						<p>发表于 2018-01-25 15:20</p>
-					</div>
-					
-				</div>
-				<div class="mui-card-content" >
-					<img src="img/book3.jpg" alt="" width="100%"/>
-					<div class="mui-card-content-inner">
-						<p style="color: #333;">本书介绍了如何学习关于.........</p>
-					</div>
-				</div>
-				<div class="mui-card-footer">
-					<a class="mui-card-link">喜欢</a>
-					<span class="mui-icon-extra mui-icon-extra-heart inline"></span>
-					<a class="mui-card-link">评论</a>
-					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 52%;"></span>
-					<a class="mui-card-link">详细信息</a>
-				</div>
-			</div>	
-			</div>
-			
-			<div id="tabbar-with-chat" class="mui-control-content">
-				
-				<ul id="chat" class="mui-table-view mui-table-view-chevron">
-					<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">{{messages.name}}</li>
-				</ul>
-				
-			</div>
-			<div id="tabbar-with-contact" class="mui-control-content">
-				<div class="mui-collapse-content">
-							<div id="slider" class="mui-slider">
-								<div class="mui-slider-group mui-slider-loop">
-									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
-									<div class="mui-slider-item mui-slider-item-duplicate">
-										<a href="#">
-											<img src="img/book3.jpg">
-										</a>
-									</div>
-									<!-- 第一张 -->
-									<div class="mui-slider-item">
-										<a href="#">
-											<img src="img/book1.jpg">
-										</a>
-									</div>
-									<!-- 第二张 -->
-									<div class="mui-slider-item">
-										<a href="#">
-											<img src="img/book2.jpg">
-										</a>
-									</div>
-									<!-- 第三张 -->
-									<div class="mui-slider-item">
-										<a href="#">
-											<img src="img/book3.jpg">
-										</a>
-									</div>
-									
-									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
-									<div class="mui-slider-item mui-slider-item-duplicate">
-										<a href="#">
-											<img src="img/book1.jpg">
-										</a>
-									</div>
-								</div>
-								<div class="mui-slider-indicator">
-									<div class="mui-indicator mui-active"></div>
-									<div class="mui-indicator"></div>
-									<div class="mui-indicator"></div>
-								</div>
-							</div>
-						</div>
-						
-				<div class="mui-card" style="margin-bottom: 35px;">
-				  <ul class="mui-table-view">
-					<li class="mui-table-view-cell mui-media">
-						<a href="javascript:;">
-							<img class="mui-media-object mui-pull-right" src="img/book1.jpg">
-							<div class="mui-media-body">
-								书籍
-								<p class='mui-ellipsis'>阅读，做一个安静的人，不急不躁。</p>
-							</div>
-						</a>
-					</li>
-					<li class="mui-table-view-cell mui-media">
-						<a href="javascript:;">
-							<img class="mui-media-object mui-pull-right" src="img/book2.jpg">
-							<div class="mui-media-body">
-								关于爱情
-								<p class='mui-ellipsis'>每一张照片，记录着多少怀念，未来，很长..</p>
-							</div>
-						</a>
-					</li>
-					<li class="mui-table-view-cell mui-media">
-						<a href="javascript:;">
-							<img class="mui-media-object mui-pull-right" src="img/book3.jpg">
-							<div class="mui-media-body">
-								关于文学
-								<p class='mui-ellipsis'>那时我们都有梦，静静看着世界，后来看着看着都疯了</p>
-							</div>
-						</a>
-					</li>
-				</ul>
-			  </div>
-			  <div class="mui-card">
-				<div class="mui-card-header mui-card-media">
-					<img src="img/logo.jpg" />
-					<div class="mui-media-body">
-						SLibrary
-						<p>2018-01-25 15:30</p>
-					</div>
-					
-				</div>
-				<div class="mui-card-content" >
-					
-					<div class="mui-card-content-inner">
-						<p style="color: #333;">
-							不是所有的悲伤都能被看到，要为爱的人选择一条幸福的路。
-						     我想东野圭吾应是对脑科学或脑医学颇有研究，在。。。
-						</p>
-					</div>
-					<img src="img/book2.jpg" alt="" width="100%"/>
-				</div>
-				<div class="mui-card-footer">
-					<a class="mui-card-link" style="margin-left: 85%;">评论</a>
-					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 92%;"></span>
-				</div>
-			</div>
-			<div class="mui-card">
-				<div class="mui-card-header mui-card-media">
-					<img src="img/logo.jpg" />
-					<div class="mui-media-body">
-						SLibrary
-						<p>2018-01-25 15:30</p>
-					</div>
-					
-				</div>
-				<div class="mui-card-content" >
-					
-					<div class="mui-card-content-inner">
-						<p style="color: #333;">
-							不是所有的悲伤都能被看到，要为爱的人选择一条幸福的路。
-						     我想东野圭吾应是对脑科学或脑医学颇有研究，在。。。
-						</p>
-					</div>
-					<img src="img/book2.jpg" alt="" width="100%"/>
-				</div>
-				<div class="mui-card-footer">
-					<a class="mui-card-link" style="margin-left: 85%;">评论</a>
-					<span class="mui-icon mui-icon-chat" style="position: absolute;left: 92%;"></span>
-				</div>
-			</div>
-			</div>
-			<div id="tabbar-with-map" class="mui-control-content">
-				<ul class="mui-table-view mui-table-view-chevron">
-							<li class="mui-table-view-cell mui-media">
-								<a class="mui-navigate-right" href="usermessage.html">
-									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="img/logo.jpg">
-									<div id="usermessage" class="mui-media-body">
-										{{messages.name}}
-										<p class='mui-ellipsis'>账号:{{messages.id}}</p>
-									</div>
-								</a>
-							</li>
-				</ul>
-				<ul class="mui-table-view">
-					<li class="mui-table-view-cell">
-						<a class="mui-navigate-right">
-							新消息通知
-						</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a href="indent.html" class="mui-navigate-right">
-						       我的订单
-						</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a href="scan.html" class="mui-navigate-right">
-							扫码上传书籍
-						</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a href="mybook.html" class="mui-navigate-right">
-							我的书房
-						</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a class="mui-navigate-right">
-							通用
-						</a>
-					</li>
-			   </ul>
-			<ul class="mui-table-view" style="margin-top: 25px;">
-				<li class="mui-table-view-cell">
-					<a id="info" class="mui-navigate-right">
-						关于共享图书
-					</a>
-				</li>
-			</ul>
-			<ul class="mui-table-view" style="margin-top: 25px;">
-				<li class="mui-table-view-cell">
-					<a href="login.html" style="text-align: center;color: #FF3B30;">
-						退出登录
-					</a>
-				</li>
-			</ul>
-			</div>
-		</div>
-		
-	</body>
-	<script src="js/mui.min.js"></script>
-	<script src="js/jquery-1.8.3.min.js"></script>
-	<script src="js/vue.min.js"></script>
-	<script>
-
-		window.onload = function () {
-            var vue = new Vue({
-                el:'#usermessage',
-                data:{
-                    messages:''
-                },
-                created:function(){
-                    $.ajax({
-                        url: 'http://localhost:8080/loginInfo',
-                        type: 'GET',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        accept: 'application/json',
-                        success: function(data){
-                            vue.messages  = data;
-                            //console.log(vue.messages);
-                        }
-                    })
-                },
-            })
-
-            var vue2 = new Vue({
-                el:'#chat',
-                data:{
-                    messages:''
-                },
-                created:function(){
-                    $.ajax({
-                        url: 'http://localhost:8080/loginInfo',
-                        type: 'GET',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        accept: 'application/json',
-                        success: function(data){
-                            vue2.messages  = data;
-                            //console.log(vue2.messages);
-                        }
-                    })
-                },
-            })
+		.title{
+			margin: 20px 15px 10px;
+			color: #6d6d72;
+			font-size: 15px;
 		}
 
-            // $('#mybtn1').click(function () {
-            //     var vue = new Vue({
-            //         el:'#usermessage',
-            //         data:{
-            //             messages:''
-            //         },
-            //         created:function(){
-            //             $.ajax({
-            //                 url: 'http://localhost:8080/loginInfo',
-            //                 type: 'GET',
-            //                 dataType: 'json',
-            //                 contentType: 'application/json',
-            //                 accept: 'application/json',
-            //                 success: function(data){
-            //                     vue.messages  = data;
-            //                     console.log(vue.messages);
-            //                 }
-            //             })
-            //         },
-            //     })
-            //
-            // })
+		.oa-contact-cell.mui-table .mui-table-cell {
+			padding: 11px 0;
+			vertical-align: middle;
+		}
 
-		mui.init({
-			swipeBack:true //启用右滑关闭功能
-		});
-		var title = document.getElementById("title");
-		var search = document.getElementById('search');
-		mui('.mui-bar-tab').on('tap', 'a', function(e) {
-				//更换标题
-				title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
-				//console.log(title.innerHTML);
-				if(title.innerHTML !== '首页'){
-					search.style.display = 'none';
-				}else{
-					search.style.display = 'block';
-				}
-				//显示目标选项卡
-			});
-			
-	    	//处理右上角关于图标的点击事件；
-			var subWebview = null,
-				template = null;
-			document.getElementById('info').addEventListener('tap', function() {
-				if (!mui.os.plus) {
-					mui.openWindow({
-						url: "info.html",
-						id: "info",
-						show: {
-							aniShow: 'zoom-fade-out',
-							duration: 300
-						}
-					});
-					return;
-				}
-				if (subWebview == null) {
-					//获取共用父窗体
-					template = plus.webview.getWebviewById("default-main");
-				}
-				if (template) {
-					subWebview = template.children()[0];
-					subWebview.loadURL('info.html');
-					//修改共用父模板的标题
-					mui.fire(template, 'updateHeader', {
-						title: '关于我们',
-						showMenu: false
-					});
-					template.show('slide-in-right', 150);
-				}
-			});
-			var slider = mui("#slider");
-			var cli = document.getElementById('slider');
-			
-			cli.onclick  = function(){
-					slider.slider({
-					interval:5000
-				});
-			}
+		.oa-contact-cell {
+			position: relative;
+			margin: -11px 0;
+		}
+
+		.oa-contact-avatar {
+			width: 75px;
+		}
+		.oa-contact-avatar img {
+			border-radius: 50%;
+		}
+		.oa-contact-content {
+			width: 100%;
+		}
+		.oa-contact-name {
+			margin-right: 20px;
+		}
+		.oa-contact-name, oa-contact-position {
+			float: left;
+		}
+		.inline{
+			position: absolute;
+			left: 50px;
+		}
+		#bookcontent ul li{
+			list-style: none;
+		}
+
+		#bookslist ul li{
+			list-style: none;
+		}
+		.go-back{
+			display: block;
+			margin: 12px;
+			margin-top: -10px;
+		}
+		.go-book{
+			background: #ffffff;
+			width: 98%;
+			margin: 0 auto;
+			font-size: 14px;
+			border-radius: 5px;
+		}
+		.go-book img{
+			float: left;
+			margin-left: -25px;
+		}
+		.go-book li{
+			list-style: none;
+		}
+		.go-footer{
+			border-radius: 5px;
+			background: #ffffff;
+			width: 98%;
+			font-size: 14px;
+			margin: 0 auto;
+		}
+		.inv{
+			position: relative;
+			width: 395px;
+		}
+		#invent{
+			display: inherit;
+			position: absolute;
+		}
+		.comment{
+			display: inherit;
+			float: right;
+		}
+	</style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+	<h1 id="title" class="mui-title">首页</h1>
+</header>
+<nav class="mui-bar mui-bar-tab">
+	<a class="mui-tab-item mui-active" href="#tabbar">
+		<span class="mui-icon mui-icon-home"></span>
+		<span class="mui-tab-label">首页</span>
+	</a>
+	<a class="mui-tab-item" href="#tabbar-with-chat">
+		<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+		<span class="mui-tab-label">消息</span>
+	</a>
+	<a class="mui-tab-item" href="#tabbar-with-contact">
+
+		<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
+		<span class="mui-tab-label">书圈</span>
+	</a>
+	<!--<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">-->
+	<!--<span class="mui-icon mui-icon-gear"></span>-->
+	<!--<span  class="mui-tab-label">我的</span>-->
+	<!--</a>-->
+	<!--href="#tabbar-with-map"-->
+	<div id="mybtn1" class="mui-tab-item">
+		<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">
+			<span class="mui-icon mui-icon-gear"></span>
+			<span  class="mui-tab-label">我的</span>
+		</a>
+	</div>
+</nav>
+<!--class="mui-input-clear mui-indexed-list-search-input"-->
+<!--class="mui-indexed-list-search mui-input-row mui-search"-->
+<div class="mui-content">
+	<form id="main">
+		<div id="search"  style="margin: 10px;width: 385px;">
+			<input id="bookname"  type="text"   placeholder="搜索图书"  style="width: 280px;">
+			<input type="button" value="搜索" id="searchbook" style="width: 100px;height: 40px;">
+		</div>
+		<!--<ul id="bmessage" style="display: none;list-style: none" v-show="isShow" >-->
+		<!--<li v-for="article in filteredArticles">-->
+		<!--<a href="#" rel="external nofollow" >ffff</a>-->
+		<!--<p>{{article.title}}</p>-->
+		<!--</li>-->
+		<!--</ul>-->
+	</form>
+
+	<div id="tabbar" class="mui-control-content mui-active">
+		<div id="bookcontent" class="mui-card" v-for="bcontent in messages" v-if="show">
+			<img :src="bcontent.image" alt="" width="30%" style="display: block;float: left;"/>
+			<ul style="width: 280px;margin-left: 105px;">
+				<li>{{bcontent.title}}</li>
+				<li>{{bcontent.author}}</li>
+				<li style="height: 80px;overflow: hidden;">{{bcontent.summary}}</li>
+				<li>{{bcontent.publisher}}</li>
+				<li>{{bcontent.price}}</li>
+			</ul>
+			<div class="mui-card-footer" style="width:395px;">
+				<span class="mui-icon mui-icon-plusempty" style="color: #007aff;"></span>
+				<a class="mui-card-link">详细信息</a>
+			</div>
+		</div>
+	</div>
 
 
+	<div id="tabbar-with-chat" class="mui-control-content">
+		<ul id="chat" class="mui-table-view mui-table-view-chevron">
+			<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">{{messages.name}}</li>
+		</ul>
+	</div>
+	<div id="tabbar-with-contact" class="mui-control-content">
 
-	</script>
+		<div id="bookslist"  class="mui-card" v-for="books in messages.list" v-if="show">
+			<img :src="books.image" alt="" width="50%" style="display: block;float: left;width: 150px;"/>
+			<ul style="width: 280px;margin-left: 105px;color: #000000;">
+				<li>{{books.title}}</li>
+				<li>{{books.author}}</li>
+				<li style="height: 80px;overflow: hidden;">{{books.summary}}</li>
+				<li>{{books.publisher}}</li>
+				<li>{{books.price}}</li>
+			</ul>
+			<div class="mui-card-footer inv">
+				<div id="invent">
+					<span class="mui-icon-extra mui-icon-extra-order" style="color: #007aff;"></span>
+					<a href="javascript:;" class="mui-card-link">查看库存</a>
+				</div>
+				<div id="comment" class="comment" :bookid="books.id">
+					<span class="mui-icon mui-icon-chat" style="color: #007aff;"></span>
+					<a href="javascript:;" class="mui-card-link">评论</a>
+				</div>
+			</div>
+		</div>
+		<div class="mui-pager" style="width: 394px;margin: 0 auto;" v-if="pageshow">
+			<button id="pre" class="mui-previous" style="float: left;" @click="pre()" v-if="messages.pageNum >1">上一页</button>
+			<span style="line-height: 35px; font-size: 14px;">共{{messages.pages}}页，当前第{{messages.pageNum}}页</span>
+			<button id="next" class="mui-next" style="float: right;" @click="next()" v-if="messages.pageNum < 4">下一页</button>
+		</div>
+	</div>
+	<div id="tabbar-with-map" class="mui-control-content">
+		<ul class="mui-table-view mui-table-view-chevron">
+			<li class="mui-table-view-cell mui-media">
+				<a class="mui-navigate-right" href="usermessage.html">
+					<img class="mui-media-object mui-pull-left head-img" id="head-img" src="img/logo.jpg">
+					<div id="usermessage" class="mui-media-body">
+						{{messages.name}}
+						<p class='mui-ellipsis'>账号:{{messages.id}}</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<a class="mui-navigate-right">
+					新消息通知
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="indent.html" class="mui-navigate-right">
+					我的订单
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="scan.html" class="mui-navigate-right">
+					扫码上传书籍
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="mybook.html" class="mui-navigate-right">
+					我的书房
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a class="mui-navigate-right">
+					通用
+				</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view" style="margin-top: 25px;">
+			<li class="mui-table-view-cell">
+				<a id="info" class="mui-navigate-right">
+					关于共享图书
+				</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view" style="margin-top: 25px;">
+			<li class="mui-table-view-cell">
+				<a href="login.html" style="text-align: center;color: #FF3B30;">
+					退出登录
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+</body>
+<script src="js/mui.min.js"></script>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script>
+
+    window.onload = function () {
+        var vue = new Vue({
+            el:'#usermessage',
+            data:{
+                messages:''
+            },
+            created:function(){
+                $.ajax({
+                    url: 'http://localhost:8080/loginInfo',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        vue.messages  = data;
+                        //console.log(vue.messages);
+                    }
+                })
+            },
+        })
+
+        var bookVue = new Vue({
+            el:'#tabbar',
+            data:{
+
+                messages:'',
+                show:true,
+            },
+            created:function () {
+                $.ajax({
+                    url: 'http://localhost:8080/findTop10',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        bookVue.messages  = data;
+                        //console.log(bookVue.messages);
+                    }
+                })
+            }
+        })
+
+        var booksVue = new Vue({
+            el:'#tabbar-with-contact',
+
+            data:{
+                messages:'',
+                show:true,
+                pageshow:true
+            },
+            created:function () {
+                $.ajax({
+                    url: 'http://localhost:8080/findBooks',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        booksVue.messages  = data;
+                        //console.log(booksVue.messages);
+                    }
+                })
+            },
+            methods:{
+                pre:function () {
+                    $.ajax({
+                        url: 'http://localhost:8080/findBooks?currentPage='+ --booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            booksVue.messages  = data;
+                            console.log(booksVue.messages);
+                            //console.log(booksVue.messages);
+                        }
+                    })
+                },
+                next:function () {
+                    $.ajax({
+                        url: 'http://localhost:8080/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            booksVue.messages  = data;
+                            console.log(booksVue.messages);
+                            //console.log(booksVue.messages);
+                        }
+                    })
+                }
+            }
+        })
+        //评论
+        $('div#tabbar-with-contact').on('click','div.comment',function () {
+            //console.log('sdsfsdf')
+            var ID = $(this).attr('bookid');
+            //console.log(ID);
+            window.location.href = 'comment.html?id='+ ID;
+
+        })
+        // $('div#comment').on('click','div',function () {
+        // // var bookID = $(this).attr('bookid');
+        // // window.location.href = 'mybookmessage.html?id='+ bookID;
+        // console.log('dfdsfsdf');
+        // })
+        // $('.comment').click(function () {
+        // 	console.log('dsfsdfsd');
+        //     })
+
+        var vue2 = new Vue({
+            el:'#chat',
+            data:{
+                messages:''
+            },
+            created:function(){
+                $.ajax({
+                    url: 'http://localhost:8080/loginInfo',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        vue2.messages  = data;
+                        //console.log(vue2.messages);
+                    }
+                })
+            },
+        })
+
+        //搜索书籍
+        $('#searchbook').click(function () {
+            bookVue.show = false;
+            var bookvalue = $('#bookname').val().trim();
+            $.ajax({
+                url: 'http://localhost:8080/searchBooks?content='+bookvalue,
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                accept: 'application/json',
+                success: function(data){
+                    var inhtml = "<div>"
+                    inhtml = "<a href='index.html' class='go-back' style='font-size: 14px;'>"+'返回'+"</a>"
+                    var inhtml = inhtml+"<ul class='go-book'>"
+                    for (var i = 0; i < data.length; i++) {
+                        inhtml = inhtml + "<img src=\'" + data[i].image + "\'>" +
+                            "<li>" + data[i].title + "</li>" +
+                            "<li>"+data[i].author+"</li>" +
+                            "<li style='height: 100px; overflow: hidden;'>"+ data[i].summary+"</li>";
+                    }
+                    inhtml = inhtml + "</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
+                        "<a class='mui-card-link'>"+'详细信息'+"</a>"+
+                        "</div>" +"</div>";
+                    document.getElementById('tabbar').innerHTML = inhtml;
+                    //console.log(data);
+                }
+            })
+        })
+
+        //点击分页按钮
+        // $('#next').click(function () {
+        // 	booksVue.show = false;
+        // 	// booksVue.pageshow = false;
+        //
+        //    $.ajax({
+        //        url: 'http://localhost:8080/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+        //        type: 'GET',
+        //        dataType: 'json',
+        //        contentType: 'application/json',
+        //        accept: 'application/json',
+        //        success: function(data){
+        //            console.log(data);
+        //            var pageNum = data.pageNum;
+        //            var pageSize = data.pageSize;
+        //            var inhtml=new Array();
+        //            for (var i = 0; i < data.list.length; i++) {
+        //                 inhtml[i] = "<div>"+"<ul class='go-book'>" + "<img src=\'" + data.list[i].image + "\'>" +
+        //                    "<li>" + data.list[i].title + "</li>" +
+        //                    "<li>"+data.list[i].author+"</li>" +
+        //                    "<li style='height: 100px; overflow: hidden;'>"+ data.list[i].summary+"</li>"+"</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
+        //                    "<a class='mui-card-link'>"+'详细信息'+"</a>"+
+        //                    "</div>"+"</div>";
+        //
+        //            }
+        //             inhtml = inhtml +"<div style='width: 385px;margin: 0 auto;text-align: center;'>"+"<button style='float: left;'>"+'上一页'+"</button>"+"<span style='line-height: 34px;'>"+"共"+ data.pages+"页，当前第"+ data.pageNum+"页"+"</span>"+"<button style='float: right;' onclick='next()'>"+'下一页'+"</button>"+"</div>"
+        //            //console.log(inhtml);
+        //           document.getElementById('tabbar-with-contact').innerHTML = inhtml;
+        //            //console.log(data);
+        //        }
+        //    })
+        // })
+
+    }
+    // function next() {
+    // console.log('sds');
+    // }
+
+    // console.log('第三次flag');
+    // console.log(flag);
+
+    // $('#mybtn1').click(function () {
+    //     var vue = new Vue({
+    //         el:'#usermessage',
+    //         data:{
+    //             messages:''
+    //         },
+    //         created:function(){
+    //             $.ajax({
+    //                 url: 'http://localhost:8080/loginInfo',
+    //                 type: 'GET',
+    //                 dataType: 'json',
+    //                 contentType: 'application/json',
+    //                 accept: 'application/json',
+    //                 success: function(data){
+    //                     vue.messages  = data;
+    //                     console.log(vue.messages);
+    //                 }
+    //             })
+    //         },
+    //     })
+    //
+    // })
+
+    mui.init({
+        swipeBack:true //启用右滑关闭功能
+    });
+    var title = document.getElementById("title");
+    var search = document.getElementById('search');
+    mui('.mui-bar-tab').on('tap', 'a', function(e) {
+        //更换标题
+        title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+        //console.log(title.innerHTML);
+        if(title.innerHTML !== '首页'){
+            search.style.display = 'none';
+        }else{
+            search.style.display = 'block';
+        }
+        //显示目标选项卡
+    });
+
+    //处理右上角关于图标的点击事件；
+    var subWebview = null,
+        template = null;
+    document.getElementById('info').addEventListener('tap', function() {
+        if (!mui.os.plus) {
+            mui.openWindow({
+                url: "info.html",
+                id: "info",
+                show: {
+                    aniShow: 'zoom-fade-out',
+                    duration: 300
+                }
+            });
+            return;
+        }
+        if (subWebview == null) {
+            //获取共用父窗体
+            template = plus.webview.getWebviewById("default-main");
+        }
+        if (template) {
+            subWebview = template.children()[0];
+            subWebview.loadURL('info.html');
+            //修改共用父模板的标题
+            mui.fire(template, 'updateHeader', {
+                title: '关于我们',
+                showMenu: false
+            });
+            template.show('slide-in-right', 150);
+        }
+    });
+</script>
 </html>

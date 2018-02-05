@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello MUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="css/mui.min.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <style>
+        h5 {
+            margin: 5px 7px;
+        }
+        .newcomment{
+            border-radius: 3px;
+            width: 392px;
+            background: #ffffff;
+            list-style: none;
+        }
+        .commentlist{
+            position: relative;
+            left: -25px;
+        }
+        p{
+            color:#0e0e0e ;
+        }
+        .page{
+            text-align: center;
+            width: 395px;
+            margin: 0 auto;
+        }
+        #bookslist ul li{
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a href="index.html" style="line-height: 44px;">返回</a>
+    <h1 class="mui-title">评论</h1>
+</header>
+<div class="mui-content">
+    <div id="bookslist" class="mui-card">
+        <img :src="messages.image" alt="" width="50%" style="display: block;float: left;width: 150px;"/>
+        <ul style="width: 280px;margin-left: 105px;color: #000000;">
+            <li>{{messages.title}}</li>
+            <li>{{messages.author}}</li>
+            <li style="height: 80px;overflow: hidden;">{{messages.summary}}</li>
+            <li>{{messages.publisher}}</li>
+            <li>{{messages.price}}</li>
+        </ul>
+    </div>
+    <div class="mui-content-padded" style="margin: 5px;">
+        <div class="mui-input-row" style="margin: 10px 5px;">
+            <textarea id="textarea" rows="5" placeholder="多行文本框"></textarea>
+            <button type="button" id="combtn" class="mui-btn mui-btn-primary" style="margin-top: -10px;">确认</button>
+        </div>
+    </div>
+</div>
+<div>
+    <div id="comments">
+        <ul class="commentlist" v-if="messages.length>0">
+            <li class="newcomment" v-for="person in messages">
+                <p>{{person.commentPersonName}}<span style="float: right;">{{person.commentTime}}</span></p>
+                <p class="p_text">{{person.content}}</p>
+            </li>
+        </ul>
+        <p v-else style="text-align: center;color:darkred">暂无评论</p>
+    </div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script>
+    window.onload = function () {
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            //console.log(query);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+            }
+            return(false);
+        }
+        var vue = new Vue({
+            el:'#bookslist',
+            data:{
+                messages:''
+            },
+            created:function () {
+                $.ajax({
+                    url: 'http://localhost:8080/findBook/' + getQueryVariable('id'),
+                    type: 'GET',
+                    dataType: 'json',
+                    cache:false,
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function (data) {
+                        vue.messages= data;
+                        //console.log(data);
+                    }
+                })
+            }
+        })
+        var comvue = new Vue({
+            el:'#comments',
+            data:{
+                messages:''
+            },
+            created:function () {
+                $.ajax({
+                    url: 'http://localhost:8080/findComments/' + getQueryVariable('id'),
+                    type: 'GET',
+                    dataType: 'json',
+                    cache:false,
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function (data) {
+                        comvue.messages= data;
+                        console.log(comvue.messages);
+                    }
+                })
+            }
+        })
+        $('#combtn').click(function () {
+            //console.log('dsfsd');
+            var parentID = 0;
+            var commentType = 1;
+            var bookId = getQueryVariable('id');
+            //console.log(bookId);
+            var content = $('#textarea').val().trim();
+            var flag = true;
+            if(content == ''){
+                mui.toast('评论内容不能为空');
+                flag = false;
+            }
+            if(flag){
+                $.ajax({
+                    url: 'http://localhost:8080/addComment',
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data:JSON.stringify({'bookId':bookId,'parentId':parentID,'commentType':commentType,'content':content}),
+                    accept: 'application/json',
+                    success: function (data) {
+                        mui.toast('评论成功');
+                        window.location.href = 'comment.html?id='+ bookId;
+                    }
+                })
+            }
+
+        })
+    }
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+</script>
+</body>
+
+</html>
