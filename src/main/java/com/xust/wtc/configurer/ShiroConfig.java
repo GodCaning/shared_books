@@ -39,17 +39,12 @@ public class ShiroConfig {
     public ShiroRealm shiroRealm() {
         ShiroRealm shiroRealm = new ShiroRealm();
 //        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        shiroRealm.setAuthenticationCachingEnabled(true);
-        shiroRealm.setAuthenticationCacheName("authenticationCache");
-        shiroRealm.setAuthorizationCachingEnabled(true);
-        shiroRealm.setAuthorizationCacheName("authorizationCache");
+//        shiroRealm.setAuthenticationCachingEnabled(true);
+//        shiroRealm.setAuthenticationCacheName("authenticationCache");
+//        shiroRealm.setAuthorizationCachingEnabled(true);
+//        shiroRealm.setAuthorizationCacheName("authorizationCache");
         return shiroRealm;
     }
-
-//    @Bean
-//    public CacheManager getCacheManager() {
-//        return new EhCacheManager();
-//    }
 
     @Bean
     public RedisCacheManager redisCacheManager() {
@@ -78,6 +73,10 @@ public class ShiroConfig {
         return quartzSessionValidationScheduler;
     }
 
+    /**
+     * DefaultWebSessionManager摒弃Servlet容器的Cookie会话，使用自己的会话机制
+     * @return
+     */
     @Bean
     public DefaultWebSessionManager getSessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
@@ -92,7 +91,6 @@ public class ShiroConfig {
         return sessionManager;
     }
 
-
     @Bean
     public DefaultWebSecurityManager getDefaultWebSecurityManager() {
         DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
@@ -101,14 +99,6 @@ public class ShiroConfig {
         dwsm.setSessionManager(getSessionManager());
         return dwsm;
     }
-
-//    public DefaultWebSecurityManager securityManager() {
-//        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-//        securityManager.setSessionManager(sessionManager());
-//        securityManager.setCacheManager(redisCacheManager());
-//        securityManager.setRealm(shiroRealm());
-//        return securityManager;
-//    }
 
     /**
      * 方法层面的权限过滤, 用于支持shiro注解
@@ -119,12 +109,6 @@ public class ShiroConfig {
         aasa.setSecurityManager(getDefaultWebSecurityManager());
         return new AuthorizationAttributeSourceAdvisor();
     }
-//    @Bean
-//    public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor() {
-//        AuthorizationAttributeSourceAdvisor aasa = new AuthorizationAttributeSourceAdvisor();
-//        aasa.setSecurityManager(securityManager());
-//        return aasa;
-//    }
 
     /**
      * 网络请求的权限过滤, 拦截外部请求
@@ -133,10 +117,9 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(getDefaultWebSecurityManager());
+        filterChainDefinitionMap.put("/a", "anon");
+        filterChainDefinitionMap.put("/ttt", "authc");
         filterChainDefinitionMap.put("/code", "anon");
-        filterChainDefinitionMap.put("/a", "authc");
-        filterChainDefinitionMap.put("/qaz", "anon");
-        filterChainDefinitionMap.put("/asdf", "anon");
         filterChainDefinitionMap.put("/wtc", "anon");
         filterChainDefinitionMap.put("/find", "anon");
         filterChainDefinitionMap.put("/myLogin", "anon");
@@ -145,7 +128,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**", "anon");
 //        filterChainDefinitionMap.put("/**/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        shiroFilterFactoryBean.setLoginUrl("wang.html");
+        shiroFilterFactoryBean.setLoginUrl("/shibai");
         return shiroFilterFactoryBean;
     }
 
@@ -157,8 +140,6 @@ public class ShiroConfig {
         return new LifecycleBeanPostProcessor();
     }
 
-//    @Autowired
-//    private RedisSessionDao redisSessionDao;
 
 //    @Bean
 //    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {

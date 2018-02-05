@@ -48,10 +48,10 @@ public interface BookService {
     /**
      * 增加一本书籍
      * @param isbn
-     * @param sessionId
+     * @param userID
      * @return
      */
-    Result addBook(String isbn, String sessionId);
+    Result addBook(String isbn, int userID);
 
     /**
      * 根据输入文字返回匹配的书籍名称
@@ -62,8 +62,8 @@ public interface BookService {
 
     /**
      * 返回用户上传的书籍
-     * @param sessionId
+     * @param userID
      * @return
      */
-    List<UserBook> userBooks(String sessionId);
+    List<UserBook> userBooks(int userID);
 }

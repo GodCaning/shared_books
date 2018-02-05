@@ -64,13 +64,12 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 返回用户上传的书籍
-     * @param sessionId
+     * @param userID
      * @return
      */
     @Override
-    public List<UserBook> userBooks(String sessionId) {
-        Integer userId = (Integer)redisTemplate.opsForValue().get(sessionId);
-        return bookMapper.userBooks(userId);
+    public List<UserBook> userBooks(int userID) {
+        return bookMapper.userBooks(userID);
     }
 
     /**
@@ -130,12 +129,12 @@ public class BookServiceImpl implements BookService {
     /**
      * 存入一本书
      * @param isbn
-     * @param sessionId
+     * @param userID
      * @return
      */
     @Override
     @Transactional
-    public Result addBook(String isbn, String sessionId) {
+    public Result addBook(String isbn, int userID) {
         Result result = new Result();
         //先搜索是否存在ES中
         Book book;
@@ -161,7 +160,6 @@ public class BookServiceImpl implements BookService {
         } else if (searchHits.getTotalHits() == 1){
             SearchHit hit = searchHits.getHits()[0];
             book = StringConverter.stringToBook(hit.getSourceAsString());
-            System.out.println("------------------>" + book);
         } else {
             //todo 抛出异常
             result.setStatus(0);
@@ -169,8 +167,7 @@ public class BookServiceImpl implements BookService {
             return result;
         }
 
-        Integer userId = (Integer) redisTemplate.opsForValue().get(sessionId);
-        stockMapper.addStock(userId, book.getId());
+        stockMapper.addStock(userID, book.getId());
 
         result.setStatus(1);
         result.setContent("增加成功");

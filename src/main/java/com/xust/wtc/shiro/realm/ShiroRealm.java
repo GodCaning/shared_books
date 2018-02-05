@@ -32,9 +32,9 @@ public class ShiroRealm extends AuthorizingRealm {
 
 		Person person = userService.findUserByLoginName(username);
 
-		System.out.println(person);
-
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, person.getLoginPasswd(), getName());
+		//PrimaryPrincipal设为当前用户id，方便直接以session的形式获取Subject，进而获取登录的ID
+		//后续通过获取ID直接运行用户的操作
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(person.getId(), person.getLoginPasswd(), getName());
 
 		return info;
 	}
@@ -47,7 +47,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		//1. 从 PrincipalCollection 中来获取登录用户的信息
 		Object principal = principals.getPrimaryPrincipal();
 		
-		//2. 利用登录的用户的信息来用户当前用户的角色或权限(可能需要查询数据库)
+		//2. 利用登录的用户的信息来用户当前用户的角色或权限(需要查询数据库)
 		Set<String> roles = new HashSet<String>();
 		if("user1".equals(principal)){
 			roles.add("user1");

@@ -34,6 +34,7 @@ public class ShiroCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K k) throws CacheException {
+        //每次获取shiro的值时，延迟该值的过期时间，主要是为了延迟session的过期时间
         redisTemplate.boundValueOps((String) getCacheKey(k)).expire(globExpire, TimeUnit.MINUTES);
         return (V) redisTemplate.boundValueOps((String) getCacheKey(k)).get();
     }

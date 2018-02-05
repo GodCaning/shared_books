@@ -11,10 +11,14 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 /**
- * shiro session
+ * shiro sessionDAO
+ *
+ * 此类于 2018/2/4摒弃,留作对会话存储的参考
+ * 直接在CachingSessionDAO里面去Redis里面查找
+ *
  * Created by Spirit on 2017/11/26.
  */
-@Component
+@Deprecated
 public class RedisSessionDao extends EnterpriseCacheSessionDAO {
 
     private static Logger logger = LoggerFactory.getLogger(RedisSessionDao.class);

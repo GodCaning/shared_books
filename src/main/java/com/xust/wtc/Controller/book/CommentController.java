@@ -4,9 +4,11 @@ import com.xust.wtc.Entity.Comment;
 import com.xust.wtc.Entity.DisplayComment;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.book.CommentService;
+import com.xust.wtc.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -45,7 +47,8 @@ public class CommentController {
      * @return
      */
     @PostMapping(value = "/addComment", consumes = "application/json", produces = "application/json")
-    public Result addComment(@RequestBody Comment comment) {
+    public Result addComment(HttpSession session, @RequestBody Comment comment) {
+        comment.setParentId(Utils.getUserId(session.getId()));
         return commentService.addComment(comment);
     }
 }

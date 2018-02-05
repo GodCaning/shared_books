@@ -6,6 +6,7 @@ import com.xust.wtc.Entity.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.UserService;
 import com.xust.wtc.jcaptcha.JCaptcha;
+import com.xust.wtc.utils.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -16,8 +17,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -30,9 +36,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     /**
      * 忘记密码第一步 验证用户名
@@ -165,18 +168,12 @@ public class UserController {
         } else {
             result = new Result();
         }
-        System.out.println(person);
         Subject subject = SecurityUtils.getSubject();
 
         UsernamePasswordToken token = new UsernamePasswordToken(person.getLoginName(), person.getLoginPasswd());
 
         try {
             subject.login(token);
-            System.out.println(subject.getPrincipal());
-            Person p = userService.findUserByLoginName(person.getLoginName());
-            //把当前用户缓存进redis
-            redisTemplate.opsForValue().set(subject.getSession().getId(), p.getId(), 30, TimeUnit.MINUTES);
-            //redisTemplate.boundHashOps("userId").put(subject.getSession().getId(), person.getId());
             result.setStatus(1);
             result.setContent("登录成功");
         } catch (Exception e) {
@@ -190,9 +187,9 @@ public class UserController {
      * 退出操作
      */
     @GetMapping(value = "/myLogout", consumes = "application/json", produces = "application/json")
-    public void logout() {
-        Subject subject = SecurityUtils.getSubject();
-        redisTemplate.delete(subject.getSession().getId());
+    public void logout(HttpSession session) {
+        Subject subject = Utils.getUserSubject(session.getId());
+        System.out.println(subject.getSession().getId());
         subject.logout();
     }
 
@@ -203,8 +200,36 @@ public class UserController {
      */
     @GetMapping(value = "/loginInfo", consumes = "application/json", produces = "application/json")
     public DisplayPerson loginInfo(HttpSession session) {
-        Person person = userService.findUser((Integer) redisTemplate.opsForValue().get(session.getId()));
+        Person person = userService.findUser(Utils.getUserId(session.getId()));
         return new DisplayPerson(person.getId(), person.getName(), person.getLoginName(), person.getGender(), person.getAutograph(), person.getPortrait());
+    }
+
+    @RequestMapping(value = "/code", method = RequestMethod.GET)
+    public void code(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setDateHeader("Expires", 0L);
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setContentType("image/jpeg");
+
+        HttpSession session = request.getSession();
+        if (session == null) {
+            System.out.println("为空");
+        } else {
+            System.out.println("------>" + session.getId());
+        }
+
+        String id = request.getRequestedSessionId();
+        BufferedImage bi = JCaptcha.captchaService.getImageChallengeForID(id);
+
+        ServletOutputStream out = response.getOutputStream();
+
+        ImageIO.write(bi, "jpg", out);
+        try {
+            out.flush();
+        } finally {
+            out.close();
+        }
     }
 
     /**

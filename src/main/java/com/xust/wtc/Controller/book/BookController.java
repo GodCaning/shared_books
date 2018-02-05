@@ -7,6 +7,7 @@ import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.UserBook;
 import com.xust.wtc.Service.book.BookService;
 import com.xust.wtc.utils.StringConverter;
+import com.xust.wtc.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,16 +35,15 @@ public class BookController {
 
     /**
      * 增加一本书籍
-     * @param httpSession
+     * @param session
      * @param isbn
      * @return
      */
     @PostMapping(value = "/addBook", consumes = "application/json", produces = "application/json")
-    public Result addBook(HttpSession httpSession, @RequestBody String isbn) {
+    public Result addBook(HttpSession session, @RequestBody String isbn) {
 //        JsonNode jsonNode = StringConverter.converterToJsonNode(isbn);
 //        StringConverter.converterToString(jsonNode, "isbn")
-        String sessionId = httpSession.getId();
-        return bookService.addBook(isbn, sessionId);
+        return bookService.addBook(isbn, Utils.getUserId(session.getId()));
     }
 
     /**
@@ -53,7 +53,7 @@ public class BookController {
      */
     @GetMapping(value = "/findBooks", consumes = "application/json", produces = "application/json")
     public AllBook findBooksWithCreateTime(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-                                           @RequestParam(value = "pageSize", defaultValue = "6")int pageSize) {
+                                           @RequestParam(value = "pageSize", defaultValue = "3")int pageSize) {
         return bookService.findBooksWithCreateTime(currentPage, pageSize);
     }
 
@@ -102,6 +102,6 @@ public class BookController {
      */
     @GetMapping(value = "/userBooks", consumes = "application/json", produces = "application/json")
     public List<UserBook> userBooks(HttpSession session) {
-        return bookService.userBooks(session.getId());
+        return bookService.userBooks(Utils.getUserId(session.getId()));
     }
 }
