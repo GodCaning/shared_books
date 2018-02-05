@@ -48,7 +48,7 @@ public class CommentController {
      */
     @PostMapping(value = "/addComment", consumes = "application/json", produces = "application/json")
     public Result addComment(HttpSession session, @RequestBody Comment comment) {
-        comment.setParentId(Utils.getUserId(session.getId()));
+        comment.setCommentPersonId(Utils.getUserId(session.getId()));
         return commentService.addComment(comment);
     }
 }
