@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface OrderService {
 
-    Result orderForBook(String sessionId, int stockId);
+    Result orderForBook(int userID, int stockId);
 
-    List<Lend> getBorrowerOrders(String sessionId);
+    List<Lend> getBorrowerOrders(int borrowerID);
 
-    List<Lend> getLenderOrders(String sessionId);
+    List<Lend> getLenderOrders(int lenderId);
 
     Lend getOrder(int id);
 

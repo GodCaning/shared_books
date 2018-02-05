@@ -30,19 +30,18 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 下订单
-     * @param sessionId
+     * @param userID
      * @param stockId
      * @return
      */
     @Override
     @Transactional
-    public Result orderForBook(String sessionId, int stockId) {
+    public Result orderForBook(int userID, int stockId) {
         Result result = new Result();
         int num = orderMapper.orderForBook(stockId);
         if (num > 0) {
             //修改库存信息成功,继续生成订单记录
-            Integer userId = (Integer) redisTemplate.boundValueOps(sessionId).get();
-            if (orderMapper.insertLendRecord(userId, stockId) > 0) {
+            if (orderMapper.insertLendRecord(userID, stockId) > 0) {
                 result.setStatus(1);
                 result.setContent("操作成功");
             }
@@ -56,23 +55,21 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 获取借书订单
-     * @param sessionId
+     * @param borrowerID
      * @return
      */
     @Override
-    public List<Lend> getBorrowerOrders(String sessionId) {
-        Integer borrowerId = (Integer) redisTemplate.boundValueOps(sessionId).get();
-        return orderMapper.getBorrowerOrders(borrowerId);
+    public List<Lend> getBorrowerOrders(int borrowerID) {
+        return orderMapper.getBorrowerOrders(borrowerID);
     }
 
     /**
      * 获取出借订单
-     * @param sessionId
+     * @param lenderId
      * @return
      */
     @Override
-    public List<Lend> getLenderOrders(String sessionId) {
-        Integer lenderId = (Integer) redisTemplate.boundValueOps(sessionId).get();
+    public List<Lend> getLenderOrders(int lenderId) {
         return orderMapper.getLenderOrders(lenderId);
     }
 

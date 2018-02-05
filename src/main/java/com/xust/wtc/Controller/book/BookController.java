@@ -1,6 +1,7 @@
 package com.xust.wtc.Controller.book;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.xust.wtc.Entity.Stock;
 import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
@@ -22,6 +23,11 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @GetMapping(value = "/findBookStock/{id}", consumes = "application/json", produces = "application/json")
+    public List<Stock> findBookStock(@PathVariable("id") int bookID) {
+        return bookService.findBookStock(bookID);
+    }
 
     /**
      * 根据isbn返回书籍信息

@@ -1,5 +1,6 @@
 package com.xust.wtc.Service.book;
 
+import com.xust.wtc.Entity.Stock;
 import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
@@ -11,6 +12,13 @@ import java.util.List;
  * Created by Spirit on 2017/12/5.
  */
 public interface BookService {
+
+    /**
+     * 根据书籍ID返回库存情况
+     * @param bookID
+     * @return
+     */
+    List<Stock> findBookStock(int bookID);
 
     /**
      * 根据点击率返回书籍信息

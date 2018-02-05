@@ -7,13 +7,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xust.wtc.Dao.book.BookMapper;
 import com.xust.wtc.Dao.book.StockMapper;
+import com.xust.wtc.Entity.Stock;
 import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.UserBook;
 import com.xust.wtc.Service.book.BookService;
 import com.xust.wtc.utils.StringConverter;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -23,12 +23,10 @@ import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -49,9 +47,6 @@ public class BookServiceImpl implements BookService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private RedisTemplate redisTemplate;
-
-    @Autowired
     private BookMapper bookMapper;
 
     @Autowired
@@ -61,6 +56,16 @@ public class BookServiceImpl implements BookService {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     private String url = "https://api.douban.com/v2/book/isbn/{isbn}";
+
+    /**
+     * 根据书籍ID返回库存情况
+     * @param bookID
+     * @return
+     */
+    @Override
+    public List<Stock> findBookStock(int bookID) {
+        return stockMapper.findBookStock(bookID);
+    }
 
     /**
      * 返回用户上传的书籍

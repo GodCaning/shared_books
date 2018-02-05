@@ -3,6 +3,7 @@ package com.xust.wtc.Controller.book;
 import com.xust.wtc.Entity.Lend;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.book.OrderService;
+import com.xust.wtc.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,36 +22,36 @@ public class OrderBookController {
 
     /**
      * 借书人下订单
-     * @param httpSession
+     * @param session
      * @param stockId
      * @return
      */
     @PostMapping(value = "/orderForBook", consumes = "application/json", produces = "application/json")
-    public Result orderForBook(HttpSession httpSession, @RequestBody int stockId) {
-        String sessionId = httpSession.getId();
-        return orderService.orderForBook(sessionId, stockId);
+    public Result orderForBook(HttpSession session, @RequestBody int stockId) {
+        int userID = Utils.getUserId(session.getId());
+        return orderService.orderForBook(userID, stockId);
     }
 
     /**
      * 获取借书订单信息
-     * @param httpSession
+     * @param session
      * @return
      */
     @GetMapping(value = "/borrowerOrders", consumes = "application/json", produces = "application/json")
-    public List<Lend> getBorrowerOrders(HttpSession httpSession) {
-        String sessionId = httpSession.getId();
-        return orderService.getBorrowerOrders(sessionId);
+    public List<Lend> getBorrowerOrders(HttpSession session) {
+        int borrowerID = Utils.getUserId(session.getId());
+        return orderService.getBorrowerOrders(borrowerID);
     }
 
     /**
      * 获取出借订单信息
-     * @param httpSession
+     * @param session
      * @return
      */
     @GetMapping(value = "/lenderOrders", consumes = "application/json", produces = "application/json")
-    public List<Lend> getLenderOrders(HttpSession httpSession) {
-        String sessionId = httpSession.getId();
-        return orderService.getLenderOrders(sessionId);
+    public List<Lend> getLenderOrders(HttpSession session) {
+        int lenderId = Utils.getUserId(session.getId());
+        return orderService.getLenderOrders(lenderId);
     }
 
     /**

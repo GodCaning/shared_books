@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.book.StockMapper">
 
+    <resultMap id="bookStock" type="com.xust.wtc.Entity.Stock">
+        <result property="stockID" column="stock_id"/>
+        <result property="personID" column="person_id"/>
+        <result property="personName" column="person_name"/>
+        <result property="stockStatus" column="status" typeHandler="com.xust.wtc.typeHandle.BookBorrowSituationTypeHandler"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
     <!-- 增加一个库存 -->
     <insert id="addStock">
         INSERT INTO stock(person_id, book_id)
         VALUES(#{personId,javaType=INTEGER},#{bookId,javaType=INTEGER})
     </insert>
+
+    <select id="findBookStock" parameterType="int" resultMap="bookStock">
+        SELECT stock_id,stock.person_id,person_name,stock.status
+        FROM stock JOIN person ON stock.person_id = person.person_id
+        WHERE book_id = #{id}
+    </select>
 
 </mapper>
