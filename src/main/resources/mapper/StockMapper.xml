@@ -5,6 +5,7 @@
         <result property="stockID" column="stock_id"/>
         <result property="personID" column="person_id"/>
         <result property="personName" column="person_name"/>
+        <result property="portrait" column="portrait"/>
         <result property="stockStatus" column="status" typeHandler="com.xust.wtc.typeHandle.BookBorrowSituationTypeHandler"/>
         <result property="status" column="status"/>
     </resultMap>
@@ -16,7 +17,7 @@
     </insert>
 
     <select id="findBookStock" parameterType="int" resultMap="bookStock">
-        SELECT stock_id,stock.person_id,person_name,stock.status
+        SELECT stock_id,stock.person_id,portrait,person_name,stock.status
         FROM stock JOIN person ON stock.person_id = person.person_id
         WHERE book_id = #{id}
     </select>

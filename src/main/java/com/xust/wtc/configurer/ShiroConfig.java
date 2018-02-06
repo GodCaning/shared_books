@@ -128,7 +128,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**", "anon");
 //        filterChainDefinitionMap.put("/**/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        shiroFilterFactoryBean.setLoginUrl("/shibai");
+        shiroFilterFactoryBean.setLoginUrl("wang.html");
         return shiroFilterFactoryBean;
     }
 

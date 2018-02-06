@@ -8,6 +8,7 @@ public class Stock {
     private int stockID;
     private int personID;
     private String personName;
+    private String portrait;
     private String stockStatus;
     private int status;
 
@@ -49,5 +50,13 @@ public class Stock {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 }

@@ -31,9 +31,10 @@ public class Validate {
     }
 
     @GetMapping("/ttt")
-    public void s() {
-//        System.out.println("----------------->" + session.getId());
-//        new Subject.Builder().sessionId(session.getId()).buildSubject().getPrincipals();
+    public void s(HttpSession session) {
+        System.out.println("----------------->" + session.getId());
+        Object o = new Subject.Builder().sessionId(session.getId()).buildSubject().getPrincipals();
+        System.out.println(o);
     }
 
     @GetMapping("/shibai")
