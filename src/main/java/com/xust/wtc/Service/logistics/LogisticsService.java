@@ -4,6 +4,7 @@ import com.xust.wtc.Entity.Company;
 import com.xust.wtc.Entity.DisplayLogistics;
 import com.xust.wtc.Entity.Logistics;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Entity.book.LenderInfo;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface LogisticsService {
 
-    int addLogistics(int lendId);
+    int addLogistics(LenderInfo lend);
 
     Result updateLogistics(Logistics logistics);
 

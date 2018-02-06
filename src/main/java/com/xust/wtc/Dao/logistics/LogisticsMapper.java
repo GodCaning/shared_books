@@ -3,6 +3,7 @@ package com.xust.wtc.Dao.logistics;
 import com.xust.wtc.Entity.Company;
 import com.xust.wtc.Entity.DisplayLogistics;
 import com.xust.wtc.Entity.Logistics;
+import com.xust.wtc.Entity.book.LenderInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,10 +17,10 @@ public interface LogisticsMapper {
 
     /**
      * 根据最终订单生成一个物流信息
-     * @param lendId
+     * @param lend
      * @return
      */
-    int addLogistics(@Param("lendId") int lendId);
+    int addLogistics(LenderInfo lend);
 
     /**
      * 添加物流编号和公司

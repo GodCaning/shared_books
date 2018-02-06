@@ -107,14 +107,14 @@ public class OrderServiceImpl implements OrderService {
     public Result lenderModifyOrder(LenderInfo lend) {
         Result result = new Result();
         int order = orderMapper.lenderModifyOrder(lend);
-        if (orderMapper.lenderModifyOrder(lend) > 0) {
+        int logistics = logisticsService.addLogistics(lend);
+        if ((order+logistics) > 1) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
-            result.setContent("修改成功");
+            result.setContent("发货成功");
             //生成物流信息
-//            logisticsService.addLogistics(lend.getId());
         } else {
             result.setStatus(CONSTANT_STATUS.ERROR);
-            result.setContent("修改失败");
+            result.setContent("发货失败");
         }
         return result;
     }

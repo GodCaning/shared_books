@@ -55,10 +55,10 @@
     </select>
 
     <!-- 修改订单中出借人信息-->
-    <update id="lenderModifyOrder" parameterType="com.xust.wtc.Entity.book.Lend">
+    <update id="lenderModifyOrder" parameterType="com.xust.wtc.Entity.book.LenderInfo">
         UPDATE lend
         SET lender_address = #{lenderAddress}, lender_phone = #{lenderPhone}, lender_name = #{lenderName}, status = 3
-        WHERE lend_id = #{id} AND status = 2
+        WHERE lend_id = #{lendId} AND status = 2
     </update>
 
     <!-- 出借人拒绝订单 -->

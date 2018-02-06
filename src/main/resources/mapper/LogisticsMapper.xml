@@ -15,8 +15,8 @@
 
     <!-- 增加一个物流信息 -->
     <insert id="addLogistics" parameterType="com.xust.wtc.Entity.book.LenderInfo">
-        INSERT INTO logistics(lend_id)
-        VALUES(#{lendId,javaType=INTEGER})
+        INSERT INTO logistics(lend_id,logistics_number,logistics_company_id)
+        VALUES(#{lendId},#{number},#{companyId})
     </insert>
 
     <!-- 添加物流编号和公司 -->

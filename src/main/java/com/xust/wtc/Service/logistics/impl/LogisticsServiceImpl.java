@@ -5,6 +5,7 @@ import com.xust.wtc.Entity.Company;
 import com.xust.wtc.Entity.DisplayLogistics;
 import com.xust.wtc.Entity.Logistics;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Entity.book.LenderInfo;
 import com.xust.wtc.Service.logistics.LogisticsService;
 import com.xust.wtc.utils.CONSTANT_STATUS;
 import com.xust.wtc.utils.KDQuery;
@@ -26,12 +27,12 @@ public class LogisticsServiceImpl implements LogisticsService {
 
     /**
      * 增加一个物流信息
-     * @param lendId
+     * @param lend
      * @return
      */
     @Override
-    public int addLogistics(int lendId) {
-        return logisticsMapper.addLogistics(lendId);
+    public int addLogistics(LenderInfo lend) {
+        return logisticsMapper.addLogistics(lend);
     }
 
     /**
