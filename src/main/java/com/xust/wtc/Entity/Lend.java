@@ -13,8 +13,10 @@ public class Lend {
     private String image;
     private String borrowerAddress;
     private String borrowerPhone;
+    private String borrowerName;
     private String lenderAddress;
     private String lenderPhone;
+    private String lenderName;
     private int status;
     private Timestamp beginDate;
     private Timestamp endDate;
@@ -113,5 +115,21 @@ public class Lend {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getBorrowerName() {
+        return borrowerName;
+    }
+
+    public void setBorrowerName(String borrowerName) {
+        this.borrowerName = borrowerName;
+    }
+
+    public String getLenderName() {
+        return lenderName;
+    }
+
+    public void setLenderName(String lenderName) {
+        this.lenderName = lenderName;
     }
 }

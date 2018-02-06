@@ -40,6 +40,7 @@ public class OrderBookController {
     @GetMapping(value = "/borrowerOrders", consumes = "application/json", produces = "application/json")
     public List<Lend> getBorrowerOrders(HttpSession session) {
         int borrowerID = Utils.getUserId(session.getId());
+//        int borrowerID = 2;
         return orderService.getBorrowerOrders(borrowerID);
     }
 
