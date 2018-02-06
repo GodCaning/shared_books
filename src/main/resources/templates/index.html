@@ -179,7 +179,7 @@
 				<li>{{books.price}}</li>
 			</ul>
 			<div class="mui-card-footer inv">
-				<div id="invent">
+				<div id="invent" class="invent" :bookid="books.id">
 					<span class="mui-icon-extra mui-icon-extra-order" style="color: #007aff;"></span>
 					<a href="javascript:;" class="mui-card-link">查看库存</a>
 				</div>
@@ -360,6 +360,13 @@
             window.location.href = 'comment.html?id='+ ID;
 
         })
+		//库存
+        $('div#tabbar-with-contact').on('click','div.invent',function () {
+            //console.log('sdsfsdf')
+            var ID = $(this).attr('bookid');
+            console.log(ID);
+            window.location.href = 'invent.html?id='+ ID;
+        })
         // $('div#comment').on('click','div',function () {
         // // var bookID = $(this).attr('bookid');
         // // window.location.href = 'mybookmessage.html?id='+ bookID;
@@ -400,20 +407,34 @@
                 contentType: 'application/json',
                 accept: 'application/json',
                 success: function(data){
-                    var inhtml = "<div>"
-                    inhtml = "<a href='index.html' class='go-back' style='font-size: 14px;'>"+'返回'+"</a>"
-                    var inhtml = inhtml+"<ul class='go-book'>"
-                    for (var i = 0; i < data.length; i++) {
-                        inhtml = inhtml + "<img src=\'" + data[i].image + "\'>" +
-                            "<li>" + data[i].title + "</li>" +
-                            "<li>"+data[i].author+"</li>" +
-                            "<li style='height: 100px; overflow: hidden;'>"+ data[i].summary+"</li>";
-                    }
-                    inhtml = inhtml + "</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
-                        "<a class='mui-card-link'>"+'详细信息'+"</a>"+
-                        "</div>" +"</div>";
-                    document.getElementById('tabbar').innerHTML = inhtml;
-                    //console.log(data);
+                    // console.log(data);
+                    // var inhtml = "<div>"
+                    // inhtml = "<a href='index.html' class='go-back' style='font-size: 14px;'>"+'返回'+"</a>"
+                    // var inhtml = inhtml+"<ul class='go-book'>"
+                    // for (var i = 0; i < data.length; i++) {
+                    //     inhtml = inhtml + "<img src=\'" + data[i].image + "\'>" +
+                    //         "<li>" + data[i].title + "</li>" +
+                    //         "<li>"+data[i].author+"</li>" +
+                    //         "<li style='height: 100px; overflow: hidden;'>"+ data[i].summary+"</li>";
+                    // }
+                    // inhtml = inhtml + "</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
+                    //     "<a class='mui-card-link'>"+'详细信息'+"</a>"+
+                    //     "</div>" +"</div>";
+                    // document.getElementById('tabbar').innerHTML = inhtml;
+                    // //console.log(data);
+                   var bIndex = "<a href='index.html' class='go-back' style='font-size: 14px;position: absolute;top: -10px;'>"+'返回'+"</a>"
+                   var inhtml=new Array();
+                   for (var i = 0; i < data.length; i++) {
+                        inhtml[i] = "<div>"+"<ul class='go-book'>" + "<img src=\'" + data[i].image + "\'>" +
+                           "<li>" + data[i].title + "</li>" +
+                           "<li>"+data[i].author+"</li>" +
+                           "<li style='height: 100px; overflow: hidden;'>"+ data[i].summary+"</li>"+"</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
+                           "<a class='mui-card-link'>"+'详细信息'+"</a>"+
+                           "</div>"+"</div>";
+
+                   }
+
+                    document.getElementById('tabbar').innerHTML = inhtml + bIndex;
                 }
             })
         })

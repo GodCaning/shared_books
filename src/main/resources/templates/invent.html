@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>共享图书</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<style>
+			h5 {
+				margin: 5px 7px;
+			}
+			.newinvent{
+				border-radius: 3px;
+			    width: 392px;
+			    height: 60px;
+			    background: #ffffff;
+			    list-style: none;
+			}
+			.newinvent img{
+				width: 15%;
+             	float: left;
+			}
+			.inventlist{
+			    position: relative;
+			    left: -25px;
+			}
+			#btn{
+				float: right;
+			    width: 100px;
+			    margin-top: -5px;
+			    border: 1px solid #007aff;
+			    color: #007aff;
+			}
+			#bookslist ul li{
+				list-style: none;
+			}
+			p{
+				color:#0e0e0e ;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a href="index.html" style="line-height: 44px;">返回</a>
+			<h1 class="mui-title">库存</h1>
+		</header>
+		<div class="mui-content">
+			<div id="bookslist" class="mui-card">
+				<img :src="messages.image" alt="" width="50%" style="display: block;float: left;width: 150px;"/>
+				<ul style="width: 280px;margin-left: 105px;color: #000000;">
+					<li>{{messages.title}}</li>
+					<li>{{messages.author}}</li>
+					<li style="height: 80px;overflow: hidden;">{{messages.summary}}</li>
+					<li>{{messages.publisher}}</li>
+					<li>{{messages.price}}</li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<div id="invent">
+				<ul class="inventlist">
+				    <li class="newinvent">
+				    	<img src="img/logo.jpg" />
+				        <p>promiselw</p>
+				        <button id="btn" class="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
+						                                                       未出借
+						</button>
+				    </li>
+                </ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script>
+
+			window.onload = function () {
+                function getQueryVariable(variable) {
+                    var query = window.location.search.substring(1);
+                    //console.log(query);
+                    var vars = query.split("&");
+                    for (var i=0;i<vars.length;i++) {
+                        var pair = vars[i].split("=");
+                        if(pair[0] == variable){return pair[1];}
+                    }
+                    return(false);
+                }
+
+                var vue = new Vue({
+                    el:'#bookslist',
+                    data:{
+                        messages:''
+                    },
+                    created:function () {
+                        $.ajax({
+                            url: 'http://localhost:8080/findBook/' + getQueryVariable('id'),
+                            type: 'GET',
+                            dataType: 'json',
+                            cache:false,
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            success: function (data) {
+                                vue.messages= data;
+                                //console.log(data);
+                            }
+                        })
+                    }
+                })
+
+                var invvue = new Vue({
+                    el:'#invent',
+                    data:{
+                        messages:''
+                    },
+                    created:function () {
+                        $.ajax({
+                            url: 'http://localhost:8080/findBookStock/' + getQueryVariable('id'),
+                            type: 'GET',
+                            dataType: 'json',
+                            cache:false,
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            success: function (data) {
+                                invvue.messages= data;
+                                console.log(invvue.messages);
+                            }
+                        })
+                    }
+                })
+
+			}
+
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+		</script>
+	</body>
+
+</html>
