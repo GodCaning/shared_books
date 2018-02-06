@@ -6,6 +6,7 @@ import com.xust.wtc.Entity.chat.PrivateMessage;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.chat.UnreadCount;
 import com.xust.wtc.Service.chat.PrivateMessageService;
+import com.xust.wtc.utils.CONSTANT_STATUS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -53,10 +54,10 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
         int x = privateMessageMapper.insertSend(sendId, receiveId, content);
         int y = privateMessageMapper.insertReceive(sendId, receiveId, content);
         if ((x + y) < 1) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("发送失败");
         } else {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("发送成功");
         }
         return result;
@@ -73,10 +74,10 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
         Result result = new Result();
         int sendId = (int) redisTemplate.opsForValue().get(sessionId);
         if (privateMessageMapper.deletePrivateMessage(sendId, receiveId) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("删除成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("删除失败");
         }
         return result;

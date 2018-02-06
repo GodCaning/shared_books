@@ -6,6 +6,7 @@ import com.xust.wtc.Entity.DisplayComment;
 import com.xust.wtc.Entity.Reply;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.book.CommentService;
+import com.xust.wtc.utils.CONSTANT_STATUS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,10 +82,10 @@ public class CommentServiceImpl implements CommentService {
     public Result deleteCommentById(int id) {
         Result result = new Result();
         if (commentMapper.deleteCommentById(id) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("删除成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("删除失败");
         }
         return result;
@@ -99,10 +100,10 @@ public class CommentServiceImpl implements CommentService {
     public Result addComment(Comment comment) {
         Result result = new Result();
         if (commentMapper.addComment(comment) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("增加成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("增加失败");
         }
         return result;

@@ -26,8 +26,8 @@ public class OrderBookController {
      * @param stockId
      * @return
      */
-    @PostMapping(value = "/orderForBook", consumes = "application/json", produces = "application/json")
-    public Result orderForBook(HttpSession session, @RequestBody int stockId) {
+    @PostMapping(value = "/orderForBook/{id}", consumes = "application/json", produces = "application/json")
+    public Result orderForBook(HttpSession session, @PathVariable("id") int stockId) {
         int userID = Utils.getUserId(session.getId());
         return orderService.orderForBook(userID, stockId);
     }

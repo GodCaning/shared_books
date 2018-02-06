@@ -1,5 +1,7 @@
 package com.xust.wtc.Entity;
 
+import com.xust.wtc.utils.CONSTANT_STATUS;
+
 /**
  * Created by Spirit on 2017/12/4.
  */
@@ -11,8 +13,8 @@ public class Result {
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatus(CONSTANT_STATUS status) {
+        this.status = status.getValue();
     }
 
     public Object getContent() {

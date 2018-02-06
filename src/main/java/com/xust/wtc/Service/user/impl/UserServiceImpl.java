@@ -5,6 +5,7 @@ import com.xust.wtc.Entity.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.AsyncSendEmail;
 import com.xust.wtc.Service.user.UserService;
+import com.xust.wtc.utils.CONSTANT_STATUS;
 import com.xust.wtc.utils.Secret;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +51,10 @@ public class UserServiceImpl implements UserService {
     public Result modifyPortrait(String portrait, int id) {
         Result result = new Result();
         if (userMapper.modifyPortrait(portrait, id) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("修改失败");
         }
         return result;
@@ -75,13 +76,13 @@ public class UserServiceImpl implements UserService {
             secretKey = para.split(":")[0];
             loginName = para.split(":")[1];
         } catch (Exception e) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("非法验证码");
             return result;
         }
         Long time = (Long) redisTemplate.opsForHash().get("emailExpirationTime", secretKey);
         if (time == null || ((Instant.now().getEpochSecond() - time) > 1800)) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("验证码失效或不存在");
             return result;
         }
@@ -90,10 +91,10 @@ public class UserServiceImpl implements UserService {
                 new SimpleHash("md5", passwd, null, 1023);
         System.out.println(simpleHash.toBase64());
         if (userMapper.modifyPassWd(loginName, simpleHash.toBase64()) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("修改失败");
         }
         return result;
@@ -108,13 +109,13 @@ public class UserServiceImpl implements UserService {
         Person person = userMapper.findUserByLoginName(loginName);
         Result result = new Result();
         if (person == null) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("用户名不存在");
         } else {
             Map<String, String> map = new HashMap<>();
             map.put("name", person.getLoginName());
             map.put("email", person.getEmail());
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent(map);
         }
         return result;
@@ -139,11 +140,11 @@ public class UserServiceImpl implements UserService {
 //            helper.setText(createEmailText(loginName), true);
 //        } catch (MessagingException e) {
 //            e.printStackTrace();
-//            result.setStatus(0);
+//            result.setStatus(CONSTANT_STATUS.ERROR);
 //            result.setContent("发送失败，请稍后重试");
 //        }
 //        mailSender.send(message);
-//        result.setStatus(1);
+//        result.setStatus(CONSTANT_STATUS.SUCCESS);
 //        result.setContent("发送成功，请及时登录邮箱修改密码");
 //        return result;
 //    }
@@ -163,7 +164,7 @@ public class UserServiceImpl implements UserService {
     public Result register(Person person) {
         Result result = new Result();
         if (userMapper.findUserByLoginName(person.getLoginName()) != null) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("登录名存在");
             return result;
         }
@@ -171,10 +172,10 @@ public class UserServiceImpl implements UserService {
                 new SimpleHash("md5", person.getLoginPasswd(), null, 1023);
         person.setLoginPasswd(simpleHash.toBase64());
         if (userMapper.register(person) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("注册成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("注册失败");
         }
         return result;
@@ -204,45 +205,39 @@ public class UserServiceImpl implements UserService {
     public Result updateUserInfo(Person person) {
         Result result = new Result();
         if (userMapper.updateUserInfo(person) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("修改失败");
         }
         return result;
     }
 
-    /**
-     * 生成邮件文本
-     * @param
-     * @return
-     */
-    private String createEmailText(String loginName){
-
-        //生成密钥
-        String secretKey = UUID.randomUUID().toString();
-        long now = Instant.now().getEpochSecond();
-
-        redisTemplate.opsForHash().put("emailExpirationTime", secretKey, now);
-
-        String para = secretKey + ":" +loginName;
-        System.out.println(para);
-        para = Secret.base64Encode(para);
-
-//        HttpServletRequest request= ServletActionContext.getRequest();
+//    /**
+//     * 生成邮件文本
+//     * @param
+//     * @return
+//     */
+//    private String createEmailText(String loginName){
 //
-//        String path=request.getContextPath();
+//        //生成密钥
+//        String secretKey = UUID.randomUUID().toString();
+//        long now = Instant.now().getEpochSecond();
 //
-//        String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+//        redisTemplate.opsForHash().put("emailExpirationTime", secretKey, now);
 //
-        String resetPassHref =  "http://localhost:8080/forget3.html?para=" + para;
-
-        String emailContent = "<html><body>请勿回复本邮件.点击下面的入口,重设密码" +
-                "<h3><a href='" + resetPassHref +
-                "' target='_blank'>点我点我</a></h3><br/><br/><br/>" +
-                "tips:本邮件超过30分钟,链接将会失效，需要重新申请'找回密码'</body></html>";
-
-        return emailContent;
-    }
+//        String para = secretKey + ":" +loginName;
+//        System.out.println(para);
+//        para = Secret.base64Encode(para);
+//
+//        String resetPassHref =  "http://localhost:8080/forget3.html?para=" + para;
+//
+//        String emailContent = "<html><body>请勿回复本邮件.点击下面的入口,重设密码" +
+//                "<h3><a href='" + resetPassHref +
+//                "' target='_blank'>点我点我</a></h3><br/><br/><br/>" +
+//                "tips:本邮件超过30分钟,链接将会失效，需要重新申请'找回密码'</body></html>";
+//
+//        return emailContent;
+//    }
 }

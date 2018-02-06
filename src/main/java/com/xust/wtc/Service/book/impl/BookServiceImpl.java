@@ -13,6 +13,7 @@ import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.UserBook;
 import com.xust.wtc.Service.book.BookService;
+import com.xust.wtc.utils.CONSTANT_STATUS;
 import com.xust.wtc.utils.StringConverter;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -88,10 +89,10 @@ public class BookServiceImpl implements BookService {
         try {
             Book book = getBook(restTemplate.getForObject(url, String.class, isbn));
             book.setIsbn(isbn);
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent(book);
         } catch (Exception e) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("暂未此条形码的书籍信息，请以后在试。");
         }
         return result;
@@ -158,7 +159,7 @@ public class BookServiceImpl implements BookService {
                 //存入ES
                 addBookToES(book);
             } catch (Exception e) {
-                result.setStatus(0);
+                result.setStatus(CONSTANT_STATUS.ERROR);
                 result.setContent("添加失败");
                 return result;
             }
@@ -167,14 +168,14 @@ public class BookServiceImpl implements BookService {
             book = StringConverter.stringToBook(hit.getSourceAsString());
         } else {
             //todo 抛出异常
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("添加失败");
             return result;
         }
 
         stockMapper.addStock(userID, book.getId());
 
-        result.setStatus(1);
+        result.setStatus(CONSTANT_STATUS.SUCCESS);
         result.setContent("增加成功");
         return result;
     }

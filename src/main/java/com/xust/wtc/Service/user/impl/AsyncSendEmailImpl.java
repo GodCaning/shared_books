@@ -2,6 +2,7 @@ package com.xust.wtc.Service.user.impl;
 
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.AsyncSendEmail;
+import com.xust.wtc.utils.CONSTANT_STATUS;
 import com.xust.wtc.utils.Secret;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,10 @@ public class AsyncSendEmailImpl implements AsyncSendEmail {
         String message = loginName + ":" + email;
         try {
             kafkaTemplate.send("email", message);
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("发送成功，请及时登录邮箱修改密码");
         } catch (Exception e) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("发送失败，请稍后重试");
         }
         return result;

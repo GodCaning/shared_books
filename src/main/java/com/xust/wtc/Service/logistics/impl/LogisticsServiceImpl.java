@@ -6,6 +6,7 @@ import com.xust.wtc.Entity.DisplayLogistics;
 import com.xust.wtc.Entity.Logistics;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.logistics.LogisticsService;
+import com.xust.wtc.utils.CONSTANT_STATUS;
 import com.xust.wtc.utils.KDQuery;
 import com.xust.wtc.utils.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,10 @@ public class LogisticsServiceImpl implements LogisticsService {
     public Result updateLogistics(Logistics logistics) {
         Result result = new Result();
         if (logisticsMapper.updateLogistics(logistics) > 0) {
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改物流信息成功");
         } else {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("修改物流信息失败");
         }
         return result;

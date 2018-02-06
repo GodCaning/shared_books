@@ -6,6 +6,7 @@ import com.xust.wtc.Entity.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.UserService;
 import com.xust.wtc.jcaptcha.JCaptcha;
+import com.xust.wtc.utils.CONSTANT_STATUS;
 import com.xust.wtc.utils.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -116,7 +117,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors());
             Result result = new Result();
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("注册参数不正确");
             return result;
         }
@@ -174,10 +175,10 @@ public class UserController {
 
         try {
             subject.login(token);
-            result.setStatus(1);
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("登录成功");
         } catch (Exception e) {
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("登录失败");
         }
         return result;
@@ -242,7 +243,7 @@ public class UserController {
         Result result = null;
         if (!JCaptcha.validateResponse(request, code)) {
             result = new Result();
-            result.setStatus(0);
+            result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("验证码不正确");
         }
         return result;
