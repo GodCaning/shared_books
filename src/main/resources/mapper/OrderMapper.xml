@@ -6,6 +6,8 @@
         <result property="id" column="lend_id" javaType="int"/>
         <result property="borrowerId" column="borrower_id" javaType="int"/>
         <result property="stockId" column="stock_id" javaType="int"/>
+        <result property="title" column="title" javaType="string"/>
+        <result property="image" column="image" javaType="string"/>
         <result property="borrowerAddress" column="borrower_address" javaType="string"/>
         <result property="borrowerPhone" column="borrower_phone" javaType="string"/>
         <result property="lenderAddress" column="lender_address" javaType="string"/>
@@ -16,8 +18,8 @@
     </resultMap>
 
     <sql id="filed">
-        lend_id, borrower_id, stock_id, borrower_address, borrower_phone,
-        lender_address, lender_phone, status, begin_date, end_date
+        lend_id, borrower_id, stock.stock_id, title, image, borrower_address, borrower_phone,
+        lender_address, lender_phone, stock.status, begin_date, end_date
     </sql>
 
     <!-- 根据订单ID获取一个订单信息 -->
@@ -31,8 +33,8 @@
     <select id="getBorrowerOrders" parameterType="int" resultMap="order">
         SELECT
         <include refid="filed"/>
-        FROM lend
-        WHERE borrower_id = #{borrowerId} AND status = 1
+        FROM lend JOIN stock ON lend.stock_id = stock.stock_id JOIN book ON book.book_id = stock.book_id
+        WHERE borrower_id = #{borrowerId} AND stock.status = 1
     </select>
 
     <!-- 修改订单中借书人信息 -->

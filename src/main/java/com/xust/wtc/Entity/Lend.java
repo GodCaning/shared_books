@@ -9,6 +9,8 @@ public class Lend {
     private int id;
     private int borrowerId;
     private int stockId;
+    private String title;
+    private String image;
     private String borrowerAddress;
     private String borrowerPhone;
     private String lenderAddress;
@@ -95,5 +97,21 @@ public class Lend {
 
     public void setBeginDate(Timestamp beginDate) {
         this.beginDate = beginDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
