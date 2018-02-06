@@ -10,16 +10,18 @@
         <result property="image" column="image" javaType="string"/>
         <result property="borrowerAddress" column="borrower_address" javaType="string"/>
         <result property="borrowerPhone" column="borrower_phone" javaType="string"/>
+        <result property="borrowerName" column="borrower_name" javaType="string"/>
         <result property="lenderAddress" column="lender_address" javaType="string"/>
         <result property="lenderPhone" column="lender_phone" javaType="string"/>
+        <result property="lenderName" column="lender_name" javaType="string"/>
         <result property="status" column="status" javaType="int"/>
         <result property="beginDate" column="begin_date" javaType="java.sql.Timestamp"/>
         <result property="endDate" column="end_date" javaType="java.sql.Timestamp"/>
     </resultMap>
 
     <sql id="filed">
-        lend_id, borrower_id, stock.stock_id, title, image, borrower_address, borrower_phone,
-        lender_address, lender_phone, stock.status, begin_date, end_date
+        lend_id, borrower_id, stock.stock_id, title, image, borrower_address, borrower_phone, borrower_name,
+        lender_address, lender_phone, lender_name, stock.status, begin_date, end_date
     </sql>
 
     <!-- 根据订单ID获取一个订单信息 -->
@@ -40,7 +42,7 @@
     <!-- 修改订单中借书人信息 -->
     <update id="borrowerModifyOrder" parameterType="com.xust.wtc.Entity.Lend">
         UPDATE lend
-        SET borrower_address = #{borrowerAddress}, borrower_phone = #{borrowerPhone}, status = 2
+        SET borrower_address = #{borrowerAddress}, borrower_phone = #{borrowerPhone}, borrower_name = #{borrowerName}, status = 2
         WHERE lend_id = #{id} AND status = 1
     </update>
 
@@ -48,14 +50,14 @@
     <select id="getLenderOrders" parameterType="int" resultMap="order">
         SELECT
         <include refid="filed"/>
-        FROM lend JOIN IN stock ON lend.stock_id = stock.stock_id
+        FROM lend JOIN stock ON lend.stock_id = stock.stock_id JOIN book ON book.book_id = stock.book_id
         WHERE stock.person_id = #{lenderId} AND status = 2
     </select>
 
     <!-- 修改订单中出借人信息-->
     <update id="lenderModifyOrder" parameterType="com.xust.wtc.Entity.Lend">
         UPDATE lend
-        SET lender_address = #{lenderAddress}, lender_phone = #{lenderPhone}, status = 3
+        SET lender_address = #{lenderAddress}, lender_phone = #{lenderPhone}, lender_name = #{lenderName}, status = 3
         WHERE lend_id = #{id} AND status = 2
     </update>
 
