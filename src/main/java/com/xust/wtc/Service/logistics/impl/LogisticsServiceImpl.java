@@ -1,9 +1,9 @@
 package com.xust.wtc.Service.logistics.impl;
 
 import com.xust.wtc.Dao.logistics.LogisticsMapper;
-import com.xust.wtc.Entity.Company;
-import com.xust.wtc.Entity.DisplayLogistics;
-import com.xust.wtc.Entity.Logistics;
+import com.xust.wtc.Entity.logistics.Company;
+import com.xust.wtc.Entity.logistics.DisplayLogistics;
+import com.xust.wtc.Entity.logistics.Logistics;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.LenderInfo;
 import com.xust.wtc.Service.logistics.LogisticsService;
@@ -12,7 +12,6 @@ import com.xust.wtc.utils.KDQuery;
 import com.xust.wtc.utils.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -72,6 +71,10 @@ public class LogisticsServiceImpl implements LogisticsService {
         return logisticsMapper.findLogisticsByLendId(lendId);
     }
 
+    /**
+     * 返回所有物流公司信息
+     * @return
+     */
     @Override
     public List<Company> findLogisticsCompany() {
         return logisticsMapper.findLogisticsCompany();

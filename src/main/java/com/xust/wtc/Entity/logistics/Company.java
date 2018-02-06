@@ -1,4 +1,4 @@
-package com.xust.wtc.Entity;
+package com.xust.wtc.Entity.logistics;
 
 /**
  * 公司信息

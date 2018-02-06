@@ -1,8 +1,8 @@
 package com.xust.wtc.Controller.user;
 
 import com.qiniu.util.Auth;
-import com.xust.wtc.Entity.DisplayPerson;
-import com.xust.wtc.Entity.Person;
+import com.xust.wtc.Entity.user.DisplayPerson;
+import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.UserService;
 import com.xust.wtc.jcaptcha.JCaptcha;
@@ -12,8 +12,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 
 /**

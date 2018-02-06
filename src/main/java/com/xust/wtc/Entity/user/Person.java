@@ -1,4 +1,4 @@
-package com.xust.wtc.Entity;
+package com.xust.wtc.Entity.user;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;

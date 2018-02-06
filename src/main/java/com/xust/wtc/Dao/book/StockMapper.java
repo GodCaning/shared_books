@@ -15,4 +15,5 @@ public interface StockMapper {
 
     List<Stock> findBookStock(@Param("id")int bookId);
 
+    int updateStockStatus(@Param("id")int stockId);
 }

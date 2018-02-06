@@ -1,6 +1,6 @@
 package com.xust.wtc.Controller.user;
 
-import com.xust.wtc.Entity.Person;
+import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;

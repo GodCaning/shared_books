@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.user.FriendMapper">
 
-    <resultMap id="friend" type="com.xust.wtc.Entity.Person">
+    <resultMap id="friend" type="com.xust.wtc.Entity.user.Person">
         <result property="id" column="person_id" javaType="int"/>
         <result property="name" column="person_name" javaType="string"/>
         <result property="autograph" column="autograph" javaType="string"/>

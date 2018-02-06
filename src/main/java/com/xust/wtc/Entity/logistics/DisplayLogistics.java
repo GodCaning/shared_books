@@ -1,4 +1,4 @@
-package com.xust.wtc.Entity;
+package com.xust.wtc.Entity.logistics;
 
 /**
  * 物流信息的显示
@@ -11,15 +11,7 @@ public class DisplayLogistics {
     private String companyName; //物流公司名称
     private String companyNumber; //物流公司编号
 
-    public DisplayLogistics() {
-    }
-
-    public DisplayLogistics(int id, String number, String companyName, String companyNumber) {
-        this.id = id;
-        this.number = number;
-        this.companyName = companyName;
-        this.companyNumber = companyNumber;
-    }
+    public DisplayLogistics() {}
 
     public int getId() {
         return id;
@@ -52,4 +44,5 @@ public class DisplayLogistics {
     public void setCompanyNumber(String companyNumber) {
         this.companyNumber = companyNumber;
     }
+
 }

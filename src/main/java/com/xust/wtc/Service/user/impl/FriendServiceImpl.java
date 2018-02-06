@@ -1,7 +1,7 @@
 package com.xust.wtc.Service.user.impl;
 
 import com.xust.wtc.Dao.user.FriendMapper;
-import com.xust.wtc.Entity.Person;
+import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.FriendService;
 import com.xust.wtc.utils.CONSTANT_STATUS;

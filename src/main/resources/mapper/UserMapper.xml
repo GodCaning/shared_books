@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.user.UserMapper">
 
-    <resultMap id="user" type="com.xust.wtc.Entity.Person">
+    <resultMap id="user" type="com.xust.wtc.Entity.user.Person">
         <result property="id" column="person_id" javaType="int"/>
         <result property="name" column="person_name" javaType="string"/>
         <result property="loginName" column="login_name" javaType="string"/>
@@ -18,7 +18,7 @@
         person_id, person_name, login_name, login_passwd, status, balance, gender, autograph, email, portrait
     </sql>
 
-    <insert id="register" parameterType="com.xust.wtc.Entity.Person">
+    <insert id="register" parameterType="com.xust.wtc.Entity.user.Person">
         INSERT INTO person(person_name, login_name, login_passwd, gender, autograph, email)
         VALUES (#{name}, #{loginName}, #{loginPasswd}, #{gender}, #{autograph}, #{email})
     </insert>
@@ -53,7 +53,7 @@
     </update>
 
     <!-- 根据用户提供的资料修改用户信息 -->
-    <update id="updateUserInfo" parameterType="com.xust.wtc.Entity.Person">
+    <update id="updateUserInfo" parameterType="com.xust.wtc.Entity.user.Person">
         UPDATE person
         <set>
             <if test="name != null AND name != ''">

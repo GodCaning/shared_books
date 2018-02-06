@@ -1,6 +1,6 @@
 package com.xust.wtc.Service.user;
 
-import com.xust.wtc.Entity.Person;
+import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
 
 import java.util.List;

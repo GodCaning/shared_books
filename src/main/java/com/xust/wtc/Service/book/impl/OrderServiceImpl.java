@@ -1,6 +1,7 @@
 package com.xust.wtc.Service.book.impl;
 
 import com.xust.wtc.Dao.book.OrderMapper;
+import com.xust.wtc.Dao.book.StockMapper;
 import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.LenderInfo;
@@ -25,6 +26,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private LogisticsService logisticsService;
 
+    @Autowired
+    private StockMapper stockMapper;
+
     /**
      * 下订单
      * @param userID
@@ -36,17 +40,14 @@ public class OrderServiceImpl implements OrderService {
     public Result orderForBook(int userID, int stockId) {
         Result result = new Result();
         int num = orderMapper.orderForBook(stockId);
-        if (num > 0) {
-            //修改库存信息成功,继续生成订单记录
-            if (orderMapper.insertLendRecord(userID, stockId) > 0) {
-                result.setStatus(CONSTANT_STATUS.SUCCESS);
-                result.setContent("操作成功");
-            }
+        int lend = orderMapper.insertLendRecord(userID, stockId);
+        if ((num + lend) > 1) {
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
+            result.setContent("操作成功");
         } else {
             result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("库存不足");
         }
-
         return result;
     }
 
@@ -86,9 +87,12 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
+    @Transactional
     public Result borrowerModifyOrder(Lend lend) {
         Result result = new Result();
-        if (orderMapper.borrowerModifyOrder(lend) > 0) {
+        int order = orderMapper.borrowerModifyOrder(lend);
+        int stock = stockMapper.updateStockStatus(lend.getStockId());
+        if ((order + stock) > 1) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改成功");
         } else {
@@ -111,7 +115,6 @@ public class OrderServiceImpl implements OrderService {
         if ((order+logistics) > 1) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("发货成功");
-            //生成物流信息
         } else {
             result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("发货失败");

@@ -1,4 +1,4 @@
-package com.xust.wtc.Entity;
+package com.xust.wtc.Entity.book;
 
 import java.sql.Timestamp;
 

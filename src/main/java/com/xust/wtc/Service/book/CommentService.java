@@ -1,7 +1,7 @@
 package com.xust.wtc.Service.book;
 
-import com.xust.wtc.Entity.Comment;
-import com.xust.wtc.Entity.DisplayComment;
+import com.xust.wtc.Entity.book.Comment;
+import com.xust.wtc.Entity.book.DisplayComment;
 import com.xust.wtc.Entity.Result;
 
 import java.util.List;

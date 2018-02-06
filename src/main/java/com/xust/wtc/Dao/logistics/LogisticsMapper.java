@@ -1,9 +1,10 @@
 package com.xust.wtc.Dao.logistics;
 
-import com.xust.wtc.Entity.Company;
-import com.xust.wtc.Entity.DisplayLogistics;
-import com.xust.wtc.Entity.Logistics;
+import com.xust.wtc.Entity.logistics.Company;
+import com.xust.wtc.Entity.logistics.DisplayLogistics;
+import com.xust.wtc.Entity.logistics.Logistics;
 import com.xust.wtc.Entity.book.LenderInfo;
+import com.xust.wtc.Entity.logistics.LogisticsAll;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,12 @@ import java.util.List;
  */
 @Repository
 public interface LogisticsMapper {
+
+    /**
+     * 更新书籍所有状态
+     * @param id
+     */
+    void updateStatus(int id);
 
     /**
      * 根据最终订单生成一个物流信息
@@ -28,6 +35,12 @@ public interface LogisticsMapper {
      * @return
      */
     int updateLogistics(Logistics logistics);
+
+    /**
+     * 返回所有物流信息
+     * @return
+     */
+    List<LogisticsAll> findAllLogistics();
 
     /**
      * 根据订单ID获取物流信息

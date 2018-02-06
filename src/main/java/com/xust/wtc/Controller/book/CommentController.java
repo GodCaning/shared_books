@@ -1,7 +1,7 @@
 package com.xust.wtc.Controller.book;
 
-import com.xust.wtc.Entity.Comment;
-import com.xust.wtc.Entity.DisplayComment;
+import com.xust.wtc.Entity.book.Comment;
+import com.xust.wtc.Entity.book.DisplayComment;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.book.CommentService;
 import com.xust.wtc.utils.Utils;

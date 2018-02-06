@@ -1,9 +1,9 @@
 package com.xust.wtc.Service.book.impl;
 
 import com.xust.wtc.Dao.book.CommentMapper;
-import com.xust.wtc.Entity.Comment;
-import com.xust.wtc.Entity.DisplayComment;
-import com.xust.wtc.Entity.Reply;
+import com.xust.wtc.Entity.book.Comment;
+import com.xust.wtc.Entity.book.DisplayComment;
+import com.xust.wtc.Entity.book.Reply;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.book.CommentService;
 import com.xust.wtc.utils.CONSTANT_STATUS;

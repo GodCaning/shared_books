@@ -1,8 +1,8 @@
 package com.xust.wtc.Controller.logistics;
 
-import com.xust.wtc.Entity.Company;
-import com.xust.wtc.Entity.DisplayLogistics;
-import com.xust.wtc.Entity.Logistics;
+import com.xust.wtc.Entity.logistics.Company;
+import com.xust.wtc.Entity.logistics.DisplayLogistics;
+import com.xust.wtc.Entity.logistics.Logistics;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.logistics.LogisticsService;
 import org.springframework.beans.factory.annotation.Autowired;

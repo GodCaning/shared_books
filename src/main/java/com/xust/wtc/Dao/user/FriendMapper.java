@@ -1,6 +1,6 @@
 package com.xust.wtc.Dao.user;
 
-import com.xust.wtc.Entity.Person;
+import com.xust.wtc.Entity.user.Person;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

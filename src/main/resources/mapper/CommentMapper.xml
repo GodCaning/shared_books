@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.book.CommentMapper">
 
-    <resultMap id="comment" type="com.xust.wtc.Entity.Comment">
+    <resultMap id="comment" type="com.xust.wtc.Entity.book.Comment">
         <result property="id" column="comment_id"/>
         <result property="bookId" column="book_id"/>
         <result property="commentPersonId" column="person_id"/>
@@ -27,7 +27,7 @@
     </update>
 
     <!-- 插入一条评论或者回复 -->
-    <insert id="addComment" parameterType="com.xust.wtc.Entity.Comment">
+    <insert id="addComment" parameterType="com.xust.wtc.Entity.book.Comment">
         INSERT INTO comment(book_id, person_id, parent_id, comment_type, comment_content)
         VALUES(#{bookId}, #{commentPersonId}, #{parentId}, #{commentType}, #{content})
     </insert>

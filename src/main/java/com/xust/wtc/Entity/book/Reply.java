@@ -1,12 +1,12 @@
-package com.xust.wtc.Entity;
+package com.xust.wtc.Entity.book;
 
 import java.util.List;
 
 /**
- * 显示评论信息
+ * 回复
  * Created by Spirit on 2018/1/10.
  */
-public class DisplayComment {
+public class Reply {
 
     private int id;
 
@@ -20,21 +20,21 @@ public class DisplayComment {
 
     private String content;
 
-    private String commentTime;
+    private String replyTime;
 
     private List<Reply> replies;
 
-    public DisplayComment() {
+    public Reply() {
     }
 
-    public DisplayComment(int id, int bookId, int commentPersonId, String commentPersonName, int parentId, String content, String commentTime, List<Reply> replies) {
+    public Reply(int id, int bookId, int commentPersonId, String commentPersonName, int parentId, String content, String replyTime, List<Reply> replies) {
         this.id = id;
         this.bookId = bookId;
         this.commentPersonId = commentPersonId;
         this.commentPersonName = commentPersonName;
         this.parentId = parentId;
         this.content = content;
-        this.commentTime = commentTime;
+        this.replyTime = replyTime;
         this.replies = replies;
     }
 
@@ -86,12 +86,12 @@ public class DisplayComment {
         this.content = content;
     }
 
-    public String getCommentTime() {
-        return commentTime;
+    public String getReplyTime() {
+        return replyTime;
     }
 
-    public void setCommentTime(String commentTime) {
-        this.commentTime = commentTime;
+    public void setReplyTime(String replyTime) {
+        this.replyTime = replyTime;
     }
 
     public List<Reply> getReplies() {
@@ -104,14 +104,14 @@ public class DisplayComment {
 
     @Override
     public String toString() {
-        return "DisplayComment{" +
+        return "Reply{" +
                 "id=" + id +
                 ", bookId=" + bookId +
                 ", commentPersonId=" + commentPersonId +
                 ", commentPersonName='" + commentPersonName + '\'' +
                 ", parentId=" + parentId +
                 ", content='" + content + '\'' +
-                ", commentTime='" + commentTime + '\'' +
+                ", replyTime='" + replyTime + '\'' +
                 ", replies=" + replies +
                 '}';
     }

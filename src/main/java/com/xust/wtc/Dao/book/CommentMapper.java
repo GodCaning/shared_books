@@ -1,6 +1,6 @@
 package com.xust.wtc.Dao.book;
 
-import com.xust.wtc.Entity.Comment;
+import com.xust.wtc.Entity.book.Comment;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

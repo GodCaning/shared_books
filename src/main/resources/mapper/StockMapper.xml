@@ -16,10 +16,18 @@
         VALUES(#{personId,javaType=INTEGER},#{bookId,javaType=INTEGER})
     </insert>
 
+    <!-- 根据书籍ID查找库存 -->
     <select id="findBookStock" parameterType="int" resultMap="bookStock">
         SELECT stock_id,stock.person_id,portrait,person_name,stock.status
         FROM stock JOIN person ON stock.person_id = person.person_id
         WHERE book_id = #{id}
     </select>
+
+    <!-- 修改库存状态为借出 -->
+    <update id="updateStockStatus" parameterType="int">
+        UPDATE stock
+        SET status = 3
+        WHERE stock.stock_id = #{id}
+    </update>
 
 </mapper>

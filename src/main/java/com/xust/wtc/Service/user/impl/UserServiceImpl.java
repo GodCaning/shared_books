@@ -1,7 +1,7 @@
 package com.xust.wtc.Service.user.impl;
 
 import com.xust.wtc.Dao.user.UserMapper;
-import com.xust.wtc.Entity.Person;
+import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.AsyncSendEmail;
 import com.xust.wtc.Service.user.UserService;
@@ -10,18 +10,11 @@ import com.xust.wtc.utils.Secret;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by Spirit on 2017/12/4.

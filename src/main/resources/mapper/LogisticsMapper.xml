@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.logistics.LogisticsMapper">
 
-    <resultMap id="displayLogistics" type="com.xust.wtc.Entity.DisplayLogistics">
+    <resultMap id="displayLogistics" type="com.xust.wtc.Entity.logistics.DisplayLogistics">
         <result property="id" column="logistics_id"/>
         <result property="number" column="logistics_number"/>
         <result property="companyName" column="company_name"/>
         <result property="companyNumber" column="company_number"/>
     </resultMap>
 
-    <resultMap id="displayCompany" type="com.xust.wtc.Entity.Company">
+    <resultMap id="displayCompany" type="com.xust.wtc.Entity.logistics.Company">
         <result property="id" column="company_id"/>
         <result property="name" column="company_name"/>
     </resultMap>
+
+    <resultMap id="logisticsAll" type="com.xust.wtc.Entity.logistics.LogisticsAll">
+        <result property="id" column="logistics_id"/>
+        <result property="number" column="logistics_number"/>
+        <result property="companyNumber" column="company_number"/>
+        <result property="logisticsStatus" column="logistics_status"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <!-- 存储过程更新所有书籍状态 -->
+    <select id="updateStatus" parameterType="int" statementType="CALLABLE">
+        {call updateStatus(#{id,mode=IN})}
+    </select>
 
     <!-- 增加一个物流信息 -->
     <insert id="addLogistics" parameterType="com.xust.wtc.Entity.book.LenderInfo">
@@ -20,15 +33,20 @@
     </insert>
 
     <!-- 添加物流编号和公司 -->
-    <update id="updateLogistics" parameterType="com.xust.wtc.Entity.Logistics">
+    <update id="updateLogistics" parameterType="com.xust.wtc.Entity.logistics.Logistics">
         UPDATE logistics
         SET logistics_number = #{number}, logistics_company_id = #{companyId}
         WHERE logistics_id = #{id}
     </update>
 
+    <select id="findAllLogistics" resultMap="logisticsAll">
+        SELECT logistics_id, logistics_number, company_name, company_number, logistics_status, status
+        FROM logistics l JOIN company c ON l.logistics_company_id = c.company_id
+    </select>
+
     <!-- 根据订单ID获取物流信息 -->
-    <select id="findLogisticsByLendId" parameterType="int" resultMap="displayLogistics">
-        SELECT logistics_id, logistics_number, company_name, company_number
+    <select id="findLogisticsByLendId" parameterType="int" resultMap="logisticsAll">
+        SELECT logistics_id, logistics_number, company_name, company_number, logistics_status
         FROM logistics l JOIN company c ON l.logistics_company_id = c.company_id
         WHERE lend_id = #{lendId}
     </select>
