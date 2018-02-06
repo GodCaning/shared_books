@@ -96,13 +96,13 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a href="index.html" style="line-height: 44px;">返回</a>
 			<h1 class="mui-title">我的订单</h1>
 		</header>
 		<div class="mui-content">
 			<div id="slider" class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-					<div class="mui-scroll" style="    margin: 0px auto;width: 414px;">
+					<div class="mui-scroll" style="margin: 0px auto;width: 414px;">
 						<a class="mui-control-item mui-active" href="#item1mobile">
 							全部
 						</a>
@@ -123,46 +123,15 @@
 						<div id="scroll1" class="mui-scroll-wrapper">
 							<div class="mui-scroll">
 								<ul class="mui-table-view">
-									<li class="mui-table-view-cell mui-media">
-										<a href="javascript:;">
-											<img class="mui-media-object mui-pull-left" src="img/book1.jpg">
-											<div class="mui-media-body">
-												图书信息
-												<p class='mui-ellipsis'>这本书，介绍了关于。。。。。</p>
-												<p>¥122</p>
-											</div>
-											<button id="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
-						                                                       查看订单信息
-											</button>
-									    </a>
+									<li class="mui-table-view-cell mui-media" v-for="indent in messages">
+										<img class="mui-media-object mui-pull-left" :src="indent.image">
+										<div class="mui-media-body">
+											{{indent.title}}
+										</div>
+										<button id="btn" :indentid="indent.id" type="button" style="top: 80%;"  class="btn mui-btn mui-btn-primary mui-btn-outlined ">
+																		   填写订单信息
+										</button>
 									</li>
-									<li class="mui-table-view-cell mui-media">
-										<a href="javascript:;">
-											<img class="mui-media-object mui-pull-left" src="img/book1.jpg">
-											<div class="mui-media-body">
-												图书信息
-												<p class='mui-ellipsis'>这本书，介绍了关于。。。。。</p>
-												<p>¥122</p>
-											</div>
-											<button id="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
-						                                                       查看订单信息
-											</button>
-										</a>
-									</li>
-									<li class="mui-table-view-cell mui-media">
-										<a href="javascript:;">
-											<img class="mui-media-object mui-pull-left" src="img/book1.jpg">
-											<div class="mui-media-body">
-												图书信息
-												<p class='mui-ellipsis'>这本书，介绍了关于。。。。。</p>
-												<p>¥122</p>
-											</div>
-											<button id="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
-						                                                       查看订单信息
-											</button>
-										</a>
-									</li>
-									
 								</ul>
 							</div>
 						</div>
@@ -179,7 +148,7 @@
 												<p class='mui-ellipsis'>这本书，介绍了关于。。。。。</p>
 												<p>¥122</p>
 											</div>
-											<button id="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
+											<button id="btn1" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
 						                                                       去付款
 											</button>
 									    </a>
@@ -200,7 +169,7 @@
 												<p class='mui-ellipsis'>这本书，介绍了关于。。。。。</p>
 												<p>¥122</p>
 											</div>
-											<button id="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
+											<button id="btn2" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
 						                                                       查看订单信息
 											</button>
 										</a>
@@ -221,7 +190,7 @@
 												<p class='mui-ellipsis'>这本书，介绍了关于。。。。。</p>
 												<p>¥122</p>
 											</div>
-											<button id="btn" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
+											<button id="btn3" type="button" class="mui-btn mui-btn-primary mui-btn-outlined">
 						                                                       查看物流信息
 											</button>
 										</a>
@@ -234,87 +203,45 @@
 			</div>
 		</div>
 		<script src="js/mui.min.js"></script>
-		<script src="js/mui.enterfocus.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/mui.pullToRefresh.js"></script>
-		<script src="js/mui.pullToRefresh.material.js"></script>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/vue.min.js"></script>
 		<script>
+			window.onload = function(){
+			    var indentVue = new Vue({
+					el:'#scroll1',
+					data:{
+					    messages:''
+					},
+					created:function () {
+                        $.ajax({
+                            url:'/borrowerOrders',
+                            type:'GET',
+                            dataType: 'json',
+                            cache:false,
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            success: function (data) {
+                                indentVue.messages = data;
+                                console.log(indentVue.messages);
+                            }
+                        })
+                    }
+				})
+
+                $('div#item1mobile').on('click','button.btn',function () {
+                    //console.log('sdsfsdf')
+                    var ID = $(this).attr('indentid');
+                    //console.log(ID);
+					window.location.href = 'fillindent.html?id='+ ID;
+                    })
+
+			}
 			mui.init({
 				gestureConfig: {
 					longtap: true
 				},
 				swipeBack: true //启用右滑关闭功能
 			});
-			(function($) {
-				//阻尼系数
-				var deceleration = mui.os.ios?0.003:0.0009;
-				$('.mui-scroll-wrapper').scroll({
-					bounce: false,
-					indicators: true, //是否显示滚动条
-					deceleration:deceleration
-				});
-				$.ready(function() {
-					//循环初始化所有下拉刷新，上拉加载。
-					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
-						$(pullRefreshEl).pullToRefresh({
-							down: {
-								callback: function() {
-									var self = this;
-									setTimeout(function() {
-										var ul = self.element.querySelector('.mui-table-view');
-										ul.insertBefore(createFragment(ul, index,3, true), ul.firstChild);
-										self.endPullDownToRefresh();
-									}, 1000);
-								}
-							},
-//							up: {
-//								callback: function() {
-//									var self = this;
-//									setTimeout(function() {
-//										var ul = self.element.querySelector('.mui-table-view');
-//										ul.appendChild(createFragment(ul, index, 5));
-//										self.endPullUpToRefresh();
-//									}, 1000);
-//								}
-//							}
-						});
-					});
-					var createFragment = function(ul, index, count, reverse) {
-						var length = ul.querySelectorAll('li').length;
-						var fragment = document.createDocumentFragment();
-						var li;
-						for (var i = 0; i < count; i++) {
-							li = document.createElement('li');
-							a  = document.createElement('a');
-							img = document.createElement('img');
-							div = document.createElement('div');
-							btn = document.createElement('button');
-							p1 = document.createElement('p');
-							p2 = document.createElement('p');
-							btn.type = 'button';
-							btn.id = 'btn';
-							btn.className = 'mui-btn mui-btn-primary mui-btn-outlined'
-							btn.innerHTML = '查看订单信息'
-							p1.innerHTML = '这本书，介绍了关于。。。。。'
-							p2.innerHTML = '¥120.0'
-							div.className = 'mui-media-body'
-							div.innerHTML = '图书信息'
-							img.src = 'img/book3.jpg';
-							img.className = 'mui-media-object mui-pull-left';
-							a.href = 'javascript:;';
-							div.appendChild(p1);
-							div.appendChild(p2);
-							a.appendChild(img);
-							a.appendChild(div);
-							a.appendChild(btn);
-							li.className = 'mui-table-view-cell';
-							li.appendChild(a);
-							fragment.appendChild(li);
-						}
-						return fragment;
-					};
-				});
-			})(mui);
 		</script>
 	</body>
 

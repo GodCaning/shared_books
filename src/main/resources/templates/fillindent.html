@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 25%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 68%;
+			}
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a href="indent.html" style="line-height: 44px;">返回</a>
+			<h1 class="mui-title">订单信息</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>收件人</label>
+					<input id='name' type="text" class="mui-input-clear mui-input" placeholder="请填写收件人姓名">
+				</div>
+				<div class="mui-input-row">
+					<label>联系方式</label>
+					<input id='connect' type="number" class="mui-input-clear mui-input" placeholder="请填写手机号">
+				</div>
+				<div class="mui-input-row">
+					<label>地址</label>
+					<input id='local' type="text" class="mui-input-clear mui-input" placeholder="请填写地址">
+				</div>
+			</form>
+			<div class="mui-content-padded">
+				<button id='sure' class="mui-btn mui-btn-block mui-btn-primary">确认订单</button>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script>
+		     window.onload = function () {
+                     $('#sure').click(function () {
+
+                         var indeNam = $('#name').val().trim();
+                         var indeCon = $('#connect').val().trim();
+                         var indeLoc = $('#local').val().trim();
+                         var flag = true;
+
+                         if(indeNam == ''){
+                             mui.toast('收件人不能为空');
+                             flag = false;
+                         }
+                         else if(indeCon == ''){
+                             mui.toast('联系方式不能为空');
+                             flag = false;
+                         }
+                         else if(indeLoc == ''){
+                             mui.toast('地址不能为空');
+                             flag = false;
+                         }
+                         if(flag){
+                             $.ajax({
+                                 url:'/borrowerModifyOrder',
+                                 type:'PUT',
+                                 dataType: 'json',
+                                 contentType: 'application/json',
+                                 accept: 'application/json',
+								 data:JSON.stringify({'borrowerName':indeNam,'borrowerPhone':indeCon,'borrowerAddress':indeLoc}),
+                                 success: function(data){
+                                     //mui.toast(data);
+									 mui.toast(data.content);
+
+                                     console.log(data);
+                                 }
+                             })
+						 }
+                     })
+			 }
+		</script>
+	</body>
+
+</html>
