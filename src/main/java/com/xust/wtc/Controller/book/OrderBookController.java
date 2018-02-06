@@ -1,7 +1,8 @@
 package com.xust.wtc.Controller.book;
 
-import com.xust.wtc.Entity.Lend;
+import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Entity.book.LenderInfo;
 import com.xust.wtc.Service.book.OrderService;
 import com.xust.wtc.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,6 @@ public class OrderBookController {
     @GetMapping(value = "/borrowerOrders", consumes = "application/json", produces = "application/json")
     public List<Lend> getBorrowerOrders(HttpSession session) {
         int borrowerID = Utils.getUserId(session.getId());
-//        int borrowerID = 2;
         return orderService.getBorrowerOrders(borrowerID);
     }
 
@@ -81,7 +81,7 @@ public class OrderBookController {
      * @return
      */
     @PutMapping(value = "/lenderModifyOrder", consumes = "application/json", produces = "application/json")
-    public Result lenderModifyOrder(@RequestBody Lend lend) {
+    public Result lenderModifyOrder(@RequestBody LenderInfo lend) {
         return orderService.lenderModifyOrder(lend);
     }
 

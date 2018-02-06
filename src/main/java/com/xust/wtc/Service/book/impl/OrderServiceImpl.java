@@ -1,14 +1,13 @@
 package com.xust.wtc.Service.book.impl;
 
 import com.xust.wtc.Dao.book.OrderMapper;
-import com.xust.wtc.Dao.logistics.LogisticsMapper;
-import com.xust.wtc.Entity.Lend;
+import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Entity.book.LenderInfo;
 import com.xust.wtc.Service.book.OrderService;
 import com.xust.wtc.Service.logistics.LogisticsService;
 import com.xust.wtc.utils.CONSTANT_STATUS;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,13 +104,14 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public Result lenderModifyOrder(Lend lend) {
+    public Result lenderModifyOrder(LenderInfo lend) {
         Result result = new Result();
+        int order = orderMapper.lenderModifyOrder(lend);
         if (orderMapper.lenderModifyOrder(lend) > 0) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改成功");
             //生成物流信息
-            logisticsService.addLogistics(lend.getId());
+//            logisticsService.addLogistics(lend.getId());
         } else {
             result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("修改失败");

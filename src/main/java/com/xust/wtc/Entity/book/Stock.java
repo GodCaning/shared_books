@@ -1,4 +1,4 @@
-package com.xust.wtc.Entity;
+package com.xust.wtc.Entity.book;
 
 /**
  * Created by Spirit on 2018/2/5.

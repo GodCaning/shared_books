@@ -1,13 +1,11 @@
 package com.xust.wtc.Controller.book;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.xust.wtc.Entity.Stock;
+import com.xust.wtc.Entity.book.Stock;
 import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.UserBook;
 import com.xust.wtc.Service.book.BookService;
-import com.xust.wtc.utils.StringConverter;
 import com.xust.wtc.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

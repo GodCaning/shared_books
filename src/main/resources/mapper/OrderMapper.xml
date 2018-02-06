@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.book.OrderMapper">
 
-    <resultMap id="order" type="com.xust.wtc.Entity.Lend">
+    <resultMap id="order" type="com.xust.wtc.Entity.book.Lend">
         <result property="id" column="lend_id" javaType="int"/>
         <result property="borrowerId" column="borrower_id" javaType="int"/>
         <result property="stockId" column="stock_id" javaType="int"/>
@@ -36,11 +36,11 @@
         SELECT
         <include refid="filed"/>
         FROM lend JOIN stock ON lend.stock_id = stock.stock_id JOIN book ON book.book_id = stock.book_id
-        WHERE borrower_id = #{borrowerId} AND stock.status = 1
+        WHERE borrower_id = #{borrowerId} AND lend.status = 1
     </select>
 
     <!-- 修改订单中借书人信息 -->
-    <update id="borrowerModifyOrder" parameterType="com.xust.wtc.Entity.Lend">
+    <update id="borrowerModifyOrder" parameterType="com.xust.wtc.Entity.book.Lend">
         UPDATE lend
         SET borrower_address = #{borrowerAddress}, borrower_phone = #{borrowerPhone}, borrower_name = #{borrowerName}, status = 2
         WHERE lend_id = #{id} AND status = 1
@@ -51,11 +51,11 @@
         SELECT
         <include refid="filed"/>
         FROM lend JOIN stock ON lend.stock_id = stock.stock_id JOIN book ON book.book_id = stock.book_id
-        WHERE stock.person_id = #{lenderId} AND status = 2
+        WHERE stock.person_id = #{lenderId} AND lend.status = 2
     </select>
 
     <!-- 修改订单中出借人信息-->
-    <update id="lenderModifyOrder" parameterType="com.xust.wtc.Entity.Lend">
+    <update id="lenderModifyOrder" parameterType="com.xust.wtc.Entity.book.Lend">
         UPDATE lend
         SET lender_address = #{lenderAddress}, lender_phone = #{lenderPhone}, lender_name = #{lenderName}, status = 3
         WHERE lend_id = #{id} AND status = 2

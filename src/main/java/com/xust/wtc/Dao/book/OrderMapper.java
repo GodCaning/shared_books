@@ -1,6 +1,7 @@
 package com.xust.wtc.Dao.book;
 
-import com.xust.wtc.Entity.Lend;
+import com.xust.wtc.Entity.book.Lend;
+import com.xust.wtc.Entity.book.LenderInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -61,7 +62,7 @@ public interface OrderMapper {
      * @param lend
      * @return
      */
-    int lenderModifyOrder(Lend lend);
+    int lenderModifyOrder(LenderInfo lend);
 
     /**
      * 出借人拒绝订单

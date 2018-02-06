@@ -1,6 +1,6 @@
 package com.xust.wtc.Dao.book;
 
-import com.xust.wtc.Entity.Stock;
+import com.xust.wtc.Entity.book.Stock;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.xust.wtc.Service.book;
 
-import com.xust.wtc.Entity.Stock;
+import com.xust.wtc.Entity.book.Stock;
 import com.xust.wtc.Entity.book.AllBook;
 import com.xust.wtc.Entity.book.Book;
 import com.xust.wtc.Entity.Result;

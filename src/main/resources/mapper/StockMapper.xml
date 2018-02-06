@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xust.wtc.Dao.book.StockMapper">
 
-    <resultMap id="bookStock" type="com.xust.wtc.Entity.Stock">
+    <resultMap id="bookStock" type="com.xust.wtc.Entity.book.Stock">
         <result property="stockID" column="stock_id"/>
         <result property="personID" column="person_id"/>
         <result property="personName" column="person_name"/>

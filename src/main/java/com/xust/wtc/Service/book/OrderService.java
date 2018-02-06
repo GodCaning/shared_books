@@ -1,7 +1,8 @@
 package com.xust.wtc.Service.book;
 
-import com.xust.wtc.Entity.Lend;
+import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.Result;
+import com.xust.wtc.Entity.book.LenderInfo;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface OrderService {
 
     Result borrowerModifyOrder(Lend lend);
 
-    Result lenderModifyOrder(Lend lend);
+    Result lenderModifyOrder(LenderInfo lend);
 
     Result lenderRefuseOrder(int id);
 }
