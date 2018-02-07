@@ -93,7 +93,7 @@
            }
            if(check){
                $.ajax({
-                   url: 'http://localhost:8080/validationName?loginName=' + loginName + "&code=" + code,
+                   url: '/validationName?loginName=' + loginName + "&code=" + code,
                    type: 'GET',
                    dataType: 'json',
                    contentType: 'application/json',

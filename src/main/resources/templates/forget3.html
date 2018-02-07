@@ -89,7 +89,7 @@
             return;
         }
         $.ajax({
-            url: 'http://localhost:8080/modifyPassWd?code=' + getQueryVariable("para"),
+            url: '/modifyPassWd?code=' + getQueryVariable("para"),
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json',

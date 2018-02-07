@@ -92,7 +92,7 @@
         var loginName = $('#name').val();
         var email = $('#email').val();
         $.ajax({
-            url: 'http://localhost:8080/sendEmail?loginName=' + loginName + "&email=" + email,
+            url: '/sendEmail?loginName=' + loginName + "&email=" + email,
             type: 'GET',
             dataType: 'json',
             contentType: 'application/json',
