@@ -2,6 +2,7 @@ package com.xust.wtc.Dao.book;
 
 import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.book.LenderInfo;
+import com.xust.wtc.Entity.book.ReturnOrder;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -69,7 +70,13 @@ public interface OrderMapper {
      * @param id
      * @return
      */
-    int lenderRefuseOrder(@Param("id")int id);
+    void lenderRefuseOrder(@Param("id")int id);
+
+    /**
+     * 可归还的书籍订单
+     * @return
+     */
+    List<ReturnOrder> canBeReturnedBooks(@Param("borrowerId") int borrowerId);
 
     /**
      * 获取过期库存ID

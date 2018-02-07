@@ -20,4 +20,6 @@ public interface LogisticsService {
     DisplayLogistics findLogisticsByLendId(int lendId);
 
     List<Company> findLogisticsCompany();
+
+    Result updateReturnedBook(Logistics logistics);
 }

@@ -3,6 +3,7 @@ package com.xust.wtc.Controller.book;
 import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.LenderInfo;
+import com.xust.wtc.Entity.book.ReturnOrder;
 import com.xust.wtc.Service.book.OrderService;
 import com.xust.wtc.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,17 @@ public class OrderBookController {
     }
 
     /**
+     * 可归还的书籍订单
+     * @param session
+     * @return
+     */
+    @GetMapping(value = "/canBeReturnOrders", consumes = "application/json", produces = "application/json")
+    public List<ReturnOrder> canBeReturnedBooks(HttpSession session) {
+        int borrowerId = Utils.getUserId(session.getId());
+        return orderService.canBeReturnedBooks(borrowerId);
+    }
+
+    /**
      * 根据订单ID获取订单信息
      * @param lendId
      * @return
@@ -94,4 +106,5 @@ public class OrderBookController {
     public Result lenderRefuseOrder(@PathVariable int id) {
         return orderService.lenderRefuseOrder(id);
     }
+
 }

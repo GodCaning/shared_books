@@ -49,4 +49,13 @@ public class LogisticsController {
         return logisticsService.findLogisticsCompany();
     }
 
+    /**
+     * 更新还书的信息
+     * @param logistics
+     * @return
+     */
+    @PutMapping(value = "/updateReturnedBook", consumes = "application/json", produces = "application/json")
+    public Result updateReturnedBook(@RequestBody Logistics logistics) {
+        return logisticsService.updateReturnedBook(logistics);
+    }
 }

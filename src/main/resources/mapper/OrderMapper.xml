@@ -19,6 +19,15 @@
         <result property="endDate" column="end_date" javaType="java.sql.Timestamp"/>
     </resultMap>
 
+    <resultMap id="canBeReturned" type="com.xust.wtc.Entity.book.ReturnOrder">
+        <result property="id" column="logistics_id" javaType="int"/>
+        <result property="lenderAddress" column="lender_address" javaType="string"/>
+        <result property="lenderPhone" column="lender_phone" javaType="string"/>
+        <result property="lenderName" column="lender_name" javaType="string"/>
+        <result property="title" column="title" javaType="string"/>
+        <result property="image" column="image" javaType="string"/>
+    </resultMap>
+
     <sql id="filed">
         lend_id, borrower_id, stock.stock_id, title, image, borrower_address, borrower_phone, borrower_name,
         lender_address, lender_phone, lender_name, stock.status, begin_date, end_date
@@ -62,11 +71,18 @@
     </update>
 
     <!-- 出借人拒绝订单 -->
-    <update id="lenderRefuseOrder" parameterType="int">
-        UPDATE lend
-        SET status = 0
-        WHERE lend_id = #{id} AND status = 2
+    <update id="lenderRefuseOrder" parameterType="int" statementType="CALLABLE">
+        {call refuseOrder(#{id,mode=IN})}
     </update>
+
+    <!--返回可以归还的书籍信息 -->
+    <select id="canBeReturnedBooks" resultMap="canBeReturned">
+        SELECT logistics_id, lender_address, lender_phone, lender_name, title, image
+        FROM logistics JOIN lend ON logistics.lend_id = lend.lend_id
+                       JOIN stock ON lend.stock_id = stock.stock_id
+                       JOIN book ON book.book_id = stock.book_id
+        WHERE borrower_id = #{borrowerId} AND logistics_status = 3 AND logistics.status = 1
+    </select>
 
     <!-- 获取过期库存ID -->
     <select id="getExpireOrder" parameterType="java.sql.Timestamp" resultType="int">

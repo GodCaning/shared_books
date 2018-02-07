@@ -3,6 +3,7 @@ package com.xust.wtc.Service.book;
 import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.LenderInfo;
+import com.xust.wtc.Entity.book.ReturnOrder;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface OrderService {
     List<Lend> getBorrowerOrders(int borrowerID);
 
     List<Lend> getLenderOrders(int lenderId);
+
+    List<ReturnOrder> canBeReturnedBooks(int borrowerId);
 
     Lend getOrder(int id);
 

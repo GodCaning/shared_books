@@ -79,4 +79,22 @@ public class LogisticsServiceImpl implements LogisticsService {
     public List<Company> findLogisticsCompany() {
         return logisticsMapper.findLogisticsCompany();
     }
+
+    /**
+     * 更新还书的信息
+     * @param logistics
+     * @return
+     */
+    @Override
+    public Result updateReturnedBook(Logistics logistics) {
+        Result result = new Result();
+        if (logisticsMapper.updateLogistics(logistics) > 0) {
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
+            result.setContent("已在还书的路上");
+        } else {
+            result.setStatus(CONSTANT_STATUS.ERROR);
+            result.setContent("还书失败,请稍后重试");
+        }
+        return result;
+    }
 }

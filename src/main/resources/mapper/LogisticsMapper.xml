@@ -39,6 +39,14 @@
         WHERE logistics_id = #{id}
     </update>
 
+    <!-- 更新还书物流信息 -->
+    <update id="updateReturnedBook" parameterType="com.xust.wtc.Entity.logistics.Logistics">
+        UPDATE logistics
+        SET logistics_number = #{number}, logistics_company_id = #{companyId}, logistics_status = 1, status = 2
+        WHERE logistics_id = #{id}
+    </update>
+
+    <!-- 查询所有物流信息 -->
     <select id="findAllLogistics" resultMap="logisticsAll">
         SELECT logistics_id, logistics_number, company_name, company_number, logistics_status, status
         FROM logistics l JOIN company c ON l.logistics_company_id = c.company_id

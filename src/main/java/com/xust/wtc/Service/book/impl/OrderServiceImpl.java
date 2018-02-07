@@ -5,6 +5,7 @@ import com.xust.wtc.Dao.book.StockMapper;
 import com.xust.wtc.Entity.book.Lend;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.book.LenderInfo;
+import com.xust.wtc.Entity.book.ReturnOrder;
 import com.xust.wtc.Service.book.OrderService;
 import com.xust.wtc.Service.logistics.LogisticsService;
 import com.xust.wtc.utils.CONSTANT_STATUS;
@@ -72,6 +73,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 可归还的书籍订单
+     * @param borrowerId
+     * @return
+     */
+    @Override
+    public List<ReturnOrder> canBeReturnedBooks(int borrowerId) {
+        return orderMapper.canBeReturnedBooks(borrowerId);
+    }
+
+    /**
      * 根据ID获取订单
      * @param id
      * @return
@@ -130,10 +141,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result lenderRefuseOrder(int id) {
         Result result = new Result();
-        if (orderMapper.lenderRefuseOrder(id) > 0) {
+        try {
+            orderMapper.lenderRefuseOrder(id);
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("拒绝成功");
-        } else {
+        } catch (Exception e) {
             result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("拒绝失败");
         }

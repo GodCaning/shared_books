@@ -37,6 +37,13 @@ public interface LogisticsMapper {
     int updateLogistics(Logistics logistics);
 
     /**
+     * 更新还书的物流信息
+     * @param logistics
+     * @return
+     */
+    int updateReturnedBook(Logistics logistics);
+
+    /**
      * 返回所有物流信息
      * @return
      */
