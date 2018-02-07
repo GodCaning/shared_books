@@ -97,7 +97,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a href="index.html" style="line-height: 44px;">返回</a>
-			<h1 class="mui-title">我的订单</h1>
+			<h1 class="mui-title">我要还书</h1>
 		</header>
 		<div class="mui-content">
 			<div id="slider" class="mui-slider mui-fullscreen">
@@ -111,12 +111,24 @@
 										<div class="mui-media-body">
 											{{indent.title}}
 										</div>
+										<div class="mui-media-body">
+											发货人姓名：
+											{{indent.lenderName}}
+										</div>
+										<div class="mui-media-body">
+											发货人电话：
+											{{indent.lenderPhone}}
+										</div>
+										<div class="mui-media-body">
+											发货人地址：
+											{{indent.lenderAddress}}
+										</div>
 										<button id="btn" :indentid="indent.id" :stockid="indent.stockId" type="button" style="top: 80%;"  class="btn mui-btn mui-btn-primary mui-btn-outlined ">
-																		   填写订单信息
+																		   还书
 										</button>
 									</li>
 								</ul>
-                                <p v-else style="text-align: center;color:darkred">暂无订单信息</p>
+                                <p v-else style="text-align: center;color:darkred">暂无可还书籍</p>
 							</div>
 						</div>
 					</div>
@@ -134,28 +146,28 @@
 					    messages:''
 					},
 					created:function () {
-                        $.ajax({
-                            url:'/borrowerOrders',
-                            type:'GET',
-                            dataType: 'json',
-                            cache:false,
-                            contentType: 'application/json',
-                            accept: 'application/json',
-                            success: function (data) {
-                                indentVue.messages = data;
-                                console.log(indentVue.messages);
-                            }
-                        })
-                    }
+                     $.ajax({
+                         url:'/canBeReturnOrders',
+                         type:'GET',
+                         dataType: 'json',
+                         cache:false,
+                         contentType: 'application/json',
+                         accept: 'application/json',
+                         success: function (data) {
+                             indentVue.messages = data;
+                             console.log(indentVue.messages);
+                         }
+                     })
+                 }
 				})
 
-                $('div#item1mobile').on('click','button.btn',function () {
-                    //console.log('sdsfsdf')
-                    var ID = $(this).attr('indentid');
-                    var stockID = $(this).attr('stockid')
-                    //console.log(ID);
-					window.location.href = 'fillindent.html?id='+ ID +'&stockid='+stockID;
-                    })
+             $('div#item1mobile').on('click','button.btn',function () {
+                 //console.log('sdsfsdf')
+                 var ID = $(this).attr('indentid');
+                 // var stockID = $(this).attr('stockid')
+                 //console.log(ID);
+				  window.location.href = 'fillreturnbook.html?id='+ ID;
+                 })
 
 			}
 			mui.init({

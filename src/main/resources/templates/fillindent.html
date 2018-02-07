@@ -65,11 +65,27 @@
 		<script src="js/vue.min.js"></script>
 		<script>
 		     window.onload = function () {
+
+
+                 function getQueryVariable(variable) {
+                     var query = window.location.search.substring(1);
+                     //console.log(query);
+                     var vars = query.split("&");
+                     for (var i=0;i<vars.length;i++) {
+                         var pair = vars[i].split("=");
+                         if(pair[0] == variable){return pair[1];}
+                     }
+                     return(false);
+                 }
+
                      $('#sure').click(function () {
 
                          var indeNam = $('#name').val().trim();
                          var indeCon = $('#connect').val().trim();
                          var indeLoc = $('#local').val().trim();
+                         var id = getQueryVariable('id');
+                         var stockid = getQueryVariable('stockid');
+                         //console.log(stockid);
                          var flag = true;
 
                          if(indeNam == ''){
@@ -91,7 +107,7 @@
                                  dataType: 'json',
                                  contentType: 'application/json',
                                  accept: 'application/json',
-								 data:JSON.stringify({'borrowerName':indeNam,'borrowerPhone':indeCon,'borrowerAddress':indeLoc}),
+								 data:JSON.stringify({'borrowerName':indeNam,'borrowerPhone':indeCon,'borrowerAddress':indeLoc,'id':id,'stockId':stockid}),
                                  success: function(data){
                                      //mui.toast(data);
 									 mui.toast(data.content);

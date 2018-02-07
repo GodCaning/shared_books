@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title></title>
+	<link href="css/mui.min.css" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
+	<style>
+		.area {
+			margin: 20px auto 0px auto;
+		}
+		.mui-input-group:first-child {
+			margin-top: 20px;
+		}
+		.mui-input-group label {
+			width: 25%;
+		}
+		.mui-input-row label~input,
+		.mui-input-row label~select,
+		.mui-input-row label~textarea {
+			width: 68%;
+		}
+		.mui-checkbox input[type=checkbox],
+		.mui-radio input[type=radio] {
+			top: 6px;
+		}
+		.mui-content-padded {
+			margin-top: 25px;
+		}
+		.mui-btn {
+			padding: 10px;
+		}
+
+	</style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+	<a href="returnbook.html" style="line-height: 44px;">返回</a>
+	<h1 class="mui-title">订单信息</h1>
+</header>
+<div id="output" class="mui-content">
+	<form class="mui-input-group">
+		<div class="mui-input-row">
+			<label>物流公司</label>
+			<select class="mui-btn mui-btn-block company" style="line-height: 1.1;width: 71%; padding: 10px 15px;">
+				<option :value="company.id" v-for="company in messages">{{company.name}}</option>
+			</select>
+		</div>
+		<div class="mui-input-row">
+			<label>物流编号</label>
+			<input id='number' type="number" class="mui-input-clear mui-input" placeholder="请填写物流编号">
+		</div>
+	</form>
+	<div class="mui-content-padded">
+		<button id='sure' class="mui-btn mui-btn-block mui-btn-primary">确认订单</button>
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script>
+    window.onload = function () {
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            //console.log(query);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+            }
+            return(false);
+        }
+
+        var vue = new Vue({
+            el:'#output',
+            data:{
+                messages:''
+            },
+            created:function () {
+                $.ajax({
+                    url:'/findLogisticsCompany',
+                    type:'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function (data) {
+                        vue.messages = data
+                        //console.log(data);
+                    }
+                })
+            }
+        })
+
+        $('#sure').click(function () {
+            var comid = $('option:selected').val();
+            var outnum = $('#number').val().trim();
+            var id   = getQueryVariable('id');
+
+            var flag = true;
+            if(outnum == ''){
+                mui.toast('发货编号不能为空');
+                flag = false;
+            }
+            if(flag){
+                $.ajax({
+                    url:'/updateReturnedBook',
+                    type:'PUT',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    data:JSON.stringify({'id':id,'number':outnum,'companyId':comid}),
+                    success: function (data) {
+                        mui.toast(data.content);
+                        console.log(data);
+                    }
+                })
+            }
+            //console.log(Comid);
+        })
+
+        // $(".company").change(function(){
+        //     var selval=$(".company").find("option:selected").val();
+        //     console.log(selval);
+        // });
+    }
+</script>
+</body>
+
+</html>
