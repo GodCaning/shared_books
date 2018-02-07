@@ -88,7 +88,7 @@ public class LogisticsServiceImpl implements LogisticsService {
     @Override
     public Result updateReturnedBook(Logistics logistics) {
         Result result = new Result();
-        if (logisticsMapper.updateLogistics(logistics) > 0) {
+        if (logisticsMapper.updateReturnedBook(logistics) > 0) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("已在还书的路上");
         } else {
