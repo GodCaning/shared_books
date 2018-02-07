@@ -55,7 +55,7 @@
 				},
 				created:function () {
                     $.ajax({
-                        url: 'http://localhost:8080/findBook/' + getQueryVariable('id'),
+                        url: '/findBook/' + getQueryVariable('id'),
                         type: 'GET',
                         dataType: 'json',
                         cache:false,

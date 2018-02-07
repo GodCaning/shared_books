@@ -439,7 +439,7 @@
                         },
                         created:function () {
                             $.ajax({
-                                url: "http://localhost:8080/queryisbn?isbn="+code,
+                                url: "/queryisbn?isbn="+code,
                                 type: "GET",
                                 dataType: 'json',
                                 contentType: 'application/json',
@@ -459,7 +459,7 @@
                 $('#btn1').click(function () {
                    // console.log('gdgdfgfdgf');
                         $.ajax({
-                            url: "http://localhost:8080/addBook",
+                            url: "/addBook",
                             type: "post",
                             dataType: 'json',
                             contentType: 'application/json',
@@ -482,7 +482,7 @@
             // $('#push').click(function () {
             //     console.log('sdsds');
             //     // $.ajax({
-            //     //     url: "http://localhost:8080/addBook",
+            //     //     url: "/addBook",
             //     //     type: "post",
             //     //     dataType: 'json',
             //     //     contentType: 'application/json',
