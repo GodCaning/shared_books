@@ -176,7 +176,7 @@ public class UserController {
             result.setContent("登录成功");
         } catch (Exception e) {
             result.setStatus(CONSTANT_STATUS.ERROR);
-            result.setContent("登录失败");
+            result.setContent("帐号密码不正确");
         }
         return result;
     }
