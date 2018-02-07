@@ -219,6 +219,16 @@
 				</a>
 			</li>
 			<li class="mui-table-view-cell">
+				<a href="outindent.html" class="mui-navigate-right">
+					我的出借
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a href="returnbook.html" class="mui-navigate-right">
+					我要还书
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
 				<a href="scan.html" class="mui-navigate-right">
 					扫码上传书籍
 				</a>
@@ -265,7 +275,7 @@
             },
             created:function(){
                 $.ajax({
-                    url: 'http://localhost:8080/loginInfo',
+                    url: '/loginInfo',
                     type: 'GET',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -287,7 +297,7 @@
             },
             created:function () {
                 $.ajax({
-                    url: 'http://localhost:8080/findTop10',
+                    url: '/findTop10',
                     type: 'GET',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -310,7 +320,7 @@
             },
             created:function () {
                 $.ajax({
-                    url: 'http://localhost:8080/findBooks',
+                    url: '/findBooks',
                     type: 'GET',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -324,7 +334,7 @@
             methods:{
                 pre:function () {
                     $.ajax({
-                        url: 'http://localhost:8080/findBooks?currentPage='+ --booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+                        url: '/findBooks?currentPage='+ --booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
                         type: 'GET',
                         dataType: 'json',
                         contentType: 'application/json',
@@ -338,7 +348,7 @@
                 },
                 next:function () {
                     $.ajax({
-                        url: 'http://localhost:8080/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+                        url: '/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
                         type: 'GET',
                         dataType: 'json',
                         contentType: 'application/json',
@@ -383,7 +393,7 @@
             },
             created:function(){
                 $.ajax({
-                    url: 'http://localhost:8080/loginInfo',
+                    url: '/loginInfo',
                     type: 'GET',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -401,7 +411,7 @@
             bookVue.show = false;
             var bookvalue = $('#bookname').val().trim();
             $.ajax({
-                url: 'http://localhost:8080/searchBooks?content='+bookvalue,
+                url: '/searchBooks?content='+bookvalue,
                 type: 'GET',
                 dataType: 'json',
                 contentType: 'application/json',
@@ -445,7 +455,7 @@
         // 	// booksVue.pageshow = false;
         //
         //    $.ajax({
-        //        url: 'http://localhost:8080/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+        //        url: '/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
         //        type: 'GET',
         //        dataType: 'json',
         //        contentType: 'application/json',
@@ -488,7 +498,7 @@
     //         },
     //         created:function(){
     //             $.ajax({
-    //                 url: 'http://localhost:8080/loginInfo',
+    //                 url: '/loginInfo',
     //                 type: 'GET',
     //                 dataType: 'json',
     //                 contentType: 'application/json',

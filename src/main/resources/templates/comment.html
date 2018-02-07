@@ -58,7 +58,7 @@
     </div>
     <div class="mui-content-padded" style="margin: 5px;">
         <div class="mui-input-row" style="margin: 10px 5px;">
-            <textarea id="textarea" rows="5" placeholder="多行文本框"></textarea>
+            <textarea id="textarea" rows="5" placeholder="请输入评论内容"></textarea>
             <button type="button" id="combtn" class="mui-btn mui-btn-primary" style="margin-top: -10px;">确认</button>
         </div>
     </div>
@@ -96,7 +96,7 @@
             },
             created:function () {
                 $.ajax({
-                    url: 'http://localhost:8080/findBook/' + getQueryVariable('id'),
+                    url: '/findBook/' + getQueryVariable('id'),
                     type: 'GET',
                     dataType: 'json',
                     cache:false,
@@ -116,7 +116,7 @@
             },
             created:function () {
                 $.ajax({
-                    url: 'http://localhost:8080/findComments/' + getQueryVariable('id'),
+                    url: '/findComments/' + getQueryVariable('id'),
                     type: 'GET',
                     dataType: 'json',
                     cache:false,
@@ -143,7 +143,7 @@
             }
             if(flag){
                 $.ajax({
-                    url: 'http://localhost:8080/addComment',
+                    url: '/addComment',
                     type: 'post',
                     dataType: 'json',
                     contentType: 'application/json',

@@ -76,7 +76,7 @@
 				    <li class="newinvent" v-for="invent in messages">
 				    	<img :src="invent.portrait" />
 				        <p style="color: #007aff;">{{invent.personName}}</p>
-				        <button id="btn" class="btn" :stockid="invent.stockID" type="button" class="mui-btn mui-btn-primary mui-btn-outlined" v-if="invent.status == 1">
+				        <button id="btn" class="btn" :stockid="invent.stockID" :personid="invent.personID" type="button" class="mui-btn mui-btn-primary mui-btn-outlined" v-if="invent.status == 1">
 							   未出借
 						</button>
 						<button id="btn1" type="button" class="mui-btn mui-btn-primary mui-btn-outlined" v-else-if="invent.status == 2">
@@ -153,17 +153,18 @@
                     //console.log('sdsfsdf')
                     var ID = $(this).attr('stockid');
                     console.log(ID);
+                    // var personID = $(this).attr('personid');
+                    // console.log(personID);
                     // window.location.href = 'invent.html?id='+ ID;
                     var btnArray = ['否', '是'];
                     mui.confirm('确认下订单吗？', '共享图书', btnArray, function(e) {
                         if (e.index == 1) {
 							$.ajax({
-                                url: '/orderForBook',
+                                url: '/orderForBook/'+ID,
                                 type: 'post',
                                 dataType: 'json',
                                 contentType: 'application/json',
                                 accept: 'application/json',
-								data:ID,
                                 success: function (data) {
                                     mui.toast('下单成功，请到我的订单中查看');
                                     console.log(data);
