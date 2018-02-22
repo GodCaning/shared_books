@@ -1,10 +1,13 @@
 package com.xust.wtc.Controller.chat;
 
 import com.xust.wtc.Entity.chat.ChatList;
+import com.xust.wtc.Entity.chat.Message;
 import com.xust.wtc.Entity.chat.PrivateMessage;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.chat.PrivateMessageService;
-import org.apache.shiro.SecurityUtils;
+import com.xust.wtc.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -12,7 +15,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -33,10 +40,9 @@ public class PrivateMessageController {
      * @return
      */
     @GetMapping(value = "/findMessage/{id}", consumes = "application/json", produces = "application/json")
-    public List<PrivateMessage> findPrivateMessageBySendIdAndReceiveId(@PathVariable("id") int receiveId) {
-//        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
-        String sessionId = "";
-        List<PrivateMessage> list = privateMessageService.findPrivateMessageBySendIdAndReceiveId(sessionId, receiveId);
+    public List<PrivateMessage> findPrivateMessageBySendIdAndReceiveId(@PathVariable("id") int receiveId, HttpSession session) {
+        int userId = Utils.getUserId(session.getId());
+        List<PrivateMessage> list = privateMessageService.findPrivateMessageBySendIdAndReceiveId(userId, receiveId);
         for (PrivateMessage p : list) {
             System.out.println(p);
         }
@@ -45,16 +51,13 @@ public class PrivateMessageController {
 
     /**
      * 私聊信息  用户ID_内容
-     * @param content
+     * @param message
      */
     @MessageMapping(value = "/chat")
-    public void sendMessage(String content) {
-        System.out.println(content);
-        String []strings = content.split("_");
-//        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
-        privateMessageService.insertPrivateMessage(strings[1], Integer.parseInt(strings[0]), strings[1]);
-//        privateMessageService.insertPrivateMessage(sessionId, Integer.parseInt(strings[0]), strings[1]);
-        simpMessageSendingOperations.convertAndSendToUser(strings[0], "/message", strings[1]);
+    public void sendMessage(Message message) {
+        System.out.println(message);
+        privateMessageService.insertPrivateMessage(message.getSendId(), message.getReceiveId(), message.getMessage());
+        simpMessageSendingOperations.convertAndSendToUser(String.valueOf(message.getReceiveId()), "/message", message);
     }
 
     /**
@@ -63,15 +66,19 @@ public class PrivateMessageController {
      * @return
      */
     @DeleteMapping(value = "/deleteMessage/{id}", consumes = "application/json", produces = "application/json")
-    public Result deletePrivateMessage(@PathVariable("id") int receiveId) {
-        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
-        return privateMessageService.deleteMessage(sessionId, receiveId);
+    public Result deletePrivateMessage(@PathVariable("id") int receiveId, HttpSession session) {
+        int userId = Utils.getUserId(session.getId());
+        return privateMessageService.deleteMessage(userId, receiveId);
     }
 
+    /**
+     * 返回当前用户的全部消息列表
+     * @param session
+     * @return
+     */
     @GetMapping(value = "/findChatList", consumes = "application/json", produces = "application/json")
-    public List<ChatList> findChatList() {
-//        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
-        String sessionId = "";
-        return privateMessageService.findListDisplay(sessionId);
+    public List<ChatList> findChatList(HttpSession session) {
+        int userId = Utils.getUserId(session.getId());
+        return privateMessageService.findListDisplay(userId);
     }
 }

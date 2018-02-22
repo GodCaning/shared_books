@@ -29,30 +29,25 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
 
     /**
      * 读取一个具体的聊天信息
-     * @param sessionId
+     * @param userId
      * @param receiveId
      * @return
      */
     @Override
-    public List<PrivateMessage> findPrivateMessageBySendIdAndReceiveId(String sessionId, int receiveId) {
-//        int sendId = (int) redisTemplate.opsForValue().get(sessionId);
-        int sendId = 1;
+    public List<PrivateMessage> findPrivateMessageBySendIdAndReceiveId(int userId, int receiveId) {
         //更新用户未读情况
-        privateMessageMapper.updateUnreadCount(sendId, receiveId);
-        return privateMessageMapper.findPrivateMessageBySendIdAndReceiveId(sendId, receiveId);
+        privateMessageMapper.updateUnreadCount(userId, receiveId);
+        return privateMessageMapper.findPrivateMessageBySendIdAndReceiveId(userId, receiveId);
     }
 
     /**
      * 插入私聊
      * @return
      */
-    public Result insertPrivateMessage(String sessionId, int receiveId, String content) {
+    public Result insertPrivateMessage(int userId, int receiveId, String content) {
         Result result = new Result();
-//        int sendId = (int) redisTemplate.opsForValue().get(sessionId);
-        int sendId = Integer.parseInt(sessionId.substring(0,1));
-        System.out.println("sendId" + sendId);
-        int x = privateMessageMapper.insertSend(sendId, receiveId, content);
-        int y = privateMessageMapper.insertReceive(sendId, receiveId, content);
+        int x = privateMessageMapper.insertSend(userId, receiveId, content);
+        int y = privateMessageMapper.insertReceive(userId, receiveId, content);
         if ((x + y) < 1) {
             result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("发送失败");
@@ -65,15 +60,14 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
 
     /**
      * 删除聊天记录
-     * @param sessionId
+     * @param userId
      * @param receiveId
      * @return
      */
     @Override
-    public Result deleteMessage(String sessionId, int receiveId) {
+    public Result deleteMessage(int userId, int receiveId) {
         Result result = new Result();
-        int sendId = (int) redisTemplate.opsForValue().get(sessionId);
-        if (privateMessageMapper.deletePrivateMessage(sendId, receiveId) > 0) {
+        if (privateMessageMapper.deletePrivateMessage(userId, receiveId) > 0) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("删除成功");
         } else {
@@ -85,17 +79,15 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
 
     /**
      * 显示聊天列表
-     * @param sessionId
+     * @param userId
      * @return
      */
     @Override
-    public List<ChatList> findListDisplay(String sessionId) {
-//        int sendId = (int) redisTemplate.opsForValue().get(sessionId);
-        int sendId = 1;
+    public List<ChatList> findListDisplay(int userId) {
         //读取该用户所有未删除的聊天框
-        List<ChatList> chatLists = privateMessageMapper.findListDisplay(sendId);
+        List<ChatList> chatLists = privateMessageMapper.findListDisplay(userId);
         //读入该用户未读取的条数
-        List<UnreadCount> unreadCountLists = privateMessageMapper.findUnreadCount(sendId);
+        List<UnreadCount> unreadCountLists = privateMessageMapper.findUnreadCount(userId);
         Map<Integer, Integer> unreadCountMaps = new HashMap<>();
         //转换为HashMap
         for (UnreadCount unreadCount : unreadCountLists) {

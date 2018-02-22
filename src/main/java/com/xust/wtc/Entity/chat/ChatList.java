@@ -10,6 +10,8 @@ public class ChatList {
 
     private String receiveName;
 
+    private String portrait;
+
     private int unreadCount;
 
     public ChatList() {
@@ -46,5 +48,13 @@ public class ChatList {
                 ", receiveName='" + receiveName + '\'' +
                 ", unreadCount=" + unreadCount +
                 '}';
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 }

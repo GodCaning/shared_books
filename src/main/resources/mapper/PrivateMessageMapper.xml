@@ -7,17 +7,20 @@
         <result property="id" column="private_message_id"/>
         <result property="sendId" column="send_id"/>
         <result property="sendName" column="send_name"/>
+        <result property="sendPortrait" column="send_portrait"/>
         <result property="receiveId" column="receive_id"/>
         <result property="receiveName" column="receive_name"/>
+        <result property="receivePortrait" column="receive_portrait"/>
         <result property="isSend" column="isReal"/>
-        <result property="content" column="message_content"/>
-        <result property="timestamp" column="create_date"/>
+        <result property="message" column="message_content"/>
+        <result property="displayDateTime" column="create_date" typeHandler="com.xust.wtc.typeHandle.TimestampDateTimeTypeHandler"/>
     </resultMap>
 
     <!--列表显示-->
     <resultMap id="chatList" type="com.xust.wtc.Entity.chat.ChatList">
         <result property="receiveId" column="receive_id"/>
         <result property="receiveName" column="person_name"/>
+        <result property="portrait" column="portrait"/>
     </resultMap>
 
     <!-- 未读情况 -->
@@ -27,8 +30,8 @@
     </resultMap>
 
     <sql id="sql">
-        private_message_id, send_id, s.person_name send_name,
-        receive_id, r.person_name receive_name, isReal,
+        private_message_id, send_id, s.person_name send_name, s.portrait send_portrait,
+        receive_id, r.person_name receive_name,r.portrait receive_portrait, isReal,
         message_content, ps.create_date create_date
     </sql>
 
@@ -69,7 +72,7 @@
 
     <!-- 查询列表显示情况 -->
     <select id="findListDisplay" parameterType="int" resultMap="chatList">
-        SELECT receive_id, person_name
+        SELECT receive_id, person_name, portrait
         FROM private_message ps JOIN person p ON ps.receive_id = p.person_id
         WHERE send_id = #{sendId} AND ps.status != 3
         GROUP BY receive_id;

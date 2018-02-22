@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface PrivateMessageService {
 
-    List<PrivateMessage> findPrivateMessageBySendIdAndReceiveId(String sessionId, int receiveId);
+    List<PrivateMessage> findPrivateMessageBySendIdAndReceiveId(int userId, int receiveId);
 
-    Result insertPrivateMessage(String sessionId, int receiveId, String content);
+    Result insertPrivateMessage(int userId, int receiveId, String content);
 
-    Result deleteMessage(String sessionId, int receiveId);
+    Result deleteMessage(int userId, int receiveId);
 
-    List<ChatList> findListDisplay(String sessionId);
+    List<ChatList> findListDisplay(int userId);
 }
