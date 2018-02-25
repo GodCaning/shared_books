@@ -10,115 +10,43 @@
     <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
 <body>
-
-<div class="chatContainer">
-    <div class="chatBtn">
-        <i class="iconfont icon-xiaoxi1"></i>
-    </div>
-    <div class="chat-message-num">10</div>
-    <div class="chatBox" ref="chatBox">
+<div class="chatContainer" id="chatPeo">
+    <div class="chatBox">
         <div class="chatBox-head">
-            <div class="chatBox-head-one" style="display: none;">
-                Conversations
-                <div class="chat-close" style="margin: 10px 10px 0 0;font-size: 14px">关闭</div>
-            </div>
             <div class="chatBox-head-two" style="display: block;">
-                <div class="chat-return">返回</div>
-                <div class="chat-people">
-                    <div class="ChatInfoHead">
-                        <img src="img/icon01.png" alt="头像">
-                    </div>
-                    <div class="ChatInfoName">自酌一杯酒</div>
+                <div class="chat-return"><a href="index.html" style="text-decoration: none;color: #FFFFFF;">返回</a></div>
+                <div class="chat-people" style="width: 280px;margin: 0 auto;text-align: center;">
+                    <div class="ChatInfoName">{{messages[0].receiveName}}</div>
                 </div>
-                <div class="chat-close">关闭</div>
             </div>
         </div>
         <div class="chatBox-info" style="height: 187px;">
             <div class="chatBox-kuang" ref="chatBoxkuang" style="height: 187px; display: block;">
                 <div class="chatBox-content" style="height: 141px;">
                     <div class="chatBox-content-demo" id="chatBox-content-demo" style="height: 141px;">
-
-                        <div class="clearfloat">
+                        <div class="clearfloat" v-for="chat in messages">
                             <div class="author-name">
-                                <small class="chat-date">2017-12-02 14:26:58</small>
+                                <small class="chat-date">{{chat.displayDateTime}}</small>
                             </div>
-                            <div class="left">
-                                <div class="chat-avatars"><img src="img/icon01.png" alt="头像"></div>
+                            <div class="left" v-if="chat.isSend == 0">
+                                <div class="chat-avatars"><img :src="chat.receivePortrait" alt="头像"></div>
                                 <div class="chat-message">
-                                    给你看张图
+                                    {{chat.message}}
+                                </div>
+                            </div>
+                            <div class="right" v-else>
+                                <div class="chat-avatars" style="float: right;"><img :src="chat.sendPortrait" alt="头像"></div>
+                                <div class="chat-message">
+                                    {{chat.message}}
                                 </div>
                             </div>
                         </div>
-
-                        <div class="clearfloat">
-                            <div class="author-name">
-                                <small class="chat-date">2017-12-02 14:26:58</small>
-                            </div>
-                            <div class="left">
-                                <div class="chat-avatars"><img src="img/icon01.png" alt="头像"></div>
-                                <div class="chat-message">
-                                    <img src="img/1.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clearfloat">
-                            <div class="author-name">
-                                <small class="chat-date">2017-12-02 14:26:58</small>
-                            </div>
-                            <div class="right">
-                                <div class="chat-message">嗯，适合做壁纸</div>
-                                <div class="chat-avatars"><img src="img/icon02.png" alt="头像"></div>
-                            </div>
-                        </div>
-
-                        <div class="clearfloat"><div class="author-name"><small class="chat-date">2017-12-02 14:26:58</small> </div> <div class="right"> <div class="chat-message"> <span class="emoji-picker-image" style="background-position: -71px -86px;"></span> </div> <div class="chat-avatars"><img src="img/icon01.png" alt="头像"></div> </div> </div><div class="clearfloat"><div class="author-name"><small class="chat-date">2017-12-02 14:26:58</small> </div> <div class="right"> <div class="chat-message"> 啊啊啊 </div> <div class="chat-avatars"><img src="img/icon01.png" alt="头像"></div> </div> </div></div>
                 </div>
                 <div class="chatBox-send">
                     <div class="div-textarea" contenteditable="true" style="width: 323px;"></div>
                     <div>
-                        <button id="chat-fasong" class="btn-default-styles"><i class="iconfont icon-fasong"></i>
+                        <button id="chat-fasong" class="btn-default-styles" @click="send()"><i class="iconfont icon-fasong"></i>
                         </button>
-                    </div>
-                    <div class="biaoqing-photo" style="display: none;">
-                        <ul>
-                            <li><span class="emoji-picker-image" style="background-position: -9px -18px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -40px -18px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -71px -18px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -102px -18px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -133px -18px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -164px -18px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -9px -52px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -40px -52px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -71px -52px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -102px -52px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -133px -52px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -164px -52px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -9px -86px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -40px -86px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -71px -86px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -102px -86px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -133px -86px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -164px -86px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -9px -120px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -40px -120px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -71px -120px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -102px -120px;"></span>
-                            </li>
-                            <li><span class="emoji-picker-image" style="background-position: -133px -120px;"></span>
-                            </li>
-                            <li><span class="emoji-picker-image" style="background-position: -164px -120px;"></span>
-                            </li>
-                            <li><span class="emoji-picker-image" style="background-position: -9px -154px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -40px -154px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -71px -154px;"></span></li>
-                            <li><span class="emoji-picker-image" style="background-position: -102px -154px;"></span>
-                            </li>
-                            <li><span class="emoji-picker-image" style="background-position: -133px -154px;"></span>
-                            </li>
-                            <li><span class="emoji-picker-image" style="background-position: -164px -154px;"></span>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -128,31 +56,111 @@
 
 
 <script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/vue.min.js"></script>
 <script>
+
+    window.onload = function () {
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            //console.log(query);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+            }
+            return(false);
+        }
+
+        var messageVue = new Vue({
+            el:'#chatPeo',
+            data:{
+                messages:''
+            },
+            created:function () {
+                $.ajax({
+                    url: '/findMessage/' + getQueryVariable('receiveid'),
+                    type: 'GET',
+                    dataType: 'json',
+                    cache:false,
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function (data) {
+                        //console.log(data);
+                        messageVue.messages= data;
+                        console.log((messageVue.messages));
+                    }
+                })
+            },
+            methods:{
+                send:function () {
+                    var textContent = $(".div-textarea").html().replace(/[\n\r]/g, '<br>');
+                    console.log(textContent);
+                    //console.log(getQueryVariable('receiveid'));
+                    var id = getQueryVariable('id');
+                    var receiveid = getQueryVariable('receiveid');
+                    console.log(receiveid)
+                    if (textContent != "") {
+                        var date = new Date();
+                        var time = date.getFullYear() + "-" +  (date.getMonth()+1)+ "-" +  date.getDate() + " " +  date.getHours()+ ":" + date.getMinutes() + ":" + date.getSeconds();
+                        $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
+                            "<div class=\"author-name\"><small class=\"chat-date\">"+time+"</small> </div> " +
+                            "<div class=\"right\"> <div class=\"chat-message\"> " + textContent + " </div> " +
+                            "<div class=\"chat-avatars\"><img src=\"img/icon01.png\" alt=\"头像\" /></div> </div> </div>");
+                        //封装消息
+                        var payload = JSON.stringify({ 'sendId' : id, 'receiveId' : receiveid, 'message' : textContent });
+                        stomp.send("/app/chat", {}, payload);
+
+                        //发送后清空输入框
+                        $(".div-textarea").html("");
+                        //聊天框默认最底部
+                        $(document).ready(function () {
+                            $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
+                        });
+                    }
+                    //console.log('gggg');
+                }
+            }
+        })
+
+    }
 
     //链接endpoint名称为 "/endpointChat" 的endpoint。
     var sock = new SockJS("/wtc");
     var stomp = Stomp.over(sock);
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        //console.log(query);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+    var id = getQueryVariable('id');
+    console.log('----------------------------------');
+    console.log(id);
     stomp.connect('guest', 'guest', function(frame) {
 
-        /**  订阅了/user/queue/notifications 发送的消息,这里雨在控制器的 convertAndSendToUser 定义的地址保持一致, 
+        /**  订阅了/user/queue/notifications 发送的消息,这里用在控制器的 convertAndSendToUser 定义的地址保持一致, 
          *  这里多用了一个/user,并且这个user 是必须的,使用user 才会发送消息到指定的用户。 
          *  */
-        stomp.subscribe('/user/' + 2 + '/message', handleNotification);
+        stomp.subscribe('/user/' + id + '/message', handleNotification);
     });
 
     function handleNotification(message) {
         console.log("收到消息----->" + message);
         console.log("收到消息----->" + message.body);
         var object = JSON.parse(message.body);
-        if (object.receiveId == 2) {     //当收到的消息中的接受方ID和当前用户ID一样时，刷新聊天框
-            console.log(object);
+        if (object.receiveId == id) {     //当收到的消息中的接受方ID和当前用户ID一样时，刷新聊天框
+            //console.log(object);
+            var date = new Date();
+            var time = date.getFullYear() + "-" +  (date.getMonth()+1)+ "-" +  date.getDate() + " " +  date.getHours()+ ":" + date.getMinutes() + ":" + date.getSeconds();
+            $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
+                "<div class=\"author-name\"><small class=\"chat-date\">"+ time+"</small> </div> " +
+                "<div class=\"left\"> <div class=\"chat-message\"> " + object.message + " </div> " +
+                "<div class=\"chat-avatars\"><img src=\"img/icon01.png\" alt=\"头像\" /></div> </div> </div>");
         }
-    }
-
-    function sendSpittle() {
-        var payload = JSON.stringify({ 'sendId' : 2, 'receiveId' : 5, 'message' : '22' });
-        stomp.send("/app/chat", {}, payload);//  发给给某个用户的ID_内容_cookie
     }
 
     screenFuc();
@@ -194,56 +202,6 @@
             $(this).css("padding", 0);
         }
     });
-
-
-    //打开/关闭聊天框
-    $(".chatBtn").click(function () {
-        $(".chatBox").toggle(10);
-    })
-    $(".chat-close").click(function () {
-        $(".chatBox").toggle(10);
-    })
-
-    //发送信息
-    $("#chat-fasong").click(function () {
-        var textContent = $(".div-textarea").html().replace(/[\n\r]/g, '<br>')
-        if (textContent != "") {
-            $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
-                "<div class=\"author-name\"><small class=\"chat-date\">2017-12-02 14:26:58</small> </div> " +
-                "<div class=\"right\"> <div class=\"chat-message\"> " + textContent + " </div> " +
-                "<div class=\"chat-avatars\"><img src=\"img/icon01.png\" alt=\"头像\" /></div> </div> </div>");
-            //封装消息
-            var payload = JSON.stringify({ 'sendId' : 2, 'receiveId' : 5, 'message' : textContent });
-            stomp.send("/app/chat", {}, payload);
-
-            //发送后清空输入框
-            $(".div-textarea").html("");
-            //聊天框默认最底部
-            $(document).ready(function () {
-                $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
-            });
-        }
-    });
-
-    $(".emoji-picker-image").each(function () {
-        $(this).click(function () {
-            var bq = $(this).parent().html();
-            console.log(bq)
-            $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
-                "<div class=\"author-name\"><small class=\"chat-date\">2017-12-02 14:26:58</small> </div> " +
-                "<div class=\"right\"> <div class=\"chat-message\"> " + bq + " </div> " +
-                "<div class=\"chat-avatars\"><img src=\"img/icon01.png\" alt=\"头像\" /></div> </div> </div>");
-            //发送后关闭表情框
-            $(".biaoqing-photo").toggle();
-            //聊天框默认最底部
-            $(document).ready(function () {
-                $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
-            });
-        })
-    });
-
 </script>
-
-
-
-</body></html>
+</body>
+</html>

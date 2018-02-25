@@ -13,6 +13,8 @@
 	<link rel="stylesheet" href="css/icons-extra.css">
 	<!--App自定义的css-->
 	<link rel="stylesheet" type="text/css" href="css/app.css"/>
+	<link rel="stylesheet" type="text/css" href="css/iconfont.css">
+	<link rel="stylesheet" type="text/css" href="css/chat.css">
 	<style>
 
 		.title{
@@ -89,11 +91,13 @@
 		}
 		#invent{
 			display: inherit;
-			position: absolute;
 		}
 		.comment{
 			display: inherit;
 			float: right;
+		}
+		.chat-list-people{
+			border-bottom: 1px solid #ddd;
 		}
 	</style>
 </head>
@@ -107,8 +111,8 @@
 		<span class="mui-icon mui-icon-home"></span>
 		<span class="mui-tab-label">首页</span>
 	</a>
-	<a class="mui-tab-item" href="#tabbar-with-chat">
-		<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+	<a class="mui-tab-item" href="#tabbar-with-chat" id="countmessage">
+		<span class="mui-icon mui-icon-email"><span class="mui-badge">{{count}}</span></span>
 		<span class="mui-tab-label">消息</span>
 	</a>
 	<a class="mui-tab-item" href="#tabbar-with-contact">
@@ -163,9 +167,19 @@
 
 
 	<div id="tabbar-with-chat" class="mui-control-content">
-		<ul id="chat" class="mui-table-view mui-table-view-chevron">
-			<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">{{messages.name}}</li>
-		</ul>
+		<!--<ul id="chat" class="mui-table-view mui-table-view-chevron">-->
+			<!--<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">{{messages.name}}</li>-->
+		<!--</ul>-->
+		<div class="chatBox-list" id="chatpeople"  style="height: 100%;background-color: #FFFFFF;overflow: hidden;">
+			<div class="chat-list-people" :receiveid="chat.receiveId"  v-for="chat in messages">
+				<div><img :src="chat.portrait" alt="头像"></div>
+				<div class="chat-name">
+					<p>{{chat.receiveName}}</p>
+				</div>
+				<div class="message-num" v-if="chat.unreadCount >0">{{chat.unreadCount}}</div>
+				<div v-else></div>
+			</div>
+		</div>
 	</div>
 	<div id="tabbar-with-contact" class="mui-control-content">
 
@@ -362,6 +376,49 @@
                 }
             }
         })
+        var vue2 = new Vue({
+            el:'#chatpeople',
+            data:{
+                messages:''
+            },
+            created:function(){
+                $.ajax({
+                    url: '/findChatList',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        vue2.messages  = data;
+                        //console.log(vue2.messages);
+                    }
+                })
+            }
+        })
+        var vue3 = new Vue({
+            el:'#countmessage',
+            data:{
+                messages:'',
+                count:''
+            },
+            created:function(){
+                $.ajax({
+                    url: '/findChatList',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        var chatMe =0;
+                        for(var i =0;i<data.length;i++){
+							chatMe += data[i].unreadCount;
+                        }
+                        vue3.count = chatMe;
+                        //console.log(vue3.count);
+                    }
+                })
+            }
+        })
         //评论
         $('div#tabbar-with-contact').on('click','div.comment',function () {
             //console.log('sdsfsdf')
@@ -377,6 +434,13 @@
             console.log(ID);
             window.location.href = 'invent.html?id='+ ID;
         })
+		//聊天
+		$('div#chatpeople').on('click','div.chat-list-people',function () {
+			console.log(vue.messages.id);
+            var receiveId = $(this).attr('receiveid');
+            console.log(receiveId);
+            window.location.href = 'chat2.html?id='+ vue.messages.id + '&receiveid=' + receiveId;
+        })
         // $('div#comment').on('click','div',function () {
         // // var bookID = $(this).attr('bookid');
         // // window.location.href = 'mybookmessage.html?id='+ bookID;
@@ -385,27 +449,6 @@
         // $('.comment').click(function () {
         // 	console.log('dsfsdfsd');
         //     })
-
-        var vue2 = new Vue({
-            el:'#chat',
-            data:{
-                messages:''
-            },
-            created:function(){
-                $.ajax({
-                    url: '/loginInfo',
-                    type: 'GET',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    accept: 'application/json',
-                    success: function(data){
-                        vue2.messages  = data;
-                        //console.log(vue2.messages);
-                    }
-                })
-            },
-        })
-
         //搜索书籍
         $('#searchbook').click(function () {
             bookVue.show = false;
