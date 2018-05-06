@@ -184,13 +184,13 @@
                     console.log(receiveId);
                     console.log('----------------');
                     console.log(userId);
-                    if(receiveId === userId){
-                        mui.toast('不能和自己进行交易');
-                        return false;
-					}else{
-                        window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
-					}
-                    //window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
+                    // if(receiveId === userId){
+                     //    mui.toast('不能和自己进行交易');
+                     //    return false;
+					// }else{
+                     //    window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
+					// }
+                    window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
                 })
 
 			}
