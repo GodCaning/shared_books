@@ -2,9 +2,11 @@ package com.xust.wtc.Controller.chat;
 
 import com.xust.wtc.Entity.chat.ChatList;
 import com.xust.wtc.Entity.chat.Message;
+import com.xust.wtc.Entity.chat.PersonalPM;
 import com.xust.wtc.Entity.chat.PrivateMessage;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.chat.PrivateMessageService;
+import com.xust.wtc.Service.user.UserService;
 import com.xust.wtc.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,9 @@ import java.util.List;
 public class PrivateMessageController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private PrivateMessageService privateMessageService;
 
     @Autowired
@@ -40,13 +45,12 @@ public class PrivateMessageController {
      * @return
      */
     @GetMapping(value = "/findMessage/{id}", consumes = "application/json", produces = "application/json")
-    public List<PrivateMessage> findPrivateMessageBySendIdAndReceiveId(@PathVariable("id") int receiveId, HttpSession session) {
+    public PersonalPM findPrivateMessageBySendIdAndReceiveId(@PathVariable("id") int receiveId, HttpSession session) {
+        PersonalPM personalPM = new PersonalPM();
         int userId = Utils.getUserId(session.getId());
-        List<PrivateMessage> list = privateMessageService.findPrivateMessageBySendIdAndReceiveId(userId, receiveId);
-        for (PrivateMessage p : list) {
-            System.out.println(p);
-        }
-        return list;
+        personalPM.setPrivateMessageList(privateMessageService.findPrivateMessageBySendIdAndReceiveId(userId, receiveId));
+        personalPM.setReceiveName(userService.findUser(receiveId).getName());
+        return personalPM;
     }
 
     /**
@@ -55,7 +59,6 @@ public class PrivateMessageController {
      */
     @MessageMapping(value = "/chat")
     public void sendMessage(Message message) {
-        System.out.println(message);
         privateMessageService.insertPrivateMessage(message.getSendId(), message.getReceiveId(), message.getMessage());
         simpMessageSendingOperations.convertAndSendToUser(String.valueOf(message.getReceiveId()), "/message", message);
     }
