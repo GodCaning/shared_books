@@ -33,7 +33,7 @@
 			    position: relative;
 			    left: -25px;
 			}
-			#btn,#btn1,#btn2{
+			#btn,#btn1,#btn2,#seller{
 				float: right;
 			    width: 100px;
 			    margin-top: -5px;
@@ -76,6 +76,7 @@
 				    <li class="newinvent" v-for="invent in messages">
 				    	<img :src="invent.portrait" />
 				        <p style="color: #007aff;">{{invent.personName}}</p>
+						<button id="seller" class="seller" type="button" class="mui-btn mui-btn-primary mui-btn-outlined" :personid="invent.personID" v-if="invent.status == 1">联系卖家</button>
 				        <button id="btn" class="btn" :stockid="invent.stockID" :personid="invent.personID" type="button" class="mui-btn mui-btn-primary mui-btn-outlined" v-if="invent.status == 1">
 							   未出借
 						</button>
@@ -106,7 +107,6 @@
                     }
                     return(false);
                 }
-
                 var vue = new Vue({
                     el:'#bookslist',
                     data:{
@@ -143,7 +143,7 @@
                             accept: 'application/json',
                             success: function (data) {
                                 invvue.messages= data;
-                                console.log(invvue.messages);
+                                //console.log(invvue.messages);
                             }
                         })
                     }
@@ -175,6 +175,22 @@
                         }
                     })
 
+                })
+
+				//联系卖家
+                $('div#invent').on('click','button.seller',function () {
+                    var receiveId = $(this).attr('personid');
+                    var userId = getQueryVariable('userid');
+                    console.log(receiveId);
+                    console.log('----------------');
+                    console.log(userId);
+                    if(receiveId === userId){
+                        mui.toast('不能和自己进行交易');
+                        return false;
+					}else{
+                        window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
+					}
+                    //window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
                 })
 
 			}

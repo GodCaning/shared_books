@@ -112,7 +112,10 @@
 		<span class="mui-tab-label">首页</span>
 	</a>
 	<a class="mui-tab-item" href="#tabbar-with-chat" id="countmessage">
-		<span class="mui-icon mui-icon-email"><span class="mui-badge">{{count}}</span></span>
+		<span class="mui-icon mui-icon-email">
+			<span class="mui-badge" v-if="count>0">{{count}}</span>
+			<span class="mui-badge" v-else></span>
+		</span>
 		<span class="mui-tab-label">消息</span>
 	</a>
 	<a class="mui-tab-item" href="#tabbar-with-contact">
@@ -431,8 +434,9 @@
         $('div#tabbar-with-contact').on('click','div.invent',function () {
             //console.log('sdsfsdf')
             var ID = $(this).attr('bookid');
+            var userID = vue.messages.id;
             console.log(ID);
-            window.location.href = 'invent.html?id='+ ID;
+            window.location.href = 'invent.html?id='+ ID+ '&userid='+ userID;
         })
 		//聊天
 		$('div#chatpeople').on('click','div.chat-list-people',function () {

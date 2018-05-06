@@ -16,7 +16,8 @@
             <div class="chatBox-head-two" style="display: block;">
                 <div class="chat-return"><a href="index.html" style="text-decoration: none;color: #FFFFFF;">返回</a></div>
                 <div class="chat-people" style="width: 280px;margin: 0 auto;text-align: center;">
-                    <div class="ChatInfoName">{{messages[0].receiveName}}</div>
+                    <div class="ChatInfoName">{{messages.receiveName}}</div>
+                    <!--<div class="ChatInfoName">promiselw</div>-->
                 </div>
             </div>
         </div>
@@ -24,18 +25,21 @@
             <div class="chatBox-kuang" ref="chatBoxkuang" style="height: 187px; display: block;">
                 <div class="chatBox-content" style="height: 141px;">
                     <div class="chatBox-content-demo" id="chatBox-content-demo" style="height: 141px;">
-                        <div class="clearfloat" v-for="chat in messages">
+                        <div class="clearfloat" v-for="chat in messages.privateMessageList">
                             <div class="author-name">
                                 <small class="chat-date">{{chat.displayDateTime}}</small>
+                                <!--<small class="chat-date">2017-5-5</small>-->
                             </div>
                             <div class="left" v-if="chat.isSend == 0">
                                 <div class="chat-avatars"><img :src="chat.receivePortrait" alt="头像"></div>
+                                <!--<div class="chat-avatars"><img src=""  alt="头像"></div>-->
                                 <div class="chat-message">
                                     {{chat.message}}
                                 </div>
                             </div>
                             <div class="right" v-else>
                                 <div class="chat-avatars" style="float: right;"><img :src="chat.sendPortrait" alt="头像"></div>
+                                <!--<div class="chat-avatars" style="float: right;"><img src="" alt="头像"></div>-->
                                 <div class="chat-message">
                                     {{chat.message}}
                                 </div>
@@ -94,11 +98,11 @@
             methods:{
                 send:function () {
                     var textContent = $(".div-textarea").html().replace(/[\n\r]/g, '<br>');
-                    console.log(textContent);
+                    //console.log(textContent);
                     //console.log(getQueryVariable('receiveid'));
                     var id = getQueryVariable('id');
                     var receiveid = getQueryVariable('receiveid');
-                    console.log(receiveid)
+                    //console.log(receiveid)
                     if (textContent != "") {
                         var date = new Date();
                         var time = date.getFullYear() + "-" +  (date.getMonth()+1)+ "-" +  date.getDate() + " " +  date.getHours()+ ":" + date.getMinutes() + ":" + date.getSeconds();
@@ -138,8 +142,8 @@
         return(false);
     }
     var id = getQueryVariable('id');
-    console.log('----------------------------------');
-    console.log(id);
+    //console.log('----------------------------------');
+    //console.log(id);
     stomp.connect('guest', 'guest', function(frame) {
 
         /**  订阅了/user/queue/notifications 发送的消息,这里用在控制器的 convertAndSendToUser 定义的地址保持一致, 
