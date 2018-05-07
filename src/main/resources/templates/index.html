@@ -214,10 +214,10 @@
 	</div>
 	<div id="tabbar-with-map" class="mui-control-content">
 		<ul class="mui-table-view mui-table-view-chevron">
-			<li class="mui-table-view-cell mui-media">
+			<li id="usermessage" class="mui-table-view-cell mui-media">
 				<a class="mui-navigate-right" href="usermessage.html">
-					<img class="mui-media-object mui-pull-left head-img" id="head-img" src="img/logo.jpg">
-					<div id="usermessage" class="mui-media-body">
+					<img class="mui-media-object mui-pull-left head-img" id="head-img" :src="messages.portrait" style="border-radius: 50%;">
+					<div class="mui-media-body">
 						{{messages.name}}
 						<p class='mui-ellipsis'>账号:{{messages.id}}</p>
 					</div>
@@ -434,9 +434,8 @@
         $('div#tabbar-with-contact').on('click','div.invent',function () {
             //console.log('sdsfsdf')
             var ID = $(this).attr('bookid');
-            var userID = vue.messages.id;
             console.log(ID);
-            window.location.href = 'invent.html?id='+ ID+ '&userid='+ userID;
+            window.location.href = 'invent.html?id='+ ID;
         })
 		//聊天
 		$('div#chatpeople').on('click','div.chat-list-people',function () {

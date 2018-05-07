@@ -9,9 +9,15 @@
 		<style>
 			.mui-navigate-right:after, .mui-push-right:after {
 				right: 0px;
-				top:100px;
+				top:110px;
 				content: '\e583';
 			}
+			#head-img1{
+				width: 20%;
+				height: 60%;
+				border-radius: 70%;
+			}
+
 		</style>
 
 	</head>
@@ -21,7 +27,7 @@
 		<div id="account" class="mui-page">
 			<div class="mui-navbar-inner mui-bar mui-bar-nav">
 				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
-					<span class="mui-icon mui-icon-left-nav"></span>
+					<a href="index.html">返回</a>
 				</button>
 				<h1 class="mui-center mui-title">我的信息</h1>
 			</div>
@@ -30,10 +36,10 @@
 					<div id="mymessage" class="mui-scroll">
 						<ul class="mui-table-view">
 							<li class="mui-table-view-cell">
-								<a id="head" class="mui-navigate-right">
+								<a id="head" class="mui-navigate-right" href="uploadimage.html">
 									<span style="display: block;margin-top: 80px;float: left;">头像</span>
-								<span class="mui-pull-right head" style="margin-top: 50px;margin-right: -70px;">
-									<img class="head-img mui-action-preview" id="head-img1" src="img/logo.jpg" style="width: 50%; height: 50%; "/>
+								<span class="mui-pull-right head" style="margin-top: 70px;margin-right: -200px;width: 300px;">
+									<img class="head-img mui-action-preview" id="head-img1" :src="messages.portrait" style="width: 30%; height: 60%; border-radius: 60% "/>
 								</span>
 							    </a>
 							</li>
