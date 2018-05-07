@@ -136,7 +136,7 @@ public class UserController {
      * 更新用户头像
      * @return
      */
-    @PutMapping(value = "/updatePortrait")
+    @PutMapping(value = "/updatePortrait", consumes = "application/json", produces = "application/json")
     public Result updateUserPortrait(@RequestBody String portrait,
                                      HttpSession session) {
         int userId = Utils.getUserId(session.getId());
