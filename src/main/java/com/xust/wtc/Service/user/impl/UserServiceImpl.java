@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result modifyPortrait(String portrait, int id) {
         Result result = new Result();
+        portrait = "http://on9arvrjb.bkt.clouddn.com/" + portrait;
         if (userMapper.modifyPortrait(portrait, id) > 0) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改成功");

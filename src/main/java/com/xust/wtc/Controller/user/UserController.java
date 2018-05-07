@@ -59,10 +59,7 @@ public class UserController {
      */
     @GetMapping(value = "/sendEmail", consumes = "application/json", produces = "application/json")
     public Result sendEmail(@RequestParam String loginName, @RequestParam String email) {
-        long a = System.currentTimeMillis();
         Result s = userService.sendEmail(loginName, email);
-        long b = System.currentTimeMillis();
-        System.out.println("需要时间---------------》" + (b - a));
         return s;
     }
 
@@ -93,22 +90,18 @@ public class UserController {
      * @param person
      * @return
      */
-    @PutMapping(value = "/updateUserInfo/{id}", consumes = "application/json", produces = "application/json")
-    public Result updateUserInfo(@PathVariable("id") int id,@RequestBody Person person) {
-        person.setId(id);
+    @PutMapping(value = "/updateUserInfo", consumes = "application/json", produces = "application/json")
+    public Result updateUserInfo(@RequestBody Person person, HttpSession session) {
+        person.setId(Utils.getUserId(session.getId()));
         return userService.updateUserInfo(person);
     }
 
     /**
      * 注册接口
-     * @param httpServletRequest
-     * @param code
-     * @param person
-     * @param bindingResult
      * @return
      */
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
-    public Result register(HttpServletRequest httpServletRequest,
+    public Result register(HttpServletRequest request,
                            @RequestParam(value = "code") String code,
                            @Validated({Person.Register.class}) @RequestBody() Person person, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -118,7 +111,7 @@ public class UserController {
             result.setContent("注册参数不正确");
             return result;
         }
-        Result result = isTrueCode(httpServletRequest, code);
+        Result result = isTrueCode(request, code);
         if (result != null) {
             return result;
         }
@@ -128,7 +121,7 @@ public class UserController {
     /**
      * 获取七牛云上传图片授权码
      */
-    @GetMapping(value = "/updateCode", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/updateCode")
     public String updateCode() {
         String accessKey = "RRyC_e6AmR_7u7MKtQNJNkm4QfTvZs7n--suNnB5";
         String secretKey = "-L3t_xoFd7JvuNGJXQ0G6yU3IaCzXwj6cLmqA7mh";
@@ -141,19 +134,16 @@ public class UserController {
 
     /**
      * 更新用户头像
-     * @param person
      * @return
      */
     @PutMapping(value = "/updatePortrait", consumes = "application/json", produces = "application/json")
-    public Result updateUserPortrait(@RequestBody Person person) {
-        return userService.modifyPortrait(person.getPortrait(), person.getId());
+    public Result updateUserPortrait(@RequestParam(value = "portrait") String portrait, HttpSession session) {
+        int userId = Utils.getUserId(session.getId());
+        return userService.modifyPortrait(portrait, userId);
     }
 
     /**
      * 登录
-     * @param httpServletRequest
-     * @param //code
-     * @param person
      * @return
      */
     @PostMapping(value = "/myLogin", consumes = "application/json", produces = "application/json")
