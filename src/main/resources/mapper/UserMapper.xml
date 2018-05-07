@@ -56,19 +56,16 @@
     <update id="updateUserInfo" parameterType="com.xust.wtc.Entity.user.Person">
         UPDATE person
         <set>
-            <if test="name != null AND name != ''">
+            <if test="name != null and name != ''">
                 person_name = #{name}
             </if>
-            <if test="status != null AND status != ''">
+            <if test="status != null and status != ''">
                 status = #{status}
             </if>
-            <if test="balance != null AND balance != ''">
-                balance = #{balance}
-            </if>
-            <if test="gender != null AND gender != ''">
+            <if test="gender != null and gender != ''">
                 gender = #{gender}
             </if>
-            <if test="autograph != null AND autograph != ''">
+            <if test="autograph != null and autograph != ''">
                 autograph = #{autograph}
             </if>
         </set>
