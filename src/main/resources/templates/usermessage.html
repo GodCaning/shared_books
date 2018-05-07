@@ -16,7 +16,12 @@
 				width: 50px;
 				height: 50px;
 			}
-
+            #usercontent{
+				width: 400px;
+				height: 150px;
+				border: 1px solid #ddd;
+				background-color: #fff;
+			}
 		</style>
 
 	</head>
@@ -59,7 +64,11 @@
 								<a>个性签名<span class="mui-pull-right">{{messages.auto}}</span></a>
 							</li>
 						</ul>
+						<div class="mui-input-row" id="usercontent" style="margin: 0px 6px;">
+							{{messages.autograph}}
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -85,11 +94,39 @@
                             accept: 'application/json',
                             success: function(data){
                                 vue.messages  = data;
-                                //console.log(vue.messages);
+                                console.log(vue.messages);
                             }
                         })
                     },
                 })
+
+				//编辑个性签名
+				$('#usercontent').on('click',function () {
+					//console.log('hello');
+                    var userContent = $('#usercontent')[0].innerText;
+                    //console.log(userContent);
+                    var btnArray = ['取消', '确定'];
+                    mui.prompt('请修改您的个性签名：', userContent, '签名修改', btnArray, function(e) {
+                        if (e.index == 1) {
+                            //console.log(e.value);
+							var newAutograph = e.value;
+                            $.ajax({
+                                url: '/updateUserInfo',
+                                type: 'PUT',
+                                dataType: 'json',
+								data: JSON.stringify({autograph:newAutograph}),
+                                contentType: 'application/json',
+                                accept: 'application/json',
+                                success: function(data){
+                                    console.log(data);
+                                }
+                            })
+                        } else {
+                            mui.toast('修改失败');
+                        }
+                    })
+                })
+
 			}
 
 			mui.init({
