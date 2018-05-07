@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="gb2312">
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/icons-extra.css">
+</head>
+<style>
+    #imagemessage{
+        margin-top: 50px;
+    }
+</style>
+<body>
+<div class="mui-navbar-inner mui-bar mui-bar-nav">
+    <button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+        <a href="usermessage.html">返回</a>
+    </button>
+    <h1 class="mui-center mui-title">上传图像</h1>
+</div>
+<div id="imagemessage">
+    <form id="uploadForm">
+        <input name="token" type="hidden" id="token">
+        <input name="file" type="file" />
+        <input type="button" id="submit" value="上传"/>
+    </form>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/mui.enterfocus.js"></script>
+<script src="js/app.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script>
+
+    window.onload = function () {
+        var vue = new Vue({
+            el:'#uploadForm',
+            data:{
+                messages:''
+            },
+            created:function(){
+                $.ajax({
+                    url: '/updateCode',
+                    type: 'GET',
+                    dataType: 'text',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        console.log(data);
+                        $('#token').attr('value',data);
+                    }
+                })
+            },
+        })
+
+        $('input[type="file"]').on('change',function () {
+            var formData = new FormData($('#uploadForm')[0]);
+            var file = this.files[0];
+            console.log(file);
+            if(!/image\/\w+/.test(file.type)){
+                mui.toast('文件必须为图片');
+                return false;
+            }else{
+                $.ajax({
+                    url: 'http://up-z2.qiniu.com/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    accept: false,
+                    success: function(data){
+                        console.log(data);
+                        var hash = data.hash;
+                        $('#submit').click(function () {
+                            //console.log('dsdsadasdas');
+                            $.ajax({
+                                url: '/updatePortrait',
+                                type: 'PUT',
+                                dataType: 'json',
+                                data: JSON.stringify({'portrait':hash}),
+                                contentType: 'application/json',
+                                accept: 'application/json',
+                                success: function(data){
+                                    console.log(data);
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+
+        })
+    }
+</script>
+</body>
+</html>
