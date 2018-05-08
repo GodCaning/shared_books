@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" class="feedback">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>问题反馈</title>
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/feedback.css" />
+	</head>
+    <style>
+		.submitbtn{
+			display: block;
+			width: 300px;
+			height: 40px;
+			margin: 0 auto;
+			color: #fff;
+			background-color: #007aff;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+				<a href="index.html">返回</a>
+			</button>
+			<h1 class="mui-title">我要反馈</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<div class="mui-inline">问题和意见</div>
+				<a class="mui-pull-right mui-inline" href="#popover">
+					快捷输入
+					<span class="mui-icon mui-icon-arrowdown"></span>
+				</a>
+				<!--快捷输入具体内容，开发者可自己替换常用语-->
+				<div id="popover" class="mui-popover">
+					<div class="mui-popover-arrow"></div>
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul class="mui-table-view">
+								<!--仅流应用环境下显示-->
+								<li class="mui-table-view-cell stream">
+									<a href="#">桌面快捷方式创建失败</a>
+								</li>
+								<li class="mui-table-view-cell"><a href="#">界面显示错乱</a></li>
+								<li class="mui-table-view-cell"><a href="#">启动缓慢，卡出翔了</a></li>
+								<li class="mui-table-view-cell"><a href="#">偶发性崩溃</a></li>
+								<li class="mui-table-view-cell"><a href="#">UI无法直视，丑哭了</a></li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="row mui-input-row">
+				<textarea id='question' class="mui-input-clear question" placeholder="请详细描述你的问题和意见..."></textarea>
+			</div>
+			<p>QQ/手机号</p>
+			<div class="mui-input-row">
+				<input id='contact' type="text" class="mui-input-clear contact" placeholder="(选填,方便我们联系你 )" />
+			</div>
+			<div class="mui-input-row">
+				<button id="submit" class="submitbtn">提交</button>
+			</div>
+
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/feedback.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			window.onload = function () {
+				$('#submit').on('click',function () {
+					var question = $('#question').val().trim();
+					var contact = $('#contact').val().trim();
+					console.log(question,contact);
+					if(question == ""){
+					    mui.toast('内容不能为空');
+					    return false;
+					}else if(contact == ''){
+					    mui.toast('联系信息不能为空');
+					    return false;
+					}else{
+                        $.ajax({
+                            url: '/feedback',
+                            type: 'POST',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            data : JSON.stringify({'feedbackContent':question,'feedbackContact':contact}),
+                            success: function(data){
+                                console.log(data);
+                            }
+                        });
+					}
+                })
+            }
+			mui.init();
+			mui('.mui-scroll-wrapper').scroll();
+		</script>
+	</body>
+
+</html>
