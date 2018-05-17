@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>共享图书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link href="css/mui.min.css" rel="stylesheet" />
+  </head>
+  <style>
+      #btn{
+          display: block;
+          border: none;
+          background-color: #FFFFFF;
+          color: #000000;
+          text-align: center;
+          margin: 0 auto;
+      }
+      #btn1{
+          display: block;
+          border: none;
+          background-color: #FFFFFF;
+          color: #000000;
+          text-align: center;
+          margin: 0 auto;
+          padding-left: 26px;
+          padding-right: 26px;
+      }
+  </style>
+  <body>
+  	<div id="account" class="mui-page">
+  		<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span>
+						<a href="index.html">返回</a>
+					</span>
+				</button>
+				<h1 class="mui-center mui-title">手动上传书籍</h1>
+        </div>
+
+    <section id="container" class="container">
+        <form class="mui-input-group">
+            <div class="mui-input-row">
+                <label>条形码</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入书籍条形码" id="mycodes">
+            </div>
+            <div class="mui-button-row">
+                <button type="button" class="mui-btn mui-btn-primary" id="btn">查阅</button>
+            </div>
+        </form>
+      <div id="result_strip">
+        <ul class="thumbnails"></ul>
+        <ul class="collector"></ul>
+      </div>
+        <div id="bookmessage" style="display: none;">
+            <img :src="messages.image" style="display: block; margin: 12px auto; width: 320px; height: 520px; margin-left: -20px">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">作者：{{messages.author}}</li>
+                <li class="mui-table-view-cell">书名：{{messages.title}}</li>
+                <li class="mui-table-view-cell">简介：{{messages.summary}}</li>
+                <li class="mui-table-view-cell">出版社：{{messages.publisher}}</li>
+                <li class="mui-table-view-cell">价格：{{messages.price}}</li>
+            </ul>
+        </div>
+        <button type="button" class="mui-btn mui-btn-primary" id="handup" style="width: 280px">上传</button>
+      <div id="interactive" class="viewport"></div>
+    </section>
+  	</div>
+    <script src="js/mui.min.js"></script>
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script>
+        $(function() {
+
+            $('#btn').click(function(){
+                var check = true;
+                var code = $('#mycodes').val();
+                if (code == '') {
+                    mui.toast('条形码不能为空!');
+                    check = false;
+                }
+
+                if(check){
+                    $('#bookmessage').show();
+                    var bookVue = new Vue({
+                        el:'#bookmessage',
+                        data:{
+                            messages:''
+                        },
+                        created:function () {
+                            $.ajax({
+                                url: "/queryisbn?isbn=" + code,
+                                type: "GET",
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                accept: 'application/json',
+                                cache:'false',
+                                success: function (result) {
+                                    bookVue.messages = result.content;
+                                }
+
+                            });
+                        }
+                    })
+                }
+
+            })
+
+            $('#handup').click(function () {
+                var check = true;
+                var code = $('#mycodes').val();
+                if (code == '') {
+                    mui.toast('条形码不能为空!');
+                    check = false;
+                }
+                if (check) {
+                    $.ajax({
+                        url: "/addBook",
+                        type: "post",
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        data:code,
+                        success: function (result) {
+                            mui.toast("上传成功");
+                        }
+
+                    })
+                }
+            })
+
+        });
+
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//testMybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xust.wtc.Dao.admin.AdminMapper">
+
+    <resultMap id="bookInfo" type="com.xust.wtc.Entity.admin.BookInfo">
+        <result property="bookStockId" column="stock_id"/>
+        <result property="bookName" column="title"/>
+        <result property="author" column="author"/>
+        <result property="userName" column="person_name"/>
+        <result property="stockStatus" column="status" typeHandler="com.xust.wtc.typeHandle.BookBorrowSituationTypeHandler"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="feedbackInfo" type="com.xust.wtc.Entity.chat.Feedback">
+        <result property="personName" column="person_name"/>
+        <result property="feedbackContent" column="feedback_content"/>
+        <result property="feedbackContact" column="feedback_contact"/>
+    </resultMap>
+
+    <!-- 书籍显示 -->
+    <select id="findBookInfo" resultMap="bookInfo">
+        SELECT stock.stock_id, person_name, title, author, stock.status
+        FROM person
+        JOIN stock ON person.person_id = stock.person_id
+        JOIN book ON stock.book_id = book.book_id
+        ORDER BY stock.stock_id DESC
+    </select>
+
+    <select id="findFeedbackInfo" resultMap="feedbackInfo">
+        SELECT person_name, feedback_content, feedback_contact
+        FROM feedback JOIN person ON feedback.person_id = person.person_id
+        ORDER BY feedback.create_date DESC
+    </select>
+
+    <!-- 修改库存状态为借出 -->
+    <update id="updateStockStatus" parameterType="int">
+        UPDATE stock
+        SET status = 3
+        WHERE stock.stock_id = #{id}
+    </update>
+
+    <!--删除库存书籍-->
+    <update id="deleteStock" parameterType="int">
+        UPDATE stock
+        SET status = 0
+        WHERE stock.stock_id = #{id}
+    </update>
+
+</mapper>

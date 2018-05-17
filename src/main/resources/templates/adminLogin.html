@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+    <meta charset="utf-8" />
+    <title>共享图书-管理员登录界面</title>
+    <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="css/admin-bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css" />
+    <link rel="stylesheet" href="css/admin-app.css" type="text/css" />
+</head>
+<body background="img/bodybg.jpg">
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp ">
+    <div class="container aside-xl" style="margin-top: 48px;">
+        <a class="navbar-brand block"><span class="h1 font-bold" style="color: #ffffff">管理员后台登录</span></a>
+        <section class="m-b-lg">
+            <header class="wrapper text-center">
+                <strong class="text-sucess">管理员登录</strong>
+            </header>
+            <form>
+                <div class="form-group">
+                    <input type="username" name="username" id="username" placeholder="用户名" class="form-control  input-lg text-center no-border">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" id="password" placeholder="密码" class="form-control  input-lg text-center no-border">
+                </div>
+
+            </form>
+            <button class="btn btn-lg btn-danger lt b-white b-2x btn-block" onclick="myLogin()">
+                <i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">登录</span>
+            </button>
+        </section>
+    </div>
+</section>
+<footer id="footer">
+    <div class="text-center padder">
+
+    </div>
+</footer>
+<script src="js/mui.min.js"></script>
+<script src="js/mui.enterfocus.js"></script>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script>
+    function myLogin() {
+
+        var loginName = $('#username').val();
+        var loginPasswd = $('#password').val();
+        var check = true;
+
+        if(loginName == '') {
+            mui.toast('用户名不能为空!!');
+            check = false;
+        } else if(loginPasswd == '') {
+            mui.toast('密码不能为空');
+            check = false;
+        }
+        if(check){
+            $.ajax({
+                url: '/adminLo',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                accept: 'application/json',
+                data : JSON.stringify({'loginName':loginName,'loginPasswd':loginPasswd}),
+                success: function(data){
+                    if(data.status == 1) {
+                        window.location.href="adminIndex.html";
+                    } else {
+                        mui.toast(data.content);
+                    }
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

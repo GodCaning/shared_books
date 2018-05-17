@@ -1,9 +1,10 @@
 spring:
   #数据库连接池配置
   datasource:
-    url: jdbc:mysql://spiritwtc.mysql.rds.aliyuncs.com:3306/sharedBooks?useUnicode=true&characterEncoding=utf-8
+#    url: jdbc:mysql://spiritwtc.mysql.rds.aliyuncs.com:3306/sharedBooks?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3306/sharedBooks?useUnicode=true&characterEncoding=utf-8
     username: root
-    password:
+    password: wangcan123
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
 #    filters: stat
@@ -24,7 +25,7 @@ spring:
   redis:
     host: localhost
     port: 6379
-    password:
+#    password: wangcan123
 
 
   data:
@@ -33,7 +34,7 @@ spring:
       cluster-nodes: localhost:9300
 
 #server:
-#  port: 8090
+#  port: 8080
 #  ssl:
 #    key-store: keystore.p12
 #    key-store-password: wangcan123
