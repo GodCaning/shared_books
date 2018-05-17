@@ -32,11 +32,11 @@ public class ShiroRealm extends AuthorizingRealm {
 
 		//PrimaryPrincipal设为当前用户id，方便直接以session的形式获取Subject，进而获取登录的ID
 		//后续通过获取ID直接运行用户的操作
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(person.getId(), person.getLoginPasswd(), getName());
+		SimpleAuthenticationInfo info =
+				new SimpleAuthenticationInfo(person.getId(), person.getLoginPasswd(), getName());
 
 		return info;
 	}
-
 
 	//授权会被 shiro 回调的方法
 	@Override
@@ -45,12 +45,10 @@ public class ShiroRealm extends AuthorizingRealm {
 		//1. 从 PrincipalCollection 中来获取登录用户的信息
 		Object principal = principals.getPrimaryPrincipal();
 		
-		//2. 利用登录的用户的信息来用户当前用户的角色或权限(需要查询数据库)
-		Set<String> roles = new HashSet<String>();
-		if("user1".equals(principal)){
-			roles.add("user1");
-		} else if("user2".equals(principal)) {
-			roles.add("user2");
+		//2. 利用登录的用户的信息来用户当前用户的角色或权限
+		Set<String> roles = new HashSet<>();
+		if ("admin".equals(principal)) {
+			roles.add("admin");
 		}
 		
 		//3. 创建 SimpleAuthorizationInfo, 并设置其 reles 属性.

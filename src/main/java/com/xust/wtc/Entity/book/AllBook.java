@@ -12,6 +12,7 @@ public class AllBook {
     private int pageNum; //当前页的坐标
     private int pageSize;
     private List<Book> list;
+    private int cate;
 
     public AllBook() {
     }
@@ -62,5 +63,13 @@ public class AllBook {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public int getCate() {
+        return cate;
+    }
+
+    public void setCate(int cate) {
+        this.cate = cate;
     }
 }

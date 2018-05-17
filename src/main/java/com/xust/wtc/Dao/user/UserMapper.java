@@ -53,4 +53,6 @@ public interface UserMapper {
      * @return
      */
     int modifyPortrait(@Param("portrait") String portrait, @Param("id") int id);
+
+    int insertFeedback(@Param("feedbackContent") String feedbackContent, @Param("feedbackContact") String feedbackContact, @Param("id") int id);
 }

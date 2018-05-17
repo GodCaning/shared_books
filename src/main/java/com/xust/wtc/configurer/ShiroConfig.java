@@ -154,45 +154,4 @@ public class ShiroConfig {
     }
 
 
-//    @Bean
-//    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-//        DefaultAdvisorAutoProxyCreator daapc = new DefaultAdvisorAutoProxyCreator();
-//        daapc.setProxyTargetClass(true);
-//        return daapc;
-//    }
-//
-//    @Bean
-//    public JCaptchaValidateFilter jCaptchaValidateFilter() {
-//        JCaptchaValidateFilter jCaptchaValidateFilter = new JCaptchaValidateFilter();
-//        jCaptchaValidateFilter.setFailureKeyAttribute("shiroLoginFailure");
-//        jCaptchaValidateFilter.setJcaptchaEbabled(true);
-//        jCaptchaValidateFilter.setJcaptchaParam("jcaptchaCode");
-//        return jCaptchaValidateFilter;
-//    }
-//
-//    @Bean
-//    public ShiroFilterFactoryBean getShiroFilterFactoryBean() {
-//        //配置路径
-//        Map<String, String> filterChainDefinitionMap = new HashMap<>();
-//        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-//        shiroFilterFactoryBean.setSecurityManager(securityManager());
-//
-//        shiroFilterFactoryBean.setLoginUrl("");
-//        shiroFilterFactoryBean.setUnauthorizedUrl("");
-//
-//
-//        filterChainDefinitionMap.put("/jujue", "authc");
-//        filterChainDefinitionMap.put("**", "anon");
-//
-//        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-//
-//        //配置过滤器
-//        Map<String, Filter> filters = new HashMap<>();
-//        filters.put("jCaptchaValidate", jCaptchaValidateFilter());
-//        shiroFilterFactoryBean.setFilters(filters);
-//
-//        //配置URL
-//        shiroFilterFactoryBean.setLoginUrl("/templates/wang.html");
-//        return shiroFilterFactoryBean;
-//    }
 }

@@ -1,6 +1,7 @@
 package com.xust.wtc.Service.user.impl;
 
 import com.xust.wtc.Dao.user.UserMapper;
+import com.xust.wtc.Entity.chat.Feedback;
 import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Service.user.AsyncSendEmail;
@@ -50,6 +51,21 @@ public class UserServiceImpl implements UserService {
         } else {
             result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("修改失败");
+        }
+        return result;
+    }
+
+    @Override
+    public Result feedback(Feedback feedback, int id) {
+        Result result = new Result();
+        String content = feedback.getFeedbackContent() == null ? "" : feedback.getFeedbackContent();
+        String contact = feedback.getFeedbackContact() == null ? "" : feedback.getFeedbackContact();
+        if (userMapper.insertFeedback(content, contact, id) > 0) {
+            result.setStatus(CONSTANT_STATUS.SUCCESS);
+            result.setContent("插入成功");
+        } else {
+            result.setStatus(CONSTANT_STATUS.ERROR);
+            result.setContent("插入失败");
         }
         return result;
     }

@@ -62,6 +62,18 @@ public class BookController {
     }
 
     /**
+     * 根据类型 返回书籍信息
+     * @param currentPage
+     * @param pageSize
+     */
+    @GetMapping(value = "/findBooksByCate", consumes = "application/json", produces = "application/json")
+    public AllBook findBooksByCate(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                                   @RequestParam(value = "pageSize", defaultValue = "3")int pageSize,
+                                   @RequestParam(value = "cate", defaultValue = "1")int cate) {
+        return bookService.findBooksByCate(currentPage, pageSize, cate);
+    }
+
+    /**
      * 根据文本查询匹配书籍返回
      * @param content
      * @return

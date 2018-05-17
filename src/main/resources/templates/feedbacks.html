@@ -85,7 +85,7 @@
                             accept: 'application/json',
                             data : JSON.stringify({'feedbackContent':question,'feedbackContact':contact}),
                             success: function(data){
-                                console.log(data);
+                                mui.toast("反馈情况已收到，管理员查阅后会及时跟进");
                             }
                         });
 					}

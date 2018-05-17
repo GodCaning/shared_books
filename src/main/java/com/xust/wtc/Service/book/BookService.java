@@ -39,6 +39,8 @@ public interface BookService {
      */
     AllBook findBooksWithCreateTime(int currentPage, int pageSize);
 
+    AllBook findBooksByCate(int currentPage, int pageSize, int cate);
+
     /**
      * 根据ID查询书籍信息
      * @param id

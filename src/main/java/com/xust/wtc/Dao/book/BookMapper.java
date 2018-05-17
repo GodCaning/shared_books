@@ -32,6 +32,8 @@ public interface BookMapper {
      */
     List<Book> findBooksWithCreateTime();
 
+    List<Book> findBooksByCate(@Param("tag") String tag);
+
     /**
      * 根据书籍ID查找书籍
      * @param bookId

@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title></title>
+		<title>订单信息</title>
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet" />
 		<style>
@@ -109,10 +109,8 @@
                                  accept: 'application/json',
 								 data:JSON.stringify({'borrowerName':indeNam,'borrowerPhone':indeCon,'borrowerAddress':indeLoc,'id':id,'stockId':stockid}),
                                  success: function(data){
-                                     //mui.toast(data);
 									 mui.toast(data.content);
-
-                                     console.log(data);
+                                     window.location.href = 'indent.html';
                                  }
                              })
 						 }

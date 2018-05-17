@@ -140,7 +140,7 @@
 						   data:JSON.stringify({'lendId':outid,'lenderAddress':outloca,'lenderPhone':outcont,'lenderName':outname,'number':outnum,'companyId':comid}),
                            success: function (data) {
                                mui.toast(data.content);
-                               console.log(data);
+                               window.location.href = 'outindent.html';
                            }
                        })
 				   }

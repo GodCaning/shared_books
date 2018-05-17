@@ -5,6 +5,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Strings;
 import com.xust.wtc.Dao.book.BookMapper;
 import com.xust.wtc.Dao.book.StockMapper;
 import com.xust.wtc.Entity.book.Stock;
@@ -155,7 +156,6 @@ public class BookServiceImpl implements BookService {
                 book.setIsbn(isbn);
                 //存入书籍信息数据库
                 bookMapper.addBook(book);
-                System.out.println(book);
                 //存入ES
                 addBookToES(book);
             } catch (Exception e) {
@@ -189,6 +189,17 @@ public class BookServiceImpl implements BookService {
         JsonNode jsonNode = StringConverter.converterToJsonNode(bookString);
         Map<String, JsonNode> map = StringConverter.jsonNodeToMap(jsonNode);
 
+        JsonNode jsonNodes = jsonNode.findValue("tags");
+        String tag = "其他";
+        if (jsonNodes.size() > 0) {
+            for (int i = 0; i < jsonNodes.size(); i++) {
+                String text = jsonNodes.get(i).get("name").asText();
+                switch (text) {
+                    case "计算机" : tag = "计算机"; break;
+                    case "人文" : tag = "人文"; break;
+                }
+            }
+        }
         String title = getValue(map, "title");
         String image = getValue(map, "image");
         String author = getValue(map, "author");
@@ -198,7 +209,7 @@ public class BookServiceImpl implements BookService {
         String summary = getValue(map, "summary");
         String price = getValue(map, "price");
         Book book = new Book(title, image, author,
-                translator, publisher, pubdate, summary, price);
+                translator, publisher, pubdate, summary, price, tag);
         return book;
     }
 
@@ -369,13 +380,29 @@ public class BookServiceImpl implements BookService {
         PageHelper.startPage(currentPage, pageSize);
         List<Book> bookList = bookMapper.findBooksWithCreateTime();
         PageInfo<Book> pageInfo = new PageInfo<>(bookList);
-        System.out.println(pageInfo.getFirstPage());//第一页的页码
-        System.out.println(pageInfo.getLastPage());//最后一页的页码
-        System.out.println(pageInfo.getPageNum()); //当前页的坐标
-        System.out.println(pageInfo.getPages()); //总页数
-        System.out.println(pageInfo.getPageSize()); //当前一页的长度
-        System.out.println(pageInfo.getTotal());  //总条数
+//        System.out.println(pageInfo.getFirstPage());//第一页的页码
+//        System.out.println(pageInfo.getLastPage());//最后一页的页码
+//        System.out.println(pageInfo.getPageNum()); //当前页的坐标
+//        System.out.println(pageInfo.getPages()); //总页数
+//        System.out.println(pageInfo.getPageSize()); //当前一页的长度
+//        System.out.println(pageInfo.getTotal());  //总条数
         AllBook allBook = new AllBook(pageInfo.getPages(), pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), bookList);
+        return allBook;
+    }
+
+    @Override
+    public AllBook findBooksByCate(int currentPage, int pageSize, int cate) {
+        PageHelper.startPage(currentPage, pageSize);
+        String tag = null;
+        switch (cate) {
+            case 1: tag = "计算机"; break;
+            case 2: tag = "人文"; break;
+            default: tag = "其他"; break;
+        }
+        List<Book> bookList = bookMapper.findBooksByCate(tag);
+        PageInfo<Book> pageInfo = new PageInfo<>(bookList);
+        AllBook allBook = new AllBook(pageInfo.getPages(), pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), bookList);
+        allBook.setCate(cate);
         return allBook;
     }
 }

@@ -71,4 +71,9 @@
         </set>
         WHERE person_id = #{id}
     </update>
+
+    <insert id="insertFeedback">
+        INSERT INTO feedback(person_id, feedback_content, feedback_contact)
+        VALUES (#{id}, #{feedbackContent}, #{feedbackContact})
+    </insert>
 </mapper>

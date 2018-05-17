@@ -113,13 +113,13 @@
         <ul class="collector"></ul>
       </div>
         <div id="bookmessage" style="display: none;">
-            <img :src="messages.image" style="display: block;margin: 0 auto;">
-            <ul>
-                <li>作者：{{messages.author}}</li>
-                <li>书名：{{messages.title}}</li>
-                <li>简介：{{messages.summary}}</li>
-                <li>出版社：{{messages.publisher}}</li>
-                <li>价格：{{messages.price}}</li>
+            <img :src="messages.image" style="display: block; margin: 12px auto; width: 320px; height: 520px; margin-left: -20px">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">作者：{{messages.author}}</li>
+                <li class="mui-table-view-cell">书名：{{messages.title}}</li>
+                <li class="mui-table-view-cell">简介：{{messages.summary}}</li>
+                <li class="mui-table-view-cell">出版社：{{messages.publisher}}</li>
+                <li class="mui-table-view-cell">价格：{{messages.price}}</li>
             </ul>
         </div>
       <div id="interactive" class="viewport"></div>
@@ -430,8 +430,6 @@
                 var $btn = $('#btn');
                 $btn.click(function(){
                     $('#bookmessage').show();
-                   //console.log('yyyyyy');
-
                     var bookVue = new Vue({
                         el:'#bookmessage',
                         data:{
@@ -439,7 +437,7 @@
                         },
                         created:function () {
                             $.ajax({
-                                url: "/queryisbn?isbn="+code,
+                                url: "/queryisbn?isbn=" + code,
                                 type: "GET",
                                 dataType: 'json',
                                 contentType: 'application/json',
@@ -447,8 +445,6 @@
                                 cache:'false',
                                 success: function (result) {
                                     bookVue.messages = result.content;
-                                    // bookVue.seen = true;
-                                    console.log(bookVue.messages.image);
                                 }
 
                             });
@@ -457,20 +453,19 @@
                 })
 
                 $('#btn1').click(function () {
-                   // console.log('gdgdfgfdgf');
-                        $.ajax({
-                            url: "/addBook",
-                            type: "post",
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            accept: 'application/json',
-                            data:code,
-                            success: function (result) {
-                                console.log(result);
-                                //mui.toast(result);
-                            }
+                    $.ajax({
+                        url: "/addBook",
+                        type: "post",
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        data:code,
+                        success: function (result) {
+                            console.log(result);
+                            //mui.toast(result);
+                        }
 
-                         })
+                     })
                 })
                 // function  add() {
                 //     console.log('sdsdsadasdsa');
@@ -499,17 +494,6 @@
             // }
 
         });
-
-
-
-        // window.onload = function () {
-        //     var push = document.getElementById('push');
-        //     push.onclick = function () {
-        //         console.log('fsdfdsfdsf');
-        //     }
-        //
-        // }
-
 
     </script>
   </body>

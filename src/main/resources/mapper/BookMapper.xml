@@ -15,6 +15,7 @@
         <result property="summary" column="summary"/>
         <result property="price" column="price"/>
         <result property="ctr" column="ctr"/>
+        <result property="tag" column="tag"/>
     </resultMap>
 
     <!--个人书房显示类-->
@@ -26,7 +27,8 @@
     </resultMap>
 
     <sql id="filed">
-        book_id, isbn, title, image, author, translator, publisher, pubdate, summary, price, ctr
+        book_id, isbn, title, image, author, translator, publisher,
+        pubdate, summary, price, ctr, tag
     </sql>
 
     <!-- 插入一条书籍信息-->
@@ -49,6 +51,14 @@
         SELECT
         <include refid="filed"/>
         FROM book
+        ORDER BY book_id DESC
+    </select>
+
+    <select id="findBooksByCate" resultMap="bookEntity">
+        SELECT
+        <include refid="filed"/>
+        FROM book
+        WHERE tag = #{tag}
         ORDER BY book_id DESC
     </select>
 

@@ -1,6 +1,7 @@
 package com.xust.wtc.Controller.user;
 
 import com.qiniu.util.Auth;
+import com.xust.wtc.Entity.chat.Feedback;
 import com.xust.wtc.Entity.user.DisplayPerson;
 import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
@@ -128,7 +129,6 @@ public class UserController {
         String bucket = "spirit";
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
-        System.out.println(upToken);
         return upToken;
     }
 
@@ -144,13 +144,23 @@ public class UserController {
     }
 
     /**
+     * 反馈
+     * @return
+     */
+    @PostMapping(value = "/feedback", consumes = "application/json", produces = "application/json")
+    public Result feedback(@RequestBody Feedback feedback, HttpSession session) {
+        int userId = Utils.getUserId(session.getId());
+        return userService.feedback(feedback, userId);
+    }
+
+    /**
      * 登录
      * @return
      */
     @PostMapping(value = "/myLogin", consumes = "application/json", produces = "application/json")
     public Result login(HttpServletRequest httpServletRequest,
                         @RequestParam(value = "code") String code,
-                        @Validated({Person.Login.class})@RequestBody() Person person) {
+                        @Validated({Person.Login.class}) @RequestBody() Person person) {
         Result result = isTrueCode(httpServletRequest, code);
         if (result != null) {
             return result;
@@ -193,6 +203,9 @@ public class UserController {
         return new DisplayPerson(person.getId(), person.getName(), person.getLoginName(), person.getGender(), person.getAutograph(), person.getPortrait());
     }
 
+    /**
+     * 获取验证码
+     */
     @RequestMapping(value = "/code", method = RequestMethod.GET)
     public void code(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setDateHeader("Expires", 0L);
@@ -202,13 +215,8 @@ public class UserController {
         response.setContentType("image/jpeg");
 
         HttpSession session = request.getSession();
-        if (session == null) {
-            System.out.println("为空");
-        } else {
-            System.out.println("------>" + session.getId());
-        }
 
-        String id = request.getRequestedSessionId();
+        String id = session.getId();
         BufferedImage bi = JCaptcha.captchaService.getImageChallengeForID(id);
 
         ServletOutputStream out = response.getOutputStream();

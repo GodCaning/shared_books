@@ -15,10 +15,19 @@ public class Book {
     private String summary;
     private String price;
     private int ctr;  //点击量
+    private String tag; //书籍类型
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
     public Book() {}
 
-    public Book(String title, String image, String author, String translator, String publisher, String pubdate, String summary, String price) {
+    public Book(String title, String image, String author, String translator, String publisher, String pubdate, String summary, String price, String tag) {
         this.title = title;
         this.image = image;
         this.author = author;
@@ -27,6 +36,7 @@ public class Book {
         this.pubdate = pubdate;
         this.summary = summary;
         this.price = price;
+        this.tag = tag;
     }
 
     public int getId() {

@@ -1,5 +1,6 @@
 package com.xust.wtc.Service.user;
 
+import com.xust.wtc.Entity.chat.Feedback;
 import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Entity.Result;
 
@@ -22,4 +23,6 @@ public interface UserService {
     Result modifyPassWd(String code, String passwd);
 
     Result modifyPortrait(String portrait, int id);
+
+    Result feedback(Feedback feedback, int id);
 }

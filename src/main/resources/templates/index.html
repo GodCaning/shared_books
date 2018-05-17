@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -123,11 +122,10 @@
 		<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
 		<span class="mui-tab-label">书圈</span>
 	</a>
-	<!--<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">-->
-	<!--<span class="mui-icon mui-icon-gear"></span>-->
-	<!--<span  class="mui-tab-label">我的</span>-->
-	<!--</a>-->
-	<!--href="#tabbar-with-map"-->
+	<a class="mui-tab-item" href="#cate">
+		<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
+		<span class="mui-tab-label">分类</span>
+	</a>
 	<div id="mybtn1" class="mui-tab-item">
 		<a id="mybtn" class="mui-tab-item" href="#tabbar-with-map">
 			<span class="mui-icon mui-icon-gear"></span>
@@ -135,20 +133,12 @@
 		</a>
 	</div>
 </nav>
-<!--class="mui-input-clear mui-indexed-list-search-input"-->
-<!--class="mui-indexed-list-search mui-input-row mui-search"-->
 <div class="mui-content">
 	<form id="main">
 		<div id="search"  style="margin: 10px;width: 385px;">
 			<input id="bookname"  type="text"   placeholder="搜索图书"  style="width: 280px;">
 			<input type="button" value="搜索" id="searchbook" style="width: 100px;height: 40px;">
 		</div>
-		<!--<ul id="bmessage" style="display: none;list-style: none" v-show="isShow" >-->
-		<!--<li v-for="article in filteredArticles">-->
-		<!--<a href="#" rel="external nofollow" >ffff</a>-->
-		<!--<p>{{article.title}}</p>-->
-		<!--</li>-->
-		<!--</ul>-->
 	</form>
 
 	<div id="tabbar" class="mui-control-content mui-active">
@@ -161,18 +151,15 @@
 				<li>{{bcontent.publisher}}</li>
 				<li>{{bcontent.price}}</li>
 			</ul>
-			<div class="mui-card-footer" style="width:395px;">
+			<div id="detail" class="mui-card-footer detail" :bookid="bcontent.id" style="width:395px;">
 				<span class="mui-icon mui-icon-plusempty" style="color: #007aff;"></span>
-				<a class="mui-card-link">详细信息</a>
+				<a href="javascript:;" class="mui-card-link">详细信息</a>
 			</div>
 		</div>
 	</div>
 
 
 	<div id="tabbar-with-chat" class="mui-control-content">
-		<!--<ul id="chat" class="mui-table-view mui-table-view-chevron">-->
-			<!--<li class="mui-table-view-cell"><a href="#" class="mui-navigate-right">{{messages.name}}</li>-->
-		<!--</ul>-->
 		<div class="chatBox-list" id="chatpeople"  style="height: 100%;background-color: #FFFFFF;overflow: hidden;">
 			<div class="chat-list-people" :receiveid="chat.receiveId"  v-for="chat in messages">
 				<div><img :src="chat.portrait" alt="头像"></div>
@@ -209,9 +196,44 @@
 		<div class="mui-pager" style="width: 394px;margin: 0 auto;" v-if="pageshow">
 			<button id="pre" class="mui-previous" style="float: left;" @click="pre()" v-if="messages.pageNum >1">上一页</button>
 			<span style="line-height: 35px; font-size: 14px;">共{{messages.pages}}页，当前第{{messages.pageNum}}页</span>
-			<button id="next" class="mui-next" style="float: right;" @click="next()" v-if="messages.pageNum < 4">下一页</button>
+			<button id="next" class="mui-next" style="float: right;" @click="next()" v-if="messages.pageNum < messages.pages">下一页</button>
 		</div>
 	</div>
+
+	<!--分类-->
+	<div id="cate" class="mui-control-content">
+		<div class="mui-pager" style="width: 394px;margin: 0 auto;">
+			<button id="computer" style="float: left;" @click="computer()">计算机</button>
+			<button id="renwen" style="float: left;" @click="humanity()">人文</button>
+			<button id="other" style="float: left;" @click="other()">其他</button>
+		</div>
+		<div id="cateslist"  class="mui-card" v-for="cates in messages.list" v-if="show">
+			<img :src="cates.image" alt="" width="50%" style="display: block;float: left;width: 150px;"/>
+			<ul style="width: 280px;margin-left: 105px;color: #000000;">
+				<li>{{cates.title}}</li>
+				<li>{{cates.author}}</li>
+				<li style="height: 80px;overflow: hidden;">{{cates.summary}}</li>
+				<li>{{cates.publisher}}</li>
+				<li>{{cates.price}}</li>
+			</ul>
+			<div class="mui-card-footer inv">
+				<div id="invents" class="invent" :bookid="cates.id">
+					<span class="mui-icon-extra mui-icon-extra-order" style="color: #007aff;"></span>
+					<a href="javascript:;" class="mui-card-link">查看库存</a>
+				</div>
+				<div id="comments" class="comment" :bookid="cates.id">
+					<span class="mui-icon mui-icon-chat" style="color: #007aff;"></span>
+					<a href="javascript:;" class="mui-card-link">评论</a>
+				</div>
+			</div>
+		</div>
+		<div class="mui-pager" style="width: 394px;margin: 0 auto;" v-if="pageshow">
+			<button id="catepre" class="mui-previous" :cateid="messages.cate" style="float: left;" @click="catepre()" v-if="messages.pageNum >1">上一页</button>
+			<span style="line-height: 35px; font-size: 14px;">共{{messages.pages}}页，当前第{{messages.pageNum}}页</span>
+			<button id="catenext" class="mui-next" :cateid="messages.cate" style="float: right;" @click="catenext()" v-if="messages.pageNum < messages.pages">下一页</button>
+		</div>
+	</div>
+
 	<div id="tabbar-with-map" class="mui-control-content">
 		<ul class="mui-table-view mui-table-view-chevron">
 			<li id="usermessage" class="mui-table-view-cell mui-media">
@@ -251,12 +273,17 @@
 				</a>
 			</li>
 			<li class="mui-table-view-cell">
+				<a href="handupload.html" class="mui-navigate-right">
+					手动上传书籍
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
 				<a href="mybook.html" class="mui-navigate-right">
 					我的书房
 				</a>
 			</li>
 			<li class="mui-table-view-cell">
-				<a class="mui-navigate-right" href="feedback.html">
+				<a class="mui-navigate-right" href="feedbacks.html">
 					我要反馈
 				</a>
 			</li>
@@ -308,7 +335,6 @@
         var bookVue = new Vue({
             el:'#tabbar',
             data:{
-
                 messages:'',
                 show:true,
             },
@@ -321,7 +347,6 @@
                     accept: 'application/json',
                     success: function(data){
                         bookVue.messages  = data;
-                        //console.log(bookVue.messages);
                     }
                 })
             }
@@ -344,7 +369,6 @@
                     accept: 'application/json',
                     success: function(data){
                         booksVue.messages  = data;
-                        //console.log(booksVue.messages);
                     }
                 })
             },
@@ -359,7 +383,6 @@
                         success: function(data){
                             booksVue.messages  = data;
                             console.log(booksVue.messages);
-                            //console.log(booksVue.messages);
                         }
                     })
                 },
@@ -373,7 +396,92 @@
                         success: function(data){
                             booksVue.messages  = data;
                             console.log(booksVue.messages);
-                            //console.log(booksVue.messages);
+                        }
+                    })
+                }
+            }
+        })
+        var cateVue = new Vue({
+            el:'#cate',
+
+            data:{
+                messages:'',
+                show:true,
+                pageshow:true
+            },
+            created:function () {
+                $.ajax({
+                    url: '/findBooksByCate',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    accept: 'application/json',
+                    success: function(data){
+                        cateVue.messages  = data;
+                    }
+                })
+            },
+            methods:{
+                computer:function () {
+                    $.ajax({
+                        url: '/findBooksByCate?cate=1',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            cateVue.messages  = data;
+                        }
+                    })
+                },
+                humanity:function () {
+                    $.ajax({
+                        url: '/findBooksByCate?cate=2',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            cateVue.messages  = data;
+                            console.log(cateVue.messages);
+                        }
+                    })
+                },
+                other:function () {
+                    $.ajax({
+                        url: '/findBooksByCate?cate=3',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            cateVue.messages  = data;
+                        }
+                    })
+                },
+                catepre:function () {
+                    var ID = $("#catepre").attr('cateid');
+                    $.ajax({
+                        url: '/findBooksByCate?cate='+ ID + '&currentPage='+ --cateVue.messages.pageNum +'&pageSize='+ cateVue.messages.pageSize,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            cateVue.messages  = data;
+                        }
+                    })
+                },
+                catenext:function () {
+                    var ID = $("#catenext").attr('cateid');
+                    $.ajax({
+                        url: '/findBooksByCate?cate='+ ID + '&currentPage='+ ++cateVue.messages.pageNum +'&pageSize='+ cateVue.messages.pageSize,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            cateVue.messages  = data;
                         }
                     })
                 }
@@ -422,17 +530,20 @@
                 })
             }
         })
+        //详情
+        $('div#tabbar').on('click','div.detail',function () {
+            var ID = $(this).attr('bookid');
+            console.log(ID);
+            window.location.href = 'detail.html?id='+ ID;
+        })
         //评论
         $('div#tabbar-with-contact').on('click','div.comment',function () {
-            //console.log('sdsfsdf')
             var ID = $(this).attr('bookid');
-            //console.log(ID);
             window.location.href = 'comment.html?id='+ ID;
 
         })
 		//库存
         $('div#tabbar-with-contact').on('click','div.invent',function () {
-            //console.log('sdsfsdf')
             var ID = $(this).attr('bookid');
             console.log(ID);
             window.location.href = 'invent.html?id='+ ID;
@@ -444,14 +555,6 @@
             console.log(receiveId);
             window.location.href = 'chat2.html?id='+ vue.messages.id + '&receiveid=' + receiveId;
         })
-        // $('div#comment').on('click','div',function () {
-        // // var bookID = $(this).attr('bookid');
-        // // window.location.href = 'mybookmessage.html?id='+ bookID;
-        // console.log('dfdsfsdf');
-        // })
-        // $('.comment').click(function () {
-        // 	console.log('dsfsdfsd');
-        //     })
         //搜索书籍
         $('#searchbook').click(function () {
             bookVue.show = false;
@@ -463,21 +566,6 @@
                 contentType: 'application/json',
                 accept: 'application/json',
                 success: function(data){
-                    // console.log(data);
-                    // var inhtml = "<div>"
-                    // inhtml = "<a href='index.html' class='go-back' style='font-size: 14px;'>"+'返回'+"</a>"
-                    // var inhtml = inhtml+"<ul class='go-book'>"
-                    // for (var i = 0; i < data.length; i++) {
-                    //     inhtml = inhtml + "<img src=\'" + data[i].image + "\'>" +
-                    //         "<li>" + data[i].title + "</li>" +
-                    //         "<li>"+data[i].author+"</li>" +
-                    //         "<li style='height: 100px; overflow: hidden;'>"+ data[i].summary+"</li>";
-                    // }
-                    // inhtml = inhtml + "</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
-                    //     "<a class='mui-card-link'>"+'详细信息'+"</a>"+
-                    //     "</div>" +"</div>";
-                    // document.getElementById('tabbar').innerHTML = inhtml;
-                    // //console.log(data);
                    var bIndex = "<a href='index.html' class='go-back' style='font-size: 14px;position: absolute;top: -10px;'>"+'返回'+"</a>"
                    var inhtml=new Array();
                    for (var i = 0; i < data.length; i++) {
@@ -495,69 +583,7 @@
             })
         })
 
-        //点击分页按钮
-        // $('#next').click(function () {
-        // 	booksVue.show = false;
-        // 	// booksVue.pageshow = false;
-        //
-        //    $.ajax({
-        //        url: '/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
-        //        type: 'GET',
-        //        dataType: 'json',
-        //        contentType: 'application/json',
-        //        accept: 'application/json',
-        //        success: function(data){
-        //            console.log(data);
-        //            var pageNum = data.pageNum;
-        //            var pageSize = data.pageSize;
-        //            var inhtml=new Array();
-        //            for (var i = 0; i < data.list.length; i++) {
-        //                 inhtml[i] = "<div>"+"<ul class='go-book'>" + "<img src=\'" + data.list[i].image + "\'>" +
-        //                    "<li>" + data.list[i].title + "</li>" +
-        //                    "<li>"+data.list[i].author+"</li>" +
-        //                    "<li style='height: 100px; overflow: hidden;'>"+ data.list[i].summary+"</li>"+"</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
-        //                    "<a class='mui-card-link'>"+'详细信息'+"</a>"+
-        //                    "</div>"+"</div>";
-        //
-        //            }
-        //             inhtml = inhtml +"<div style='width: 385px;margin: 0 auto;text-align: center;'>"+"<button style='float: left;'>"+'上一页'+"</button>"+"<span style='line-height: 34px;'>"+"共"+ data.pages+"页，当前第"+ data.pageNum+"页"+"</span>"+"<button style='float: right;' onclick='next()'>"+'下一页'+"</button>"+"</div>"
-        //            //console.log(inhtml);
-        //           document.getElementById('tabbar-with-contact').innerHTML = inhtml;
-        //            //console.log(data);
-        //        }
-        //    })
-        // })
-
     }
-    // function next() {
-    // console.log('sds');
-    // }
-
-    // console.log('第三次flag');
-    // console.log(flag);
-
-    // $('#mybtn1').click(function () {
-    //     var vue = new Vue({
-    //         el:'#usermessage',
-    //         data:{
-    //             messages:''
-    //         },
-    //         created:function(){
-    //             $.ajax({
-    //                 url: '/loginInfo',
-    //                 type: 'GET',
-    //                 dataType: 'json',
-    //                 contentType: 'application/json',
-    //                 accept: 'application/json',
-    //                 success: function(data){
-    //                     vue.messages  = data;
-    //                     console.log(vue.messages);
-    //                 }
-    //             })
-    //         },
-    //     })
-    //
-    // })
 
     mui.init({
         swipeBack:true //启用右滑关闭功能
