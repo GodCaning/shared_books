@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="referrer" content="no-referrer">
 
     <title>共享图书</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -77,6 +78,7 @@
         $(function() {
 
             $('#btn').click(function(){
+                $('#bookmessage').hidden();
                 var check = true;
                 var code = $('#mycodes').val();
                 if (code == '') {

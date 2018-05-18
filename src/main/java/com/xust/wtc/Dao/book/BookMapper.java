@@ -27,6 +27,13 @@ public interface BookMapper {
     List<Book> findTop10Book();
 
     /**
+     * 协同推荐
+     * @param ids
+     * @return
+     */
+    List<Book> fancyBooks(@Param("ids") String []ids);
+
+    /**
      * 根据书籍创建时间返回最近的书籍
      * @return
      */
@@ -54,4 +61,6 @@ public interface BookMapper {
      * @return
      */
     int updateBookCTR(@Param("bookId") int bookId);
+
+    int addCFFancy(@Param("userId") int userId, @Param("bookId") int bookId, @Param("date") String date);
 }

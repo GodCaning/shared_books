@@ -8,11 +8,8 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.xust.wtc.Dao.book.BookMapper;
 import com.xust.wtc.Dao.book.StockMapper;
-import com.xust.wtc.Entity.book.Stock;
-import com.xust.wtc.Entity.book.AllBook;
-import com.xust.wtc.Entity.book.Book;
+import com.xust.wtc.Entity.book.*;
 import com.xust.wtc.Entity.Result;
-import com.xust.wtc.Entity.book.UserBook;
 import com.xust.wtc.Service.book.BookService;
 import com.xust.wtc.utils.CONSTANT_STATUS;
 import com.xust.wtc.utils.StringConverter;
@@ -35,9 +32,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Spirit on 2017/12/5.
@@ -143,6 +139,8 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Result addBook(String isbn, int userID) {
         Result result = new Result();
+        result.setStatus(CONSTANT_STATUS.SUCCESS);
+        result.setContent("增加成功");
         //先搜索是否存在ES中
         Book book;
         SearchHits searchHits = existsES(isbn);
@@ -151,13 +149,14 @@ public class BookServiceImpl implements BookService {
                 //不存在ES则把书籍信息存入ES和BOOK表中
                 String bookResult = restTemplate.getForObject(url, String.class, isbn);
                 //解析result
-                System.out.println(bookResult);
                 book = getBook(bookResult);
                 book.setIsbn(isbn);
                 //存入书籍信息数据库
                 bookMapper.addBook(book);
+                stockMapper.addStock(userID, book.getId());
                 //存入ES
                 addBookToES(book);
+                return result;
             } catch (Exception e) {
                 result.setStatus(CONSTANT_STATUS.ERROR);
                 result.setContent("添加失败");
@@ -166,18 +165,13 @@ public class BookServiceImpl implements BookService {
         } else if (searchHits.getTotalHits() == 1){
             SearchHit hit = searchHits.getHits()[0];
             book = StringConverter.stringToBook(hit.getSourceAsString());
+            stockMapper.addStock(userID, book.getId());
+            return result;
         } else {
-            //todo 抛出异常
             result.setStatus(CONSTANT_STATUS.ERROR);
             result.setContent("添加失败");
             return result;
         }
-
-        stockMapper.addStock(userID, book.getId());
-
-        result.setStatus(CONSTANT_STATUS.SUCCESS);
-        result.setContent("增加成功");
-        return result;
     }
 
     /**
@@ -259,8 +253,8 @@ public class BookServiceImpl implements BookService {
      */
     private void addBookToES(Book book) {
 
-        XContentBuilder mapping1;
-        XContentBuilder mapping2;
+        XContentBuilder mapping1 = null;
+        XContentBuilder mapping2 = null;
         String s1 = null;
         String s2 = null;
         try {
@@ -356,19 +350,33 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    public Book findBook(int id) {
+    public Book findBook(int id, int userId) {
         //增加书籍点击率
         bookMapper.updateBookCTR(id);
+        //增加书籍喜好程度（CF协同算法）
+        bookMapper.addCFFancy(userId, id, new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         return bookMapper.findBook(id);
     }
 
     /**
-     * 根据点击率返回TOP10
+     * 推荐书籍 如果协同算法推荐的书籍大于10，协同获取，如果推荐的书籍小于10，获取PV量最大的10本书
      * @return
      */
     @Override
-    public List<Book> findTop10Book() {
-        return bookMapper.findTop10Book();
+    public List<Book> findTop10Book(int userId) {
+        List<Book> result;
+        String fancy = restTemplate.getForObject("http://localhost:8880/fancy/{userId}", String.class, userId);
+        String []bookIds = null;
+        if (!Strings.isNullOrEmpty(fancy)) {
+            bookIds = fancy.split(",");
+        }
+        if (bookIds != null && bookIds.length >= 10) {
+            bookIds = Arrays.copyOf(bookIds, 10);
+            result = bookMapper.fancyBooks(bookIds);
+        } else {
+            result = bookMapper.findTop10Book();
+        }
+        return result;
     }
 
     /**

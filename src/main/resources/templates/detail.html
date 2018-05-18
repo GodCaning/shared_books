@@ -100,12 +100,10 @@
         }
 
         function stock() {
-            console.log(getQueryVariable('id'));
-            window.location.href = 'invent.html?id=' + getQueryVariable('id');
+            window.location.href = 'invent.html?id=' + getQueryVariable('id') + "&userId=" + getQueryVariable('userId');
         }
 
         function comment() {
-            console.log(getQueryVariable('id'));
             window.location.href = 'comment.html?id='+ getQueryVariable('id');
         }
 

@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="referrer" content="no-referrer">
 	<!--标准mui.css-->
 	<link rel="stylesheet" href="css/mui.min.css">
 	<link rel="stylesheet" href="css/icons-extra.css">
@@ -122,7 +123,7 @@
 		<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
 		<span class="mui-tab-label">书圈</span>
 	</a>
-	<a class="mui-tab-item" href="#cate">
+	<a class="mui-tab-item" href="#tabbar-cate">
 		<span class="mui-icon mui-icon-extra mui-icon-extra-xiaoshuo"></span>
 		<span class="mui-tab-label">分类</span>
 	</a>
@@ -201,7 +202,7 @@
 	</div>
 
 	<!--分类-->
-	<div id="cate" class="mui-control-content">
+	<div id="tabbar-cate" class="mui-control-content">
 		<div class="mui-pager" style="width: 394px;margin: 0 auto;">
 			<button id="computer" style="float: left;" @click="computer()">计算机</button>
 			<button id="renwen" style="float: left;" @click="humanity()">人文</button>
@@ -217,11 +218,11 @@
 				<li>{{cates.price}}</li>
 			</ul>
 			<div class="mui-card-footer inv">
-				<div id="invents" class="invent" :bookid="cates.id">
+				<div id="invents" class="invents" :bookid="cates.id">
 					<span class="mui-icon-extra mui-icon-extra-order" style="color: #007aff;"></span>
 					<a href="javascript:;" class="mui-card-link">查看库存</a>
 				</div>
-				<div id="comments" class="comment" :bookid="cates.id">
+				<div id="comments" class="comments" :bookid="cates.id">
 					<span class="mui-icon mui-icon-chat" style="color: #007aff;"></span>
 					<a href="javascript:;" class="mui-card-link">评论</a>
 				</div>
@@ -241,17 +242,12 @@
 					<img class="mui-media-object mui-pull-left head-img" id="head-img" :src="messages.portrait" style="border-radius: 50%;">
 					<div class="mui-media-body">
 						{{messages.name}}
-						<p class='mui-ellipsis'>账号:{{messages.id}}</p>
+						<p class='mui-ellipsis' id="account" :account="messages.id">账号:{{messages.loginName}}</p>
 					</div>
 				</a>
 			</li>
 		</ul>
 		<ul class="mui-table-view">
-			<li class="mui-table-view-cell">
-				<a class="mui-navigate-right">
-					新消息通知
-				</a>
-			</li>
 			<li class="mui-table-view-cell">
 				<a href="indent.html" class="mui-navigate-right">
 					我的订单
@@ -402,7 +398,7 @@
             }
         })
         var cateVue = new Vue({
-            el:'#cate',
+            el:'#tabbar-cate',
 
             data:{
                 messages:'',
@@ -443,7 +439,6 @@
                         accept: 'application/json',
                         success: function(data){
                             cateVue.messages  = data;
-                            console.log(cateVue.messages);
                         }
                     })
                 },
@@ -525,7 +520,6 @@
 							chatMe += data[i].unreadCount;
                         }
                         vue3.count = chatMe;
-                        //console.log(vue3.count);
                     }
                 })
             }
@@ -533,8 +527,8 @@
         //详情
         $('div#tabbar').on('click','div.detail',function () {
             var ID = $(this).attr('bookid');
-            console.log(ID);
-            window.location.href = 'detail.html?id='+ ID;
+            var userId = $("#account").attr('account');
+            window.location.href = 'detail.html?id='+ ID + "&userId=" + userId;
         })
         //评论
         $('div#tabbar-with-contact').on('click','div.comment',function () {
@@ -542,18 +536,30 @@
             window.location.href = 'comment.html?id='+ ID;
 
         })
-		//库存
+        //库存
         $('div#tabbar-with-contact').on('click','div.invent',function () {
             var ID = $(this).attr('bookid');
+            var userId = $("#account").attr('account');
+            window.location.href = 'invent.html?id='+ ID + "&userId=" + userId;
+        })
+        //分类评论
+        $('div#tabbar-cate').on('click','div.comments',function () {
+            var ID = $(this).attr('bookid');
             console.log(ID);
-            window.location.href = 'invent.html?id='+ ID;
+            window.location.href = 'comment.html?id='+ ID;
+
+        })
+        //分类库存
+        $('div#tabbar-cate').on('click','div.invents',function () {
+            var ID = $(this).attr('bookid');
+            console.log(ID);
+            var userId = $("#account").attr('account');
+            window.location.href = 'invent.html?id='+ ID + "&userId=" + userId;
         })
 		//聊天
 		$('div#chatpeople').on('click','div.chat-list-people',function () {
-			console.log(vue.messages.id);
             var receiveId = $(this).attr('receiveid');
-            console.log(receiveId);
-            window.location.href = 'chat2.html?id='+ vue.messages.id + '&receiveid=' + receiveId;
+            window.location.href = 'chat.html?id='+ vue.messages.id + '&receiveid=' + receiveId;
         })
         //搜索书籍
         $('#searchbook').click(function () {
@@ -567,15 +573,21 @@
                 accept: 'application/json',
                 success: function(data){
                    var bIndex = "<a href='index.html' class='go-back' style='font-size: 14px;position: absolute;top: -10px;'>"+'返回'+"</a>"
-                   var inhtml=new Array();
+                   var inhtml = "";
                    for (var i = 0; i < data.length; i++) {
-                        inhtml[i] = "<div>"+"<ul class='go-book'>" + "<img src=\'" + data[i].image + "\'>" +
-                           "<li>" + data[i].title + "</li>" +
-                           "<li>"+data[i].author+"</li>" +
-                           "<li style='height: 100px; overflow: hidden;'>"+ data[i].summary+"</li>"+"</ul>"+"<div class='mui-card-footer go-footer'>"+ "<span class='mui-icon mui-icon-plusempty'>"+"</span>"+
-                           "<a class='mui-card-link'>"+'详细信息'+"</a>"+
-                           "</div>"+"</div>";
-
+                        inhtml +=
+							"<div class='mui-card'>" +
+							"<img src=\'" + data[i].image + "\'alt='' width='30%' style='display: block;float: left;'/>" +
+                            "<ul style='width: 280px;margin-left: 105px;'>" +
+							"<li>" + data[i].title + "</li>" +
+                            "<li>"+data[i].author+"</li>" +
+                            "<li style='height: 80px;overflow: hidden;'>"+ data[i].summary + "</li>" +
+                            "<li>"+data[i].publisher+"</li>" +
+                            "<li>"+data[i].price+"</li>" +
+							"</ul>"+"<div id='detail' class='mui-card-footer detail' bookid='" + data[i].id +"'style='width:395px;'>"+
+							"<span class='mui-icon mui-icon-plusempty' style='color: #007aff;'>"+"</span>"+
+                            "<a href='javascript:;' class='mui-card-link'>"+'详细信息'+"</a>"+
+                            "</div></div>";
                    }
 
                     document.getElementById('tabbar').innerHTML = inhtml + bIndex;

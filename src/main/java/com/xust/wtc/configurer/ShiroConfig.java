@@ -40,7 +40,7 @@ public class ShiroConfig {
     @Bean
     public ShiroRealm shiroRealm() {
         ShiroRealm shiroRealm = new ShiroRealm();
-//        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
 //        shiroRealm.setAuthenticationCachingEnabled(true);
 //        shiroRealm.setAuthenticationCacheName("authenticationCache");
 //        shiroRealm.setAuthorizationCachingEnabled(true);
@@ -130,18 +130,23 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(getDefaultWebSecurityManager());
-        filterChainDefinitionMap.put("/a", "anon");
-        filterChainDefinitionMap.put("/ttt", "authc");
+        filterChainDefinitionMap.put("/login.html", "anon");
+        filterChainDefinitionMap.put("/adminLogin.html", "anon");
+        filterChainDefinitionMap.put("/forget1.html", "anon");
+        filterChainDefinitionMap.put("/forget2.html", "anon");
+        filterChainDefinitionMap.put("/forget3.html", "anon");
+        filterChainDefinitionMap.put("/forget4.html", "anon");
         filterChainDefinitionMap.put("/code", "anon");
-        filterChainDefinitionMap.put("/wtc", "anon");
-        filterChainDefinitionMap.put("/find", "anon");
         filterChainDefinitionMap.put("/myLogin", "anon");
-        filterChainDefinitionMap.put("/login*", "anon");
+        filterChainDefinitionMap.put("/adminLo", "anon");
         filterChainDefinitionMap.put("/register", "anon");
-        filterChainDefinitionMap.put("/**", "anon");
-//        filterChainDefinitionMap.put("/**/**", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/img/**", "anon");
+        filterChainDefinitionMap.put("/fonts/**", "anon");
+        filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        shiroFilterFactoryBean.setLoginUrl("wang.html");
+        shiroFilterFactoryBean.setLoginUrl("login.html");
         return shiroFilterFactoryBean;
     }
 

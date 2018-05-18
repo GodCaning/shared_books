@@ -24,7 +24,7 @@ public interface BookService {
      * 根据点击率返回书籍信息
      * @return
      */
-    List<Book> findTop10Book();
+    List<Book> findTop10Book(int userId);
 
     /**
      * 根据isbn返回书籍信息
@@ -46,7 +46,7 @@ public interface BookService {
      * @param id
      * @return
      */
-    Book findBook(int id);
+    Book findBook(int id, int userId);
 
     /**
      * 根据字符串查询图书
@@ -76,4 +76,5 @@ public interface BookService {
      * @return
      */
     List<UserBook> userBooks(int userID);
+
 }

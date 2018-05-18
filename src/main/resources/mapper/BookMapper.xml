@@ -33,10 +33,10 @@
 
     <!-- 插入一条书籍信息-->
     <insert id="addBook" parameterType="com.xust.wtc.Entity.book.Book" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO book(isbn, title, image, author, translator, publisher, pubdate, summary, price)
+        INSERT INTO book(isbn, title, image, author, translator, publisher, pubdate, summary, price, tag)
         VALUES(#{isbn,javaType=string}, #{title,javaType=string}, #{image,javaType=string},
                #{author,javaType=string}, #{translator,javaType=string}, #{publisher,javaType=string},
-               #{pubdate,javaType=string}, #{summary,javaType=string}, #{price,javaType=string});
+               #{pubdate,javaType=string}, #{summary,javaType=string}, #{price,javaType=string},#{tag,javaType=string});
     </insert>
 
     <!--查找个人书房信息-->
@@ -84,4 +84,19 @@
         ORDER BY ctr
         DESC LIMIT 0,10;
     </select>
+
+    <!-- 协同算法推荐书籍查询 -->
+    <select id="fancyBooks"  resultMap="bookEntity">
+        SELECT
+        <include refid="filed"/>
+        FROM book
+        WHERE book_id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="addCFFancy">
+        INSERT INTO fancy VALUES(#{userId}, #{bookId}, 3, #{date});
+    </insert>
 </mapper>

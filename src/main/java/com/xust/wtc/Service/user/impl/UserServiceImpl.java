@@ -99,8 +99,7 @@ public class UserServiceImpl implements UserService {
         System.out.println(passwd);
         SimpleHash simpleHash =
                 new SimpleHash("md5", passwd, null, 1023);
-        System.out.println(simpleHash.toBase64());
-        if (userMapper.modifyPassWd(loginName, simpleHash.toBase64()) > 0) {
+        if (userMapper.modifyPassWd(loginName, simpleHash.toHex()) > 0) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("修改成功");
         } else {
@@ -180,7 +179,7 @@ public class UserServiceImpl implements UserService {
         }
         SimpleHash simpleHash =
                 new SimpleHash("md5", person.getLoginPasswd(), null, 1023);
-        person.setLoginPasswd(simpleHash.toBase64());
+        person.setLoginPasswd(simpleHash.toHex());
         if (userMapper.register(person) > 0) {
             result.setStatus(CONSTANT_STATUS.SUCCESS);
             result.setContent("注册成功");

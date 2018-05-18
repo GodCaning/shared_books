@@ -45,8 +45,6 @@ public class BookController {
      */
     @PostMapping(value = "/addBook", consumes = "application/json", produces = "application/json")
     public Result addBook(HttpSession session, @RequestBody String isbn) {
-//        JsonNode jsonNode = StringConverter.converterToJsonNode(isbn);
-//        StringConverter.converterToString(jsonNode, "isbn")
         return bookService.addBook(isbn, Utils.getUserId(session.getId()));
     }
 
@@ -99,8 +97,9 @@ public class BookController {
      * @return
      */
     @GetMapping(value = "/findBook/{id}", consumes = "application/json", produces = "application/json")
-    public Book findBookById(@PathVariable("id") int id) {
-        return bookService.findBook(id);
+    public Book findBookById(@PathVariable("id") int id, HttpSession session) {
+        int userId = Utils.getUserId(session.getId());
+        return bookService.findBook(id, userId);
     }
 
     /**
@@ -108,8 +107,9 @@ public class BookController {
      * @return
      */
     @GetMapping(value = "/findTop10", consumes = "application/json", produces = "application/json")
-    public List<Book> findTop10Book() {
-        return bookService.findTop10Book();
+    public List<Book> findTop10Book(HttpSession session) {
+        int userId = Utils.getUserId(session.getId());
+        return bookService.findTop10Book(userId);
     }
 
     /**

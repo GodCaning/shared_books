@@ -99,7 +99,6 @@
 			window.onload = function () {
                 function getQueryVariable(variable) {
                     var query = window.location.search.substring(1);
-                    //console.log(query);
                     var vars = query.split("&");
                     for (var i=0;i<vars.length;i++) {
                         var pair = vars[i].split("=");
@@ -122,7 +121,6 @@
                             accept: 'application/json',
                             success: function (data) {
                                 vue.messages= data;
-                                //console.log(data);
                             }
                         })
                     }
@@ -143,14 +141,12 @@
                             accept: 'application/json',
                             success: function (data) {
                                 invvue.messages= data;
-                                //console.log(invvue.messages);
                             }
                         })
                     }
                 })
 				//订单提示
                 $('div#invent').on('click','button.btn',function () {
-                    //console.log('sdsfsdf')
                     var ID = $(this).attr('stockid');
                     console.log(ID);
                     // var personID = $(this).attr('personid');
@@ -180,17 +176,16 @@
 				//联系卖家
                 $('div#invent').on('click','button.seller',function () {
                     var receiveId = $(this).attr('personid');
-                    var userId = getQueryVariable('userid');
+                    var userId = getQueryVariable('userId');
                     console.log(receiveId);
-                    console.log('----------------');
                     console.log(userId);
                     // if(receiveId === userId){
                      //    mui.toast('不能和自己进行交易');
                      //    return false;
 					// }else{
-                     //    window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
+                     //    window.location.href = 'chat.html?id='+ userId + '&receiveid=' + receiveId;
 					// }
-                    window.location.href = 'chat2.html?id='+ userId + '&receiveid=' + receiveId;
+                    window.location.href = 'chat.html?id='+ userId + '&receiveid=' + receiveId;
                 })
 
 			}
