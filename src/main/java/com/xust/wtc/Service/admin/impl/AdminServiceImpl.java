@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xust.wtc.Dao.admin.AdminMapper;
 import com.xust.wtc.Entity.admin.BookInfo;
+import com.xust.wtc.Entity.admin.LendInfo;
 import com.xust.wtc.Entity.chat.Feedback;
 import com.xust.wtc.Service.admin.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,16 @@ public class AdminServiceImpl implements AdminService {
         List<Feedback> feedbackList = adminMapper.findFeedbackInfo();
         PageInfo<Feedback> pageInfo = new PageInfo<>(feedbackList);
         return pageInfo;
+    }
+
+    public PageInfo<LendInfo> displayLendInfo(int currentPage, int pageSize) {
+        PageHelper.startPage(currentPage, pageSize);
+        List<LendInfo> feedbackList = adminMapper.findLendInfo();
+        PageInfo<LendInfo> pageInfo = new PageInfo<>(feedbackList);
+        return pageInfo;
+    }
+
+    public void closeOrder(int id) {
+        adminMapper.closeOrder(id);
     }
 }

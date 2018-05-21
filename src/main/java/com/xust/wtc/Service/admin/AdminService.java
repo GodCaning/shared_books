@@ -2,6 +2,7 @@ package com.xust.wtc.Service.admin;
 
 import com.github.pagehelper.PageInfo;
 import com.xust.wtc.Entity.admin.BookInfo;
+import com.xust.wtc.Entity.admin.LendInfo;
 import com.xust.wtc.Entity.chat.Feedback;
 
 /**
@@ -14,4 +15,8 @@ public interface AdminService {
     void deleteStock(int stockId);
 
     PageInfo<Feedback> displayFeedback(int currentPage, int pageSize);
+
+    PageInfo<LendInfo> displayLendInfo(int currentPage, int pageSize);
+
+    void closeOrder(int id);
 }

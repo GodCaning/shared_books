@@ -1,6 +1,7 @@
 package com.xust.wtc.Dao.admin;
 
 import com.xust.wtc.Entity.admin.BookInfo;
+import com.xust.wtc.Entity.admin.LendInfo;
 import com.xust.wtc.Entity.chat.Feedback;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,5 +18,9 @@ public interface AdminMapper {
 
     List<Feedback> findFeedbackInfo();
 
+    List<LendInfo> findLendInfo();
+
     int deleteStock(@Param("id")int stockId);
+
+    void closeOrder(@Param("id")int id);
 }

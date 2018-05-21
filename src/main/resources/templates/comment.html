@@ -65,10 +65,15 @@
 </div>
 <div>
     <div id="comments">
-        <ul class="commentlist" v-if="messages.length>0">
-            <li class="newcomment" v-for="person in messages">
-                <p>{{person.commentPersonName}}<span style="float: right;">{{person.commentTime}}</span></p>
-                <p class="p_text">{{person.content}}</p>
+        <ul class="mui-table-view" v-if="messages.length>0">
+            <li class="mui-table-view-cell mui-media" v-for="person in messages">
+                <a href="javascript:;">
+                    <img class="mui-media-object mui-pull-left" :src="person.portrait">
+                    <div class="mui-media-body">
+                        {{person.commentPersonName}}
+                        <p class='mui-ellipsis'>{{person.content}}</p>
+                    </div>
+                </a>
             </li>
         </ul>
         <p v-else style="text-align: center;color:darkred">暂无评论</p>

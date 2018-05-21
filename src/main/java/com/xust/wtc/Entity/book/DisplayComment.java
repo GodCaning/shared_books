@@ -22,12 +22,15 @@ public class DisplayComment {
 
     private String commentTime;
 
+    private String portrait;
+
     private List<Reply> replies;
 
     public DisplayComment() {
     }
 
-    public DisplayComment(int id, int bookId, int commentPersonId, String commentPersonName, int parentId, String content, String commentTime, List<Reply> replies) {
+    public DisplayComment(int id, int bookId, int commentPersonId, String commentPersonName,
+                          int parentId, String content, String commentTime, String portrait, List<Reply> replies) {
         this.id = id;
         this.bookId = bookId;
         this.commentPersonId = commentPersonId;
@@ -35,7 +38,16 @@ public class DisplayComment {
         this.parentId = parentId;
         this.content = content;
         this.commentTime = commentTime;
+        this.portrait = portrait;
         this.replies = replies;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 
     public int getId() {

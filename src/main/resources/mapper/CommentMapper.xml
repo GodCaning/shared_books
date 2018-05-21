@@ -7,6 +7,7 @@
         <result property="commentPersonId" column="person_id"/>
         <result property="commentPersonName" column="person_name"/>
         <result property="parentId" column="parent_id"/>
+        <result property="portrait" column="portrait"/>
         <result property="commentType" column="comment_type"/>
         <result property="content" column="comment_content"/>
         <result property="timestamp" column="create_date"/>
@@ -14,7 +15,7 @@
     
     <!-- 获取一个书籍的所有评论 -->
     <select id="findCommentByBookId" parameterType="int" resultMap="comment">
-        SELECT comment_id, book_id, p.person_id, person_name, parent_id, comment_type, comment_content, c.create_date
+        SELECT comment_id, book_id, p.person_id, person_name, parent_id, portrait, comment_type, comment_content, c.create_date
         FROM comment c JOIN person p ON c.person_id = p.person_id
         WHERE book_id = #{id} AND c.status = 1;
     </select>

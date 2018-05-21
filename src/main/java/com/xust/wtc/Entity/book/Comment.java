@@ -21,7 +21,17 @@ public class Comment {
 
     private String content;
 
+    private String portrait;
+
     private Timestamp timestamp;
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
 
     public Comment() {
     }

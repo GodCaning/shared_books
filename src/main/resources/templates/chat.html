@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +12,8 @@
     <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
 <body>
-<div class="chatContainer" id="chatPeo">
-    <div class="chatBox">
+    <div class="chatContainer" id="chatPeo">
+        <div class="chatBox">
         <div class="chatBox-head">
             <div class="chatBox-head-two" style="display: block;">
                 <div class="chat-return"><a href="index.html" style="text-decoration: none;color: #FFFFFF;">返回</a></div>
@@ -142,8 +144,6 @@
         return(false);
     }
     var id = getQueryVariable('id');
-    //console.log('----------------------------------');
-    //console.log(id);
     stomp.connect('guest', 'guest', function(frame) {
 
         /**  订阅了/user/queue/notifications 发送的消息,这里用在控制器的 convertAndSendToUser 定义的地址保持一致, 
@@ -157,7 +157,6 @@
         console.log("收到消息----->" + message.body);
         var object = JSON.parse(message.body);
         if (object.receiveId == id) {     //当收到的消息中的接受方ID和当前用户ID一样时，刷新聊天框
-            //console.log(object);
             var date = new Date();
             var time = date.getFullYear() + "-" +  (date.getMonth()+1)+ "-" +  date.getDate() + " " +  date.getHours()+ ":" + date.getMinutes() + ":" + date.getSeconds();
             $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +

@@ -39,18 +39,16 @@ public class CommentServiceImpl implements CommentService {
         List<Reply> replyList = new ArrayList<>();
         //所有显示评论的构建
         for (Comment c : commentList) {
-//            Instant i = Instant.ofEpochMilli(c.getTimestamp().getTime());
-//            String time = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(i);
             String time = LocalDateTime.ofEpochSecond(c.getTimestamp().getTime()/1000, 0, ZoneOffset.ofHours(8))
                     .format(DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss"));
             if (c.getCommentType() == 1) {
                 DisplayComment displayComment =
                         new DisplayComment(c.getId(), c.getBookId(), c.getCommentPersonId(), c.getCommentPersonName(), c.getParentId(),
-                                c.getContent(), time, new ArrayList<>());
+                                c.getContent(), time, c.getPortrait(), new ArrayList<>());
                 displayCommentList.add(displayComment);
             } else if(c.getCommentType() == 2) {
                 Reply reply = new Reply(c.getId(), c.getBookId(), c.getCommentPersonId(), c.getCommentPersonName(), c.getParentId(),
-                                c.getContent(), time, new ArrayList<>());
+                                c.getContent(), time, c.getPortrait(), new ArrayList<>());
                 replyList.add(reply);
             }
         }
@@ -124,11 +122,11 @@ public class CommentServiceImpl implements CommentService {
             if (c.getCommentType() == 1) {
                 DisplayComment displayComment =
                         new DisplayComment(c.getId(), c.getBookId(), c.getCommentPersonId(), c.getCommentPersonName(), c.getParentId(),
-                                c.getContent(), time, new ArrayList<>());
+                                c.getContent(), time, c.getPortrait(), new ArrayList<>());
                 displayCommentList.add(displayComment);
             } else if(c.getCommentType() == 2) {
                 Reply reply = new Reply(c.getId(), c.getBookId(), c.getCommentPersonId(), c.getCommentPersonName(), c.getParentId(),
-                        c.getContent(), time, new ArrayList<>());
+                        c.getContent(), time, c.getPortrait(), new ArrayList<>());
                 replyList.add(reply);
             }
         }

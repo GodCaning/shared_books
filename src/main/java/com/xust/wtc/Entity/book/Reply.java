@@ -22,12 +22,15 @@ public class Reply {
 
     private String replyTime;
 
+    private String portrait;
+
     private List<Reply> replies;
 
     public Reply() {
     }
 
-    public Reply(int id, int bookId, int commentPersonId, String commentPersonName, int parentId, String content, String replyTime, List<Reply> replies) {
+    public Reply(int id, int bookId, int commentPersonId, String commentPersonName, int parentId,
+                 String content, String replyTime, String portrait, List<Reply> replies) {
         this.id = id;
         this.bookId = bookId;
         this.commentPersonId = commentPersonId;
@@ -35,7 +38,16 @@ public class Reply {
         this.parentId = parentId;
         this.content = content;
         this.replyTime = replyTime;
+        this.portrait = portrait;
         this.replies = replies;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 
     public int getId() {

@@ -1,8 +1,10 @@
 package com.xust.wtc.Controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.xust.wtc.Dao.logistics.LogisticsMapper;
 import com.xust.wtc.Entity.Result;
 import com.xust.wtc.Entity.admin.BookInfo;
+import com.xust.wtc.Entity.admin.LendInfo;
 import com.xust.wtc.Entity.chat.Feedback;
 import com.xust.wtc.Entity.user.Person;
 import com.xust.wtc.Service.admin.AdminService;
@@ -92,5 +94,37 @@ public class AdminController {
         return "feedbackInfo";
     }
 
+    @GetMapping(value = "/lendInfo")
+    public String displayLendInfo(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                      Model model) {
+        PageInfo<LendInfo> lendInfoPageInfo = adminService.displayLendInfo(currentPage, pageSize);
+        model.addAttribute("list", lendInfoPageInfo.getList());
+        model.addAttribute("currentPage", lendInfoPageInfo.getPageNum());
+        model.addAttribute("pages", lendInfoPageInfo.getPages());
+        int prePage = lendInfoPageInfo.getPrePage();
+        model.addAttribute("prePage", prePage < 1 ? 1 : prePage);
+        int nextPage = lendInfoPageInfo.getNextPage();
+        model.addAttribute("nextPage", nextPage < 1 ? lendInfoPageInfo.getPages() : nextPage); // 下一页
+        return "lendInfo";
+    }
+
+    @GetMapping(value = "/orderDelete/{id}")
+    public String deleteOrder(@PathVariable("id") int orderId,
+                              @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                              Model model) {
+        //关单
+        adminService.closeOrder(orderId);
+        PageInfo<LendInfo> lendInfoPageInfo = adminService.displayLendInfo(currentPage, pageSize);
+        model.addAttribute("list", lendInfoPageInfo.getList());
+        model.addAttribute("currentPage", lendInfoPageInfo.getPageNum());
+        model.addAttribute("pages", lendInfoPageInfo.getPages());
+        int prePage = lendInfoPageInfo.getPrePage();
+        model.addAttribute("prePage", prePage < 1 ? 1 : prePage);
+        int nextPage = lendInfoPageInfo.getNextPage();
+        model.addAttribute("nextPage", nextPage < 1 ? lendInfoPageInfo.getPages() : nextPage); // 下一页
+        return "lendInfo";
+    }
 
 }

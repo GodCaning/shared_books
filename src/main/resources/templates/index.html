@@ -173,7 +173,12 @@
 		</div>
 	</div>
 	<div id="tabbar-with-contact" class="mui-control-content">
-
+		<div class="mui-pager" style="width: 394px;margin: 0 auto;">
+			<button id="all" style="float: left;" @click="all()">全部</button>
+			<button id="computer" style="float: left;" @click="computer()">计算机</button>
+			<button id="renwen" style="float: left;" @click="humanity()">人文</button>
+			<button id="other" style="float: left;" @click="other()">其他</button>
+		</div>
 		<div id="bookslist"  class="mui-card" v-for="books in messages.list" v-if="show">
 			<img :src="books.image" alt="" width="50%" style="display: block;float: left;width: 150px;"/>
 			<ul style="width: 280px;margin-left: 105px;color: #000000;">
@@ -195,18 +200,18 @@
 			</div>
 		</div>
 		<div class="mui-pager" style="width: 394px;margin: 0 auto;" v-if="pageshow">
-			<button id="pre" class="mui-previous" style="float: left;" @click="pre()" v-if="messages.pageNum >1">上一页</button>
+			<button id="pre" class="mui-previous" :cateid="messages.cate" style="float: left;" @click="pre()" v-if="messages.pageNum >1">上一页</button>
 			<span style="line-height: 35px; font-size: 14px;">共{{messages.pages}}页，当前第{{messages.pageNum}}页</span>
-			<button id="next" class="mui-next" style="float: right;" @click="next()" v-if="messages.pageNum < messages.pages">下一页</button>
+			<button id="next" class="mui-next" :cateid="messages.cate" style="float: right;" @click="next()" v-if="messages.pageNum < messages.pages">下一页</button>
 		</div>
 	</div>
 
 	<!--分类-->
 	<div id="tabbar-cate" class="mui-control-content">
 		<div class="mui-pager" style="width: 394px;margin: 0 auto;">
-			<button id="computer" style="float: left;" @click="computer()">计算机</button>
-			<button id="renwen" style="float: left;" @click="humanity()">人文</button>
-			<button id="other" style="float: left;" @click="other()">其他</button>
+			<button id="computers" style="float: left;" @click="computer()">计算机</button>
+			<button id="renwens" style="float: left;" @click="humanity()">人文</button>
+			<button id="others" style="float: left;" @click="other()">其他</button>
 		</div>
 		<div id="cateslist"  class="mui-card" v-for="cates in messages.list" v-if="show">
 			<img :src="cates.image" alt="" width="50%" style="display: block;float: left;width: 150px;"/>
@@ -369,9 +374,65 @@
                 })
             },
             methods:{
-                pre:function () {
+                all:function () {
                     $.ajax({
-                        url: '/findBooks?currentPage='+ --booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+                        url: '/findBooks',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            booksVue.messages  = data;
+                            console.log(booksVue.messages);
+                        }
+                    })
+                },
+                computer:function () {
+                    $.ajax({
+                        url: '/findBooksByCate?cate=1',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            booksVue.messages  = data;
+                        }
+                    })
+                },
+                humanity:function () {
+                    $.ajax({
+                        url: '/findBooksByCate?cate=2',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            booksVue.messages  = data;
+                        }
+                    })
+                },
+                other:function () {
+                    $.ajax({
+                        url: '/findBooksByCate?cate=3',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        success: function(data){
+                            booksVue.messages  = data;
+                        }
+                    })
+                },
+                pre:function () {
+                    var ID = $("#pre").attr('cateid');
+                    var u;
+                    if (ID == undefined || ID == 0) {
+                       u = '/findBooks?currentPage='+ --booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize;
+					} else {
+                        u = '/findBooksByCate?cate='+ ID + '&currentPage='+ --booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize;
+					}
+                    $.ajax({
+                        url: u,
                         type: 'GET',
                         dataType: 'json',
                         contentType: 'application/json',
@@ -383,8 +444,16 @@
                     })
                 },
                 next:function () {
+                    var ID = $("#next").attr('cateid');
+                    console.log(ID);
+                    var u;
+                    if (ID == undefined || ID == 0) {
+                        u = '/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize;
+                    } else {
+                        u = '/findBooksByCate?cate='+ ID + '&currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize;
+                    }
                     $.ajax({
-                        url: '/findBooks?currentPage='+ ++booksVue.messages.pageNum +'&pageSize='+ booksVue.messages.pageSize,
+                        url: u,
                         type: 'GET',
                         dataType: 'json',
                         contentType: 'application/json',
@@ -418,7 +487,7 @@
                 })
             },
             methods:{
-                computer:function () {
+                computers:function () {
                     $.ajax({
                         url: '/findBooksByCate?cate=1',
                         type: 'GET',
@@ -430,7 +499,7 @@
                         }
                     })
                 },
-                humanity:function () {
+                humanitys:function () {
                     $.ajax({
                         url: '/findBooksByCate?cate=2',
                         type: 'GET',
@@ -442,7 +511,7 @@
                         }
                     })
                 },
-                other:function () {
+                others:function () {
                     $.ajax({
                         url: '/findBooksByCate?cate=3',
                         type: 'GET',

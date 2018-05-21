@@ -77,16 +77,14 @@
                         console.log(data);
                         var hash = data.hash;
                         $('#submit').click(function () {
-                            //console.log('dsdsadasdas');
                             $.ajax({
                                 url: '/updatePortrait',
                                 type: 'PUT',
                                 dataType: 'json',
-                                data: JSON.stringify({'portrait':hash}),
+                                data: hash,
                                 contentType: 'application/json',
                                 accept: 'application/json',
                                 success: function(data){
-                                    console.log(data);
                                 }
                             })
                         })

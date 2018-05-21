@@ -25,18 +25,6 @@ public class KDQuery {
             System.out.println(StringConverter.converterToString(
                     StringConverter.converterToJsonNode(result), "State"));
 
-//            System.out.println(StringConverter.converterToJsonNode(result).get("State").asInt());
-            /* result:
-            {
-              "LogisticCode" : "12345678",
-              "ShipperCode" : "YTO",
-              "Traces" : [ ],
-              "State" : "0",
-              "EBusinessID" : "1319539",
-              "Reason" : "暂无轨迹信息",
-              "Success" : true
-            }
-             */
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -167,9 +155,7 @@ public class KDQuery {
                     param.append(entry.getKey());
                     param.append("=");
                     param.append(entry.getValue());
-                    //System.out.println(entry.getKey()+":"+entry.getValue());
                 }
-                //System.out.println("param:"+param.toString());
                 out.write(param.toString());
             }
             // flush输出流的缓冲

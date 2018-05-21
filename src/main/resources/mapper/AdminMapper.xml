@@ -17,6 +17,22 @@
         <result property="feedbackContact" column="feedback_contact"/>
     </resultMap>
 
+    <resultMap id="lendInfo" type="com.xust.wtc.Entity.admin.LendInfo">
+        <result property="lendId" column="lend_id"/>
+        <result property="borrowerAddress" column="borrower_address"/>
+        <result property="borrowerName" column="borrower_name"/>
+        <result property="lenderAddress" column="lender_address"/>
+        <result property="lenderName" column="lender_name"/>
+        <result property="lendStatus" column="lend_status" typeHandler="com.xust.wtc.typeHandle.LendStatusTypeHandler"/>
+        <result property="logisticsId" column="logistics_id"/>
+        <result property="logisticsNumber" column="logistics_number"/>
+        <result property="logisticsStatus" column="logistics_status" typeHandler="com.xust.wtc.typeHandle.LogisticsStatusTypeHandler"/>
+        <result property="logisStatus" column="logis_status" typeHandler="com.xust.wtc.typeHandle.LogisStatusTypeHandler"/>
+        <result property="lenderLoginName" column="lender_login_name"/>
+        <result property="borrowerLoginName" column="borrower_login_name"/>
+        <result property="title" column="title"/>
+    </resultMap>
+
     <!-- 书籍显示 -->
     <select id="findBookInfo" resultMap="bookInfo">
         SELECT stock.stock_id, person_name, title, author, stock.status
@@ -32,6 +48,19 @@
         ORDER BY feedback.create_date DESC
     </select>
 
+    <select id="findLendInfo" resultMap="lendInfo">
+        SELECT lend.lend_id, borrower_address, borrower_name,
+        lender_address, lender_name, lend.status lend_status,
+        logistics_id, logistics_number, logistics_status,
+        logistics.status logis_status, lender.login_name lender_login_name,
+        borrower.login_name borrower_login_name, title
+        FROM lend LEFT JOIN logistics ON logistics.lend_id = lend.lend_id
+        JOIN stock ON lend.stock_id = stock.stock_id
+        JOIN book ON stock.book_id = book.book_id
+        JOIN person borrower ON borrower.person_id = lend.borrower_id
+        JOIN person lender ON lender.person_id = stock.person_id
+    </select>
+
     <!-- 修改库存状态为借出 -->
     <update id="updateStockStatus" parameterType="int">
         UPDATE stock
@@ -45,5 +74,10 @@
         SET status = 0
         WHERE stock.stock_id = #{id}
     </update>
+
+    <!-- 关单 -->
+    <select id="closeOrder" parameterType="int" statementType="CALLABLE">
+        {call closeOrder(#{id,mode=IN})}
+    </select>
 
 </mapper>
